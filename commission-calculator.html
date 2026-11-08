@@ -79,6 +79,12 @@
   .rules{font-size:.86rem;padding-inline-start:18px;margin:0}
   .slider{width:100%;accent-color:var(--brand)}
   .scroll{overflow-x:auto}
+  .rank-sel{width:auto;font-size:.85rem;padding:3px 8px}
+  .neg{color:var(--minus);font-weight:700}
+  @media print{
+    .no-print,.btn,#settingsBox{display:none !important}
+    body{background:#fff;color:#000} .card{break-inside:avoid;border-color:#ccc}
+  }
 </style>
 </head>
 <body>
@@ -86,10 +92,12 @@
   <div class="head">
     <div>
       <h1>ماشین حساب پورسانت و جایزهٔ فروش</h1>
-      <p class="sub">همهٔ مبالغ به <b>میلیون تومان</b> وارد می‌شود. پورسانت همکاران، مدیر و جایزهٔ نفرات برتر هم‌زمان محاسبه می‌شود.</p>
+      <p class="sub"><input type="text" id="periodName" style="width:auto;display:inline-block;font-weight:700" placeholder="نام دوره، مثلاً آبان ۱۴۰۵"> • همهٔ مبالغ به <b>میلیون تومان</b> وارد می‌شود. پورسانت همکاران، مدیر و جایزهٔ نفرات برتر هم‌زمان محاسبه می‌شود.</p>
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn primary" id="addMember">+ افزودن همکار</button>
+      <button class="btn" id="csv">خروجی اکسل</button>
+      <button class="btn" id="print">چاپ / PDF</button>
       <button class="btn" id="reset">بازنشانی</button>
     </div>
   </div>
@@ -121,7 +129,9 @@
           <div><label>روز کاری در ماه</label><input type="text" data-s="wdMonth"></div>
           <div><label>کسر هر لید معوق (٪)</label><input type="text" data-s="leadPen"></div>
           <div><label>کسر هر قرارداد لغوشده (٪)</label><input type="text" data-s="cancelPen"></div>
+          <div><label>کسر هر شکایت مشتری (٪)</label><input type="text" data-s="complaintPen"></div>
           <div><label>سقف کل کسورات (٪)</label><input type="text" data-s="penCap"></div>
+          <div><label>کسر مالیات/بیمه (٪)</label><input type="text" data-s="taxPct"></div>
         </div>
       </div>
       <div class="grp">
@@ -133,6 +143,10 @@
         <div class="grp-t" style="margin-top:8px">هدف تیم (مدیر)</div>
         <div><label>هدف فروش دوره (میلیون تومان)</label><input type="text" data-s="target"></div>
         <div class="hint" id="targetTxt"></div>
+        <div class="g g2" style="margin-top:6px">
+          <div><label>حداقل تحقق هدف برای پورسانت مدیر (٪)</label><input type="text" data-s="mgrGate"></div>
+          <div><label>علی‌الحساب دریافتی مدیر (میلیون)</label><input type="text" data-s="mgrAdvance"></div>
+        </div>
       </div>
       <div class="grp">
         <div class="grp-t">جایزهٔ نفرات برتر</div>
@@ -146,6 +160,7 @@
           <div><label>شرط: حداقل وصول (٪)</label><input type="text" data-s="pMinCollect"></div>
           <div><label>شرط: حداکثر لید معوق ماه</label><input type="text" data-s="pMaxLeads"></div>
         </div>
+        <label style="display:flex;gap:6px;align-items:center;color:var(--ink);margin-top:6px"><input type="checkbox" data-s="manualCheck"> شرط‌های جایزه برای رتبهٔ دستی هم بررسی شود</label>
       </div>
     </div>
     <h3>جدول پله‌ها با نرخ‌های جدید</h3>
@@ -176,6 +191,9 @@
       <li><b>پاداش نرخ تبدیل:</b> اگر قراردادها نسبت به جلسه‌های ماه از حد تعیین‌شده بیشتر باشد، این پاداش داده می‌شود تا جلسهٔ صوری تشویق نشود.</li>
       <li><b>جریمهٔ لید معوق:</b> لیدی که در همان روز در CRM با آن تماس گرفته نشده باشد یک «لید معوق» حساب می‌شود و برای هر کدام درصد تعیین‌شده کسر می‌شود. ملاک: ماه، سپس هفته، سپس روز.</li>
       <li><b>قرارداد لغوشده:</b> از تعداد قراردادها کم می‌شود و برای هر کدام هم درصدی کسر می‌شود. مجموع کسورات از سقف تعیین‌شده بیشتر نمی‌شود.</li>
+      <li><b>شکایت مشتری:</b> برای هر شکایت ثبت‌شده درصد تعیین‌شده کسر می‌شود. این کسر جزو سقف کل کسورات است.</li>
+      <li><b>مالیات/بیمه و علی‌الحساب:</b> از جمع پورسانت و جایزه کم می‌شود. اگر علی‌الحساب از پورسانت بیشتر باشد، مبلغ به‌صورت بدهکار نمایش داده می‌شود.</li>
+      <li><b>رتبه:</b> به‌طور پیش‌فرض بر اساس فروش تعیین می‌شود، ولی برای هر همکار می‌توانید رتبه را دستی انتخاب کنید یا او را از رتبه‌بندی خارج کنید.</li>
       <li><b>وصول:</b> پورسانت فقط به نسبت مبلغی پرداخت می‌شود که واقعاً وصول شده است.</li>
       <li><b>جایزه:</b> همکاران بر اساس فروش رتبه‌بندی می‌شوند. نفر اول، دوم و سوم به شرط رسیدن به حداقل فروش، وصول کافی و نداشتن لید معوق بیش از حد جایزهٔ ثابت می‌گیرند.</li>
       <li><b>مدیر:</b> پورسانت مدیر روی فروش کل تیم حساب می‌شود.
@@ -185,6 +203,7 @@
           <li>اگر دست‌کم ۷۰٪ همکاران به حداقل ۲ جلسه در روز برسند، ۵٪ پاداش اضافه می‌شود.</li>
           <li>میانگین جریمهٔ لید همکاران از پورسانت مدیر هم کسر می‌شود.</li>
           <li>پرداخت به نسبت وصول کل تیم انجام می‌شود.</li>
+          <li>اگر تحقق هدف تیم از حداقل تعیین‌شده (پیش‌فرض ۶۰٪) کمتر باشد، پورسانت مدیر صفر است.</li>
         </ul>
       </li>
     </ul>
@@ -202,11 +221,14 @@ const DEFAULT_SETTINGS = {
   wdWeek:'6', wdMonth:'24', leadPen:'10', cancelPen:'5', penCap:'50',
   convTh:'20', convBonus:'5', target:'2800',
   p1Th:'1000', p1Amt:'30', p2Th:'800', p2Amt:'15', p3Th:'600', p3Amt:'7',
-  pMinCollect:'70', pMaxLeads:'3'
+  pMinCollect:'70', pMaxLeads:'3', manualCheck:true,
+  complaintPen:'5', taxPct:'0', mgrGate:'60', mgrAdvance:'0'
 };
 const blankMember = (name, sales) => ({name, sales:String(sales), collect:'100', contracts:'0', cancelled:'0',
+  complaints:'0', advance:'0', rank:'auto',
   md:'', mw:'', mm:'', ld:'', lw:'', lm:''});
 const DEFAULT_STATE = () => ({
+  period:'',
   settings:{...DEFAULT_SETTINGS},
   members:[
     {...blankMember('همکار ۱',1200), contracts:'7', mm:'55', lm:'1', collect:'90'},
@@ -215,10 +237,11 @@ const DEFAULT_STATE = () => ({
   ]
 });
 
-let state;
-try { state = JSON.parse(localStorage.getItem('commission-v2')) || DEFAULT_STATE(); } catch(e){ state = DEFAULT_STATE(); }
+let state, lastCalc;
+try { state = JSON.parse(localStorage.getItem('commission-v3')) || DEFAULT_STATE(); } catch(e){ state = DEFAULT_STATE(); }
 state.settings = {...DEFAULT_SETTINGS, ...state.settings};
-const save = () => { try { localStorage.setItem('commission-v2', JSON.stringify(state)); } catch(e){} };
+state.members = state.members.map(m => ({...blankMember(m.name, 0), ...m}));
+const save = () => { try { localStorage.setItem('commission-v3', JSON.stringify(state)); } catch(e){} };
 
 /* ---------- ابزارها ---------- */
 const fa = (n, d=0) => Number(n).toLocaleString('fa-IR', {maximumFractionDigits:d});
@@ -232,7 +255,8 @@ const S = () => {
     wdW:N(s.wdWeek)||6, wdM:N(s.wdMonth)||24, leadPen:N(s.leadPen), cancelPen:N(s.cancelPen), penCap:N(s.penCap),
     convTh:N(s.convTh), convBonus:N(s.convBonus), target:N(s.target),
     p:[[N(s.p1Th),N(s.p1Amt)],[N(s.p2Th),N(s.p2Amt)],[N(s.p3Th),N(s.p3Amt)]],
-    pMinCollect:N(s.pMinCollect), pMaxLeads:N(s.pMaxLeads) };
+    pMinCollect:N(s.pMinCollect), pMaxLeads:N(s.pMaxLeads), manualCheck:!!s.manualCheck,
+    complaintPen:N(s.complaintPen), tax:Math.min(100, N(s.taxPct)), mgrGate:N(s.mgrGate), mgrAdvance:N(s.mgrAdvance) };
 };
 // مبلغ (میلیون تومان) به متن خوانا
 function amt(m){
@@ -286,7 +310,9 @@ function calcMember(m, s){
   const bonus = cb + mb + vb;
   const leadP = leads.total * s.leadPen;
   const cancelP = cancelled * s.cancelPen;
-  const penalty = Math.min(s.penCap, leadP + cancelP);
+  const complaints = Math.floor(N(m.complaints));
+  const complaintP = complaints * s.complaintPen;
+  const penalty = Math.min(s.penCap, leadP + cancelP + complaintP);
   const collect = Math.min(100, N(m.collect));
   const afterBonus = b.value * (1 + bonus/100);
   const afterPen = afterBonus * (1 - penalty/100);
@@ -295,22 +321,41 @@ function calcMember(m, s){
   if (filled(m.mm) && filled(m.mw) && N(m.mm) < N(m.mw)) warn.push('جلسه‌های ماه از هفته کمتر است.');
   if (filled(m.lm) && filled(m.lw) && N(m.lm) < N(m.lw)) warn.push('لید معوق ماه از هفته کمتر است.');
   if (cancelled > N(m.contracts)) warn.push('تعداد لغوشده از کل قراردادها بیشتر است.');
-  return {sales, b, net, cancelled, meet, leads, cb, mb, conv, vb, bonus, leadP, cancelP, penalty, collect,
-    afterBonus, afterPen, payable, warn, prize:0, rank:0, prizeNote:''};
+  return {sales, b, net, cancelled, complaints, meet, leads, cb, mb, conv, vb, bonus, leadP, cancelP, complaintP, penalty, collect,
+    afterBonus, afterPen, payable, warn, advance:N(m.advance)*1e6, prize:0, rank:0, manual:false, prizeNote:''};
+}
+function finalize(r, s){
+  r.gross = r.payable + r.prize;
+  r.taxAmt = r.gross * s.tax / 100;
+  r.netPay = r.gross - r.taxAmt - r.advance;
 }
 
 function applyPrizes(results, s){
-  const order = results.map((r,i) => i).sort((a,b) => results[b].sales - results[a].sales || results[b].payable - results[a].payable);
-  order.forEach((idx, k) => {
-    const r = results[idx]; r.rank = k + 1;
-    if (k > 2 || r.sales <= 0) return;
+  const taken = new Set();
+  results.forEach((r, i) => {
+    const k = state.members[i].rank;
+    if (k === 'none') { r.rank = 0; return; }
+    if (/^\d+$/.test(k)) {
+      if (taken.has(+k)) r.warn.push('رتبهٔ ' + fa(+k) + ' به همکار دیگری داده شده؛ رتبه خودکار شد.');
+      else { r.rank = +k; r.manual = true; taken.add(+k); }
+    }
+  });
+  const auto = results.map((r,i) => i).filter(i => state.members[i].rank !== 'none' && !results[i].manual)
+    .sort((a,b) => results[b].sales - results[a].sales || results[b].payable - results[a].payable);
+  let next = 1;
+  auto.forEach(i => { while (taken.has(next)) next++; results[i].rank = next; taken.add(next); });
+  results.forEach(r => {
+    const k = r.rank - 1;
+    if (k < 0 || k > 2) { r.prizeNote = r.rank === 0 ? 'خارج از رتبه‌بندی' : ''; return; }
     const [th, prize] = s.p[k];
     const reasons = [];
-    if (r.sales < th) reasons.push('فروش کمتر از ' + amt(th));
-    if (r.collect < s.pMinCollect) reasons.push('وصول کمتر از ' + fa(s.pMinCollect) + '٪');
-    if (r.leads.month > s.pMaxLeads) reasons.push('لید معوق بیش از ' + fa(s.pMaxLeads) + ' در ماه');
-    if (!reasons.length){ r.prize = prize * 1e6; r.prizeNote = 'جایزهٔ نفر ' + ['اول','دوم','سوم'][k]; }
-    else r.prizeNote = 'بدون جایزه: ' + reasons.join('، ');
+    if (!r.manual || s.manualCheck) {
+      if (r.sales < th) reasons.push('فروش کمتر از ' + amt(th));
+      if (r.collect < s.pMinCollect) reasons.push('وصول کمتر از ' + fa(s.pMinCollect) + '٪');
+      if (r.leads.month > s.pMaxLeads) reasons.push('لید معوق بیش از ' + fa(s.pMaxLeads) + ' در ماه');
+    }
+    if (!reasons.length && prize > 0){ r.prize = prize * 1e6; r.prizeNote = 'جایزهٔ نفر ' + ['اول','دوم','سوم'][k] + (r.manual ? ' (رتبهٔ دستی)' : ''); }
+    else r.prizeNote = 'بدون جایزه: ' + (reasons.join('، ') || 'جایزه تعریف نشده');
   });
 }
 
@@ -331,22 +376,35 @@ function calcManager(results, s){
   const collect = total > 0 ? results.reduce((a,r) => a + r.sales * r.collect, 0) / total : 100;
   const afterBonus = b.value * (1 + bonus/100);
   const afterPen = afterBonus * (1 - penalty/100);
-  const payable = afterPen * collect / 100;
-  return {total, b, achv, tb, tc, cb, active, activeShare, ab, bonus, penalty, collect, afterBonus, afterPen, payable};
+  const gated = achv < s.mgrGate;
+  const payable = gated ? 0 : afterPen * collect / 100;
+  const taxAmt = payable * s.tax / 100;
+  const advance = s.mgrAdvance * 1e6;
+  const netPay = payable - taxAmt - advance;
+  return {gated, taxAmt, advance, netPay, total, b, achv, tb, tc, cb, active, activeShare, ab, bonus, penalty, collect, afterBonus, afterPen, payable};
 }
 
 /* ---------- رابط کاربری ---------- */
 const FIELDS = [
-  ['sales','فروش (میلیون تومان)'],['collect','وصول‌شده (٪)'],['contracts','تعداد قرارداد'],['cancelled','قرارداد لغوشده']
+  ['sales','فروش (میلیون تومان)'],['collect','وصول‌شده (٪)'],['contracts','تعداد قرارداد'],
+  ['cancelled','قرارداد لغوشده'],['complaints','شکایت ثبت‌شدهٔ مشتری'],['advance','علی‌الحساب دریافتی (میلیون)']
 ];
 function memberHTML(m, i){
   const inp = (k, ph='') => `<input type="text" inputmode="decimal" data-i="${i}" data-k="${k}" value="${m[k] ?? ''}" placeholder="${ph}">`;
   return `<div class="card member" id="mem-${i}">
     <div class="head">
       <h2><input type="text" class="name" data-i="${i}" data-k="name" value="${m.name}"> <span class="tag" id="rank-${i}"></span></h2>
-      <button class="btn del" data-del="${i}">حذف</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="margin:0">رتبه:</label>
+        <select class="rank-sel" data-i="${i}" data-k="rank">
+          <option value="auto">خودکار (بر اساس فروش)</option>
+          ${Array.from({length:Math.max(3, state.members.length)}, (_,k) => `<option value="${k+1}">نفر ${fa(k+1)}</option>`).join('')}
+          <option value="none">خارج از رتبه‌بندی</option>
+        </select>
+        <button class="btn del" data-del="${i}">حذف</button>
+      </div>
     </div>
-    <div class="g g4">${FIELDS.map(([k,l]) => `<div><label>${l}</label>${inp(k)}<div class="hint" id="h-${k}-${i}"></div></div>`).join('')}</div>
+    <div class="g g6">${FIELDS.map(([k,l]) => `<div><label>${l}</label>${inp(k)}<div class="hint" id="h-${k}-${i}"></div></div>`).join('')}</div>
     <div class="g g2" style="margin-top:10px">
       <div class="grp"><div class="grp-t">جلسهٔ هدفمند</div>
         <div class="g g3">
@@ -376,9 +434,12 @@ function memberHTML(m, i){
 
 function renderMembers(){
   document.getElementById('members').innerHTML = state.members.map(memberHTML).join('');
-  document.querySelectorAll('#members input').forEach(el => el.addEventListener('input', e => {
-    state.members[+e.target.dataset.i][e.target.dataset.k] = e.target.value; update();
-  }));
+  document.querySelectorAll('#members input, #members select').forEach(el => {
+    if (el.tagName === 'SELECT') el.value = state.members[+el.dataset.i].rank || 'auto';
+    el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', e => {
+      state.members[+e.target.dataset.i][e.target.dataset.k] = e.target.value; update();
+    });
+  });
   document.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
     state.members.splice(+b.dataset.del, 1); renderMembers(); update();
   }));
@@ -390,7 +451,9 @@ function update(){
   const s = S();
   const results = state.members.map(m => calcMember(m, s));
   applyPrizes(results, s);
+  results.forEach(r => finalize(r, s));
   const mg = calcManager(results, s);
+  lastCalc = {results, mg};
 
   document.getElementById('redTxt').textContent = fa(s.red, 1);
   document.getElementById('targetTxt').textContent = 'معادل ' + amt(s.target) + ' تومان';
@@ -406,16 +469,21 @@ function update(){
 
   results.forEach((r, i) => {
     const m = state.members[i];
-    document.getElementById('final-' + i).textContent = toman(r.payable + r.prize);
-    document.getElementById('finalS-' + i).textContent = '≈ ' + tomanShort(r.payable + r.prize) + (r.prize ? ' (با جایزه)' : '');
+    const fe = document.getElementById('final-' + i);
+    fe.textContent = toman(r.netPay); fe.classList.toggle('neg', r.netPay < 0);
+    document.getElementById('finalS-' + i).textContent = (r.netPay < 0 ? 'بدهکار • ' : '≈ ') + tomanShort(Math.abs(r.netPay)) +
+      ` • پورسانت ${tomanShort(r.payable)}` + (r.prize ? ` + جایزه ${tomanShort(r.prize)}` : '');
     document.getElementById('h-sales-' + i).textContent = amt(r.sales) + ' تومان';
     document.getElementById('h-contracts-' + i).textContent = 'خالص: ' + fa(r.net);
+    document.getElementById('h-collect-' + i).textContent = 'وصول‌شده: ' + amt(r.sales * r.collect / 100);
+    document.getElementById('h-complaints-' + i).textContent = r.complaints ? '−' + fa(r.complaintP) + '٪' : '';
+    document.getElementById('h-advance-' + i).textContent = r.advance ? amt(r.advance/1e6) + ' تومان' : '';
     document.getElementById('h-meet-' + i).textContent = r.meet.basis === '—' ? 'وارد نشده' :
       `مبنا: ${r.meet.basis} • میانگین روزانه ${fa(r.meet.daily,2)} (هدف ۲ در روز = ${fa(2*s.wdW)} در هفته = ${fa(2*s.wdM)} در ماه)`;
     document.getElementById('h-lead-' + i).textContent = r.leads.basis === '—' ? 'وارد نشده (صفر در نظر گرفته می‌شود)' :
       `مبنا: ${r.leads.basis} • ${fa(r.leads.total)} لید معوق × ${fa(s.leadPen)}٪ = ${fa(r.leadP)}٪ کسر`;
     const rk = document.getElementById('rank-' + i);
-    rk.textContent = 'رتبهٔ ' + fa(r.rank); rk.className = 'tag' + (r.prize ? ' gold' : '');
+    rk.textContent = r.rank ? 'رتبهٔ ' + fa(r.rank) + (r.manual ? ' (دستی)' : '') : 'بدون رتبه'; rk.className = 'tag' + (r.prize ? ' gold' : '');
     document.getElementById('prize-' + i).innerHTML = r.prizeNote ? (r.prize ? `🏆 <b>${r.prizeNote}: ${toman(r.prize)}</b>` : r.prizeNote) : '';
     document.getElementById('warn-' + i).textContent = r.warn.join(' ');
     document.getElementById('br-' + i).innerHTML = `
@@ -425,17 +493,21 @@ function update(){
       <tr><td>جلسهٔ هدفمند (${fa(r.meet.daily,2)} در روز)</td><td>${pill(r.mb,1)}</td></tr>
       <tr><td>نرخ تبدیل (${fa(r.conv,1)}٪)</td><td>${pill(r.vb,1)}</td></tr>
       <tr><td>بعد از پاداش</td><td class="plus">${toman(r.afterBonus)}</td></tr>
-      <tr><td>لید معوق + لغو قرارداد</td><td>${pill(r.penalty,-1)} ${r.leadP + r.cancelP > s.penCap ? '<span class="small">(سقف)</span>' : ''}</td></tr>
-      <tr><td>وصول ${fa(r.collect)}٪</td><td>${toman(r.afterPen)} ← <b>${toman(r.payable)}</b></td></tr>`;
+      <tr><td>کسورات: لید ${fa(r.leadP)}٪ • لغو ${fa(r.cancelP)}٪ • شکایت ${fa(r.complaintP)}٪</td><td>${pill(r.penalty,-1)} ${r.leadP + r.cancelP + r.complaintP > s.penCap ? '<span class="small">(سقف)</span>' : ''}</td></tr>
+      <tr><td>وصول ${fa(r.collect)}٪</td><td>${toman(r.afterPen)} ← <b>${toman(r.payable)}</b></td></tr>
+      <tr><td>جایزه</td><td>${r.prize ? '<span class="plus">+' + toman(r.prize) + '</span>' : '—'}</td></tr>
+      <tr><td>مالیات/بیمه ${fa(s.tax)}٪ و علی‌الحساب</td><td class="minus">−${toman(r.taxAmt + r.advance)}</td></tr>
+      <tr><td><b>خالص پرداختی</b></td><td><b class="${r.netPay < 0 ? 'neg' : ''}">${toman(r.netPay)}</b></td></tr>`;
   });
 
   document.getElementById('managerCard').innerHTML = `
     <h2>مدیر فروش <span class="tag">بر اساس فروش کل تیم</span></h2>
     <div class="res">
       <div class="box">
-        <div class="small">پورسانت قابل پرداخت مدیر</div>
-        <div class="big">${toman(mg.payable)}</div>
-        <div class="small">≈ ${tomanShort(mg.payable)}</div>
+        <div class="small">خالص پرداختی مدیر</div>
+        <div class="big ${mg.netPay < 0 ? 'neg' : ''}">${toman(mg.netPay)}</div>
+        <div class="small">${mg.netPay < 0 ? 'بدهکار • ' : '≈ '}${tomanShort(Math.abs(mg.netPay))}</div>
+        ${mg.gated ? `<div class="warn">تحقق هدف کمتر از ${fa(s.mgrGate)}٪ است؛ پورسانت مدیر این دوره صفر است.</div>` : ''}
         <div class="small" style="margin-top:6px">فروش تیم: <b>${amt(mg.total)} تومان</b> • تحقق هدف: <b>${fa(mg.achv,1)}٪</b></div>
       </div>
       <div class="box scroll"><table>
@@ -446,19 +518,25 @@ function update(){
         <tr><td>همکاران فعال در جلسه (${fa(mg.active)} از ${fa(results.length)})</td><td>${pill(mg.ab,1)}</td></tr>
         <tr><td>بعد از پاداش</td><td class="plus">${toman(mg.afterBonus)}</td></tr>
         <tr><td>میانگین جریمهٔ لید تیم</td><td>${pill(mg.penalty,-1)}</td></tr>
-        <tr><td>وصول تیم ${fa(mg.collect,1)}٪</td><td><b>${toman(mg.payable)}</b></td></tr>
+        <tr><td>وصول تیم ${fa(mg.collect,1)}٪ ${mg.gated ? '(شرط حداقل هدف برقرار نیست)' : ''}</td><td><b>${toman(mg.payable)}</b></td></tr>
+        <tr><td>مالیات/بیمه و علی‌الحساب</td><td class="minus">−${toman(mg.taxAmt + mg.advance)}</td></tr>
+        <tr><td><b>خالص پرداختی</b></td><td><b>${toman(mg.netPay)}</b></td></tr>
       </table></div>
     </div>`;
 
-  const order = results.map((r,i) => [r,i]).sort((a,b) => a[0].rank - b[0].rank);
-  const totalPay = results.reduce((a,r) => a + r.payable + r.prize, 0) + mg.payable;
+  const order = results.map((r,i) => [r,i]).sort((a,b) => (a[0].rank || 1e9) - (b[0].rank || 1e9));
+  const totalPay = results.reduce((a,r) => a + r.gross, 0) + mg.payable;
+  const totalNet = results.reduce((a,r) => a + r.netPay, 0) + mg.netPay;
   document.getElementById('board').innerHTML =
-    '<tr><th>رتبه</th><th>نام</th><th>فروش</th><th>قرارداد</th><th>جلسه/روز</th><th>لید معوق</th><th>پورسانت</th><th>جایزه</th><th>جمع</th></tr>' +
-    order.map(([r,i]) => `<tr class="${r.prize && r.rank === 1 ? 'r1' : ''}"><td>${fa(r.rank)}</td><td>${state.members[i].name}</td>
+    '<tr><th>رتبه</th><th>نام</th><th>فروش</th><th>قرارداد</th><th>جلسه/روز</th><th>لید معوق</th><th>پورسانت</th><th>جایزه</th><th>کسر مالیات و علی‌الحساب</th><th>خالص پرداختی</th></tr>' +
+    order.map(([r,i]) => `<tr class="${r.prize && r.rank === 1 ? 'r1' : ''}"><td>${r.rank ? fa(r.rank) + (r.manual ? '*' : '') : '—'}</td><td>${state.members[i].name}</td>
       <td>${amt(r.sales)}</td><td>${fa(r.net)}</td><td>${fa(r.meet.daily,1)}</td><td>${fa(r.leads.total)}</td>
-      <td>${toman(r.payable)}</td><td>${r.prize ? toman(r.prize) : '—'}</td><td><b>${toman(r.payable + r.prize)}</b></td></tr>`).join('') +
-    `<tr><td></td><td><b>مدیر</b></td><td>${amt(mg.total)}</td><td>${fa(mg.tc)}</td><td></td><td></td><td>${toman(mg.payable)}</td><td>—</td><td><b>${toman(mg.payable)}</b></td></tr>
-     <tr><td></td><td colspan="7"><b>جمع کل پرداختی</b> (${fa(mg.total ? totalPay / (mg.total*1e6) * 100 : 0, 3)}٪ از فروش)</td><td><b>${toman(totalPay)}</b></td></tr>`;
+      <td>${toman(r.payable)}</td><td>${r.prize ? toman(r.prize) : '—'}</td><td class="minus">${r.taxAmt + r.advance ? '−' + toman(r.taxAmt + r.advance) : '—'}</td>
+      <td><b class="${r.netPay < 0 ? 'neg' : ''}">${toman(r.netPay)}</b></td></tr>`).join('') +
+    `<tr><td></td><td><b>مدیر</b></td><td>${amt(mg.total)}</td><td>${fa(mg.tc)}</td><td></td><td></td><td>${toman(mg.payable)}</td><td>—</td>
+      <td class="minus">${mg.taxAmt + mg.advance ? '−' + toman(mg.taxAmt + mg.advance) : '—'}</td><td><b>${toman(mg.netPay)}</b></td></tr>
+     <tr><td></td><td colspan="8"><b>جمع کل هزینهٔ پورسانت و جایزه</b> (${fa(mg.total ? totalPay / (mg.total*1e6) * 100 : 0, 3)}٪ از فروش) • خالص پرداختی پس از کسورات</td><td><b>${toman(totalNet)}</b></td></tr>
+     <tr><td colspan="10" class="small">* رتبهٔ دستی • جمع هزینه: ${toman(totalPay)}</td></tr>`;
   save();
 }
 
@@ -485,8 +563,26 @@ document.getElementById('addMember').addEventListener('click', () => {
 });
 document.getElementById('reset').addEventListener('click', () => {
   if (!confirm('همهٔ اطلاعات به حالت پیش‌فرض برگردد؟')) return;
-  try { localStorage.removeItem('commission-v2'); } catch(e){}
+  try { localStorage.removeItem('commission-v3'); } catch(e){}
   location.reload();
+});
+const pn = document.getElementById('periodName');
+pn.value = state.period || '';
+pn.addEventListener('input', () => { state.period = pn.value; save(); });
+document.getElementById('print').addEventListener('click', () => window.print());
+document.getElementById('csv').addEventListener('click', () => {
+  const {results, mg} = lastCalc;
+  const rows = [['رتبه','نام','فروش (میلیون تومان)','وصول %','قرارداد خالص','لغو','شکایت','جلسه در روز','لید معوق',
+    'پورسانت پایه','پاداش %','کسورات %','پورسانت قابل پرداخت','جایزه','مالیات','علی‌الحساب','خالص پرداختی']];
+  results.forEach((r,i) => rows.push([r.rank || '-', state.members[i].name, r.sales, r.collect, r.net, r.cancelled, r.complaints,
+    r.meet.daily.toFixed(2), r.leads.total, Math.round(r.b.value), r.bonus, r.penalty, Math.round(r.payable), r.prize,
+    Math.round(r.taxAmt), r.advance, Math.round(r.netPay)]));
+  rows.push(['-','مدیر', mg.total, mg.collect.toFixed(1), mg.tc, '', '', '', '', Math.round(mg.b.value), mg.bonus, mg.penalty.toFixed(1),
+    Math.round(mg.payable), 0, Math.round(mg.taxAmt), mg.advance, Math.round(mg.netPay)]);
+  const csv = '\ufeff' + rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'commission-' + (state.period || 'report') + '.csv'; a.click();
 });
 bindSettings(); renderMembers(); update();
 </script>
