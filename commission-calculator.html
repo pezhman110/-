@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ماشین حساب پورسانت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6fa; --card:#ffffff; --ink:#1b2333; --muted:#6b7487; --line:#e3e7ef;
+    --brand:#0f6e6e; --brand-soft:#e3f2f1; --mgr:#5b3fa8; --mgr-soft:#eeeaf8;
+    --plus:#18794e; --minus:#c0392b; --warn-soft:#fdecea; --plus-soft:#e6f4ec;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#11151d; --card:#1a202b; --ink:#e8ecf3; --muted:#9aa3b5; --line:#2b3342;
+      --brand:#4cc3bd; --brand-soft:#173634; --mgr:#a990f0; --mgr-soft:#2a2340;
+      --plus:#4cc98a; --minus:#ff7b6b; --warn-soft:#3a1f1c; --plus-soft:#173225;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.7}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:1.6rem;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:.92rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .grid{display:grid;gap:16px}
+  .top{grid-template-columns:2fr 1fr}
+  .cols{grid-template-columns:1fr 1fr;margin-top:16px}
+  @media (max-width:860px){.top,.cols{grid-template-columns:1fr}}
+  label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:4px}
+  input[type=text]{width:100%;font:inherit;font-size:1.05rem;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+  input[type=text]:focus{outline:2px solid var(--brand);border-color:transparent}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  @media (max-width:560px){.row{grid-template-columns:1fr}}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:3px 12px;cursor:pointer}
+  .chip:hover{border-color:var(--brand)}
+  .hint{font-size:.8rem;color:var(--muted);margin-top:4px}
+  h2{font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  .tag{font-size:.75rem;padding:2px 10px;border-radius:999px;font-weight:700}
+  .colleague h2 .tag{background:var(--brand-soft);color:var(--brand)}
+  .manager h2 .tag{background:var(--mgr-soft);color:var(--mgr)}
+  .colleague{border-top:4px solid var(--brand)}
+  .manager{border-top:4px solid var(--mgr)}
+  .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--bg)}
+  .big{font-size:1.7rem;font-weight:800}
+  .colleague .big{color:var(--brand)} .manager .big{color:var(--mgr)}
+  .small{font-size:.85rem;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:10px}
+  td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+  th{color:var(--muted);font-weight:500}
+  tr.active td{font-weight:700}
+  .colleague tr.active td{background:var(--brand-soft)}
+  .manager tr.active td{background:var(--mgr-soft)}
+  .plus{color:var(--plus)} .minus{color:var(--minus)}
+  .pill{display:inline-block;padding:1px 8px;border-radius:8px;font-size:.8rem}
+  .pill.plus{background:var(--plus-soft)} .pill.minus{background:var(--warn-soft)}
+  .slider{width:100%;accent-color:var(--brand)}
+  .note{font-size:.82rem;color:var(--muted);margin-top:16px}
+  .section-title{font-size:.9rem;font-weight:700;margin:14px 0 8px}
+  .toggle{display:flex;gap:6px;align-items:center;font-size:.88rem;color:var(--ink);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ماشین حساب پورسانت فروش</h1>
+  <p class="sub">محاسبهٔ هم‌زمان پورسانت همکار فروش و مدیر فروش، با پاداش قرارداد و جلسه و جریمهٔ لیدهای تماس‌گرفته‌نشده در CRM</p>
+
+  <div class="grid top">
+    <div class="card">
+      <label for="amount">مبلغ فروش (میلیارد تومان)</label>
+      <input type="text" id="amount" inputmode="decimal" value="2800">
+      <div class="hint" id="amountWords"></div>
+      <div class="chips">
+        <button class="chip" data-v="350">۳۵۰ میلیارد</button>
+        <button class="chip" data-v="600">۶۰۰ میلیارد</button>
+        <button class="chip" data-v="1000">۱ همت</button>
+        <button class="chip" data-v="1800">۱٫۸ همت</button>
+        <button class="chip" data-v="2800">۲٫۸ همت (بیمارستان پارسا)</button>
+      </div>
+    </div>
+    <div class="card">
+      <label>کاهش نرخ پایه (به ازای پاداش‌ها)</label>
+      <input type="range" class="slider" id="reduce" min="0" max="0.0015" step="0.0005" value="0.001">
+      <div class="small">هر نرخ اعلامی <b id="reduceTxt"></b> درصد کمتر می‌شود. مثلاً ۰٫۰۰۸٪ ← <b id="reduceEx"></b>٪</div>
+      <label class="toggle"><input type="checkbox" id="slab"> محاسبهٔ پلکانی (هر بخش از مبلغ با نرخ پلهٔ خودش)</label>
+    </div>
+  </div>
+
+  <div class="grid cols">
+    <div class="card colleague" id="c"></div>
+    <div class="card manager" id="m"></div>
+  </div>
+
+  <p class="note">
+    فرمول: پورسانت نهایی = مبلغ فروش × نرخ پله (پس از کاهش) × (۱ + درصد پاداش‌ها) × (۱ − جریمهٔ لید).
+    جریمه برای هر روزی که لید تماس‌گرفته‌نشده در CRM باشد ۱۰٪ است و حداکثر به ۱۰۰٪ می‌رسد.
+    «هزارم درصد» یعنی ۰٫۰۰۱٪؛ مثلاً ۰٫۰۲۵٪ از ۲٫۸ همت می‌شود ۷۰۰ میلیون تومان.
+    تعداد روزهای لید تماس‌گرفته‌نشده را از گزارش CRM وارد کنید.
+  </p>
+</div>
+
+<script>
+const TIERS = {
+  c: [ // همکار — مرزها به میلیارد تومان
+    {from:0,    to:400,  rate:0,     label:'تا ۳۹۹ میلیارد'},
+    {from:400,  to:800,  rate:0.008, label:'۴۰۰ تا ۷۹۹ میلیارد'},
+    {from:800,  to:1500, rate:0.012, label:'۸۰۰ میلیارد تا ۱٫۵ همت'},
+    {from:1500, to:2200, rate:0.018, label:'۱٫۵ تا ۲٫۲ همت'},
+    {from:2200, to:Infinity, rate:0.025, label:'۲٫۲ همت به بالا'},
+  ],
+  m: [ // مدیر
+    {from:0,    to:900,  rate:0,     label:'تا ۹۰۰ میلیارد'},
+    {from:900,  to:1500, rate:0.008, label:'۹۰۱ میلیارد تا ۱٫۵ همت'},
+    {from:1500, to:2200, rate:0.012, label:'۱٫۵ تا ۲٫۲ همت'},
+    {from:2200, to:Infinity, rate:0.025, label:'۲٫۲ همت به بالا'},
+  ]
+};
+
+const fa = (n, d=0) => Number(n).toLocaleString('fa-IR', {maximumFractionDigits:d, minimumFractionDigits:0});
+const toEn = s => String(s).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫,،]/g, m => m === '٫' ? '.' : '');
+const num = el => { const v = parseFloat(toEn(el.value)); return isFinite(v) && v > 0 ? v : 0; };
+
+function contractBonus(n){ return n > 10 ? 18 : n > 6 ? 13 : n > 3 ? 8 : 0; }
+function meetingBonus(n){ return n >= 3 ? 11 : n >= 2 ? 7 : 0; }
+
+function adjRate(r, red){ return r > 0 ? Math.max(0, r - red) : 0; }
+
+function baseCommission(key, amountB, red, slab){
+  const tiers = TIERS[key];
+  const toman = amountB * 1e9;
+  if (!slab){
+    const t = tiers.find(t => amountB >= t.from && amountB < t.to) || tiers[tiers.length-1];
+    return {value: toman * adjRate(t.rate, red) / 100, tier: t};
+  }
+  let v = 0, tier = tiers[0];
+  for (const t of tiers){
+    if (amountB > t.from){
+      const part = Math.min(amountB, t.to) - t.from;
+      v += part * 1e9 * adjRate(t.rate, red) / 100;
+      tier = t;
+    }
+  }
+  return {value: v, tier};
+}
+
+function moneyTxt(t){
+  if (t >= 1e9) return fa(t/1e9, 2) + ' میلیارد تومان';
+  return fa(t/1e6, 1) + ' میلیون تومان';
+}
+
+function buildCard(key, title){
+  const el = document.getElementById(key);
+  el.innerHTML = `
+    <h2>${title} <span class="tag">${key === 'c' ? 'همکار' : 'مدیر'}</span></h2>
+    <div class="row">
+      <div><label>تعداد قرارداد</label><input type="text" inputmode="numeric" id="${key}-contracts" value="0"></div>
+      <div><label>میانگین جلسهٔ هدفمند در روز</label><input type="text" inputmode="numeric" id="${key}-meet" value="0"></div>
+      <div><label>روزهای دارای لید تماس‌گرفته‌نشده</label><input type="text" inputmode="numeric" id="${key}-lead" value="0"></div>
+    </div>
+    <div class="result">
+      <div class="small">پورسانت نهایی</div>
+      <div class="big" id="${key}-final">۰</div>
+      <div class="small" id="${key}-finalM"></div>
+      <table id="${key}-break"></table>
+    </div>
+    <div class="section-title">جدول پله‌ها (نرخ اعلامی ← نرخ پس از کاهش)</div>
+    <table id="${key}-tiers"></table>`;
+  el.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+}
+
+function renderCard(key, amountB, red, slab){
+  const contracts = Math.floor(num(document.getElementById(key+'-contracts')));
+  const meet = num(document.getElementById(key+'-meet'));
+  const leadDays = Math.floor(num(document.getElementById(key+'-lead')));
+
+  const base = baseCommission(key, amountB, red, slab);
+  const cb = contractBonus(contracts), mb = meetingBonus(meet);
+  const bonus = cb + mb;
+  const penalty = Math.min(100, leadDays * 10);
+  const afterBonus = base.value * (1 + bonus/100);
+  const final = afterBonus * (1 - penalty/100);
+
+  document.getElementById(key+'-final').textContent = fa(Math.round(final)) + ' تومان';
+  document.getElementById(key+'-finalM').textContent = '≈ ' + moneyTxt(final);
+
+  document.getElementById(key+'-break').innerHTML = `
+    <tr><td>پلهٔ فعال</td><td>${base.tier.label}</td></tr>
+    <tr><td>پورسانت پایه</td><td>${fa(Math.round(base.value))} تومان</td></tr>
+    <tr><td>پاداش قرارداد (${fa(contracts)} قرارداد)</td><td><span class="pill plus">+${fa(cb)}٪</span></td></tr>
+    <tr><td>پاداش جلسهٔ هدفمند (${fa(meet,1)} در روز)</td><td><span class="pill plus">+${fa(mb)}٪</span></td></tr>
+    <tr><td>پس از پاداش</td><td class="plus">${fa(Math.round(afterBonus))} تومان</td></tr>
+    <tr><td>جریمهٔ لید (${fa(leadDays)} روز × ۱۰٪)</td><td><span class="pill minus">−${fa(penalty)}٪</span> <span class="minus">${fa(Math.round(afterBonus - final))} تومان</span></td></tr>`;
+
+  document.getElementById(key+'-tiers').innerHTML =
+    '<tr><th>بازه</th><th>نرخ اعلامی</th><th>نرخ جدید</th><th>پورسانت به ازای هر میلیارد</th></tr>' +
+    TIERS[key].map(t => {
+      const active = t === base.tier ? 'active' : '';
+      const r = adjRate(t.rate, red);
+      return `<tr class="${active}"><td>${t.label}</td><td>${fa(t.rate,4)}٪</td><td>${fa(r,4)}٪</td><td>${r ? fa(r*10,3) + ' میلیون تومان' : '—'}</td></tr>`;
+    }).join('');
+}
+
+function calc(){
+  const amountB = num(document.getElementById('amount'));
+  const red = parseFloat(document.getElementById('reduce').value);
+  const slab = document.getElementById('slab').checked;
+  document.getElementById('reduceTxt').textContent = fa(red, 4);
+  document.getElementById('reduceEx').textContent = fa(Math.max(0, 0.008 - red), 4);
+  document.getElementById('amountWords').textContent = amountB >= 1000
+    ? `${fa(amountB/1000, 3)} همت (${fa(amountB)} میلیارد تومان)` : `${fa(amountB)} میلیارد تومان`;
+  renderCard('c', amountB, red, slab);
+  renderCard('m', amountB, red, slab);
+}
+
+buildCard('c', 'همکار فروش');
+buildCard('m', 'مدیر فروش');
+document.getElementById('amount').addEventListener('input', calc);
+document.getElementById('reduce').addEventListener('input', calc);
+document.getElementById('slab').addEventListener('change', calc);
+document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+  document.getElementById('amount').value = b.dataset.v; calc();
+}));
+calc();
+</script>
+</body>
+</html>
