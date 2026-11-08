@@ -11,219 +11,484 @@
     --bg:#f4f6fa; --card:#ffffff; --ink:#1b2333; --muted:#6b7487; --line:#e3e7ef;
     --brand:#0f6e6e; --brand-soft:#e3f2f1; --mgr:#5b3fa8; --mgr-soft:#eeeaf8;
     --plus:#18794e; --minus:#c0392b; --warn-soft:#fdecea; --plus-soft:#e6f4ec;
+    --gold:#b7791f; --gold-soft:#fdf3dc;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --bg:#11151d; --card:#1a202b; --ink:#e8ecf3; --muted:#9aa3b5; --line:#2b3342;
       --brand:#4cc3bd; --brand-soft:#173634; --mgr:#a990f0; --mgr-soft:#2a2340;
       --plus:#4cc98a; --minus:#ff7b6b; --warn-soft:#3a1f1c; --plus-soft:#173225;
+      --gold:#f0c060; --gold-soft:#3a3018;
     }
+  }
+  :root[data-theme="dark"]{
+    --bg:#11151d; --card:#1a202b; --ink:#e8ecf3; --muted:#9aa3b5; --line:#2b3342;
+    --brand:#4cc3bd; --brand-soft:#173634; --mgr:#a990f0; --mgr-soft:#2a2340;
+    --plus:#4cc98a; --minus:#ff7b6b; --warn-soft:#3a1f1c; --plus-soft:#173225;
+    --gold:#f0c060; --gold-soft:#3a3018;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.7}
-  .wrap{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+  .wrap{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
   h1{font-size:1.6rem;margin:0 0 4px}
-  .sub{color:var(--muted);margin:0 0 20px;font-size:.92rem}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-  .grid{display:grid;gap:16px}
-  .top{grid-template-columns:2fr 1fr}
-  .cols{grid-template-columns:1fr 1fr;margin-top:16px}
-  @media (max-width:860px){.top,.cols{grid-template-columns:1fr}}
-  label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:4px}
-  input[type=text]{width:100%;font:inherit;font-size:1.05rem;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
-  input[type=text]:focus{outline:2px solid var(--brand);border-color:transparent}
-  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-  @media (max-width:560px){.row{grid-template-columns:1fr}}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-  .chip{font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:3px 12px;cursor:pointer}
-  .chip:hover{border-color:var(--brand)}
-  .hint{font-size:.8rem;color:var(--muted);margin-top:4px}
-  h2{font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:8px}
-  .tag{font-size:.75rem;padding:2px 10px;border-radius:999px;font-weight:700}
-  .colleague h2 .tag{background:var(--brand-soft);color:var(--brand)}
-  .manager h2 .tag{background:var(--mgr-soft);color:var(--mgr)}
-  .colleague{border-top:4px solid var(--brand)}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:.92rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+  h2{font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h3{font-size:.95rem;margin:14px 0 8px}
+  label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:3px}
+  input[type=text],select{width:100%;font:inherit;font-size:.98rem;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink)}
+  input[type=text]:focus,select:focus{outline:2px solid var(--brand);border-color:transparent}
+  .g{display:grid;gap:10px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)} .g6{grid-template-columns:repeat(6,1fr)}
+  @media (max-width:900px){.g4,.g6{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:560px){.g3,.g4,.g6{grid-template-columns:repeat(2,1fr)}}
+  .grp{border:1px dashed var(--line);border-radius:10px;padding:10px}
+  .grp-t{font-size:.82rem;font-weight:700;margin-bottom:6px}
+  .hint{font-size:.78rem;color:var(--muted);margin-top:4px}
+  details summary{cursor:pointer;font-weight:700}
+  details[open] summary{margin-bottom:10px}
+  .member{border-top:4px solid var(--brand)}
   .manager{border-top:4px solid var(--mgr)}
-  .result{margin-top:14px;padding:14px;border-radius:12px;background:var(--bg)}
-  .big{font-size:1.7rem;font-weight:800}
-  .colleague .big{color:var(--brand)} .manager .big{color:var(--mgr)}
-  .small{font-size:.85rem;color:var(--muted)}
-  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:10px}
-  td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+  .tag{font-size:.75rem;padding:2px 10px;border-radius:999px;font-weight:700;background:var(--brand-soft);color:var(--brand)}
+  .manager .tag{background:var(--mgr-soft);color:var(--mgr)}
+  .tag.gold{background:var(--gold-soft);color:var(--gold)}
+  .name{max-width:220px;font-weight:700}
+  .res{display:grid;grid-template-columns:1fr 1.3fr;gap:14px;margin-top:12px}
+  @media (max-width:760px){.res{grid-template-columns:1fr}}
+  .box{background:var(--bg);border-radius:12px;padding:12px}
+  .big{font-size:1.6rem;font-weight:800;color:var(--brand)}
+  .manager .big{color:var(--mgr)}
+  .small{font-size:.83rem;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:.86rem}
+  td,th{padding:5px 7px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
   th{color:var(--muted);font-weight:500}
-  tr.active td{font-weight:700}
-  .colleague tr.active td{background:var(--brand-soft)}
-  .manager tr.active td{background:var(--mgr-soft)}
   .plus{color:var(--plus)} .minus{color:var(--minus)}
-  .pill{display:inline-block;padding:1px 8px;border-radius:8px;font-size:.8rem}
+  .pill{display:inline-block;padding:0 8px;border-radius:8px;font-size:.8rem;white-space:nowrap}
   .pill.plus{background:var(--plus-soft)} .pill.minus{background:var(--warn-soft)}
+  .btn{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:6px 14px;cursor:pointer}
+  .btn:hover{border-color:var(--brand)}
+  .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .btn.del{color:var(--minus)}
+  .head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .warn{font-size:.8rem;color:var(--minus);margin-top:6px}
+  tr.r1 td{background:var(--gold-soft)}
+  .tiers tr.active td{background:var(--brand-soft);font-weight:700}
+  .tiers.m tr.active td{background:var(--mgr-soft)}
+  .rules li{margin-bottom:4px}
+  .rules{font-size:.86rem;padding-inline-start:18px;margin:0}
   .slider{width:100%;accent-color:var(--brand)}
-  .note{font-size:.82rem;color:var(--muted);margin-top:16px}
-  .section-title{font-size:.9rem;font-weight:700;margin:14px 0 8px}
-  .toggle{display:flex;gap:6px;align-items:center;font-size:.88rem;color:var(--ink);margin-top:10px}
+  .scroll{overflow-x:auto}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>ماشین حساب پورسانت فروش</h1>
-  <p class="sub">محاسبهٔ هم‌زمان پورسانت همکار فروش و مدیر فروش، با پاداش قرارداد و جلسه و جریمهٔ لیدهای تماس‌گرفته‌نشده در CRM</p>
+  <div class="head">
+    <div>
+      <h1>ماشین حساب پورسانت و جایزهٔ فروش</h1>
+      <p class="sub">همهٔ مبالغ به <b>میلیون تومان</b> وارد می‌شود. پورسانت همکاران، مدیر و جایزهٔ نفرات برتر هم‌زمان محاسبه می‌شود.</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn primary" id="addMember">+ افزودن همکار</button>
+      <button class="btn" id="reset">بازنشانی</button>
+    </div>
+  </div>
 
-  <div class="grid top">
-    <div class="card">
-      <label for="amount">مبلغ فروش (میلیارد تومان)</label>
-      <input type="text" id="amount" inputmode="decimal" value="2800">
-      <div class="hint" id="amountWords"></div>
-      <div class="chips">
-        <button class="chip" data-v="350">۳۵۰ میلیارد</button>
-        <button class="chip" data-v="600">۶۰۰ میلیارد</button>
-        <button class="chip" data-v="1000">۱ همت</button>
-        <button class="chip" data-v="1800">۱٫۸ همت</button>
-        <button class="chip" data-v="2800">۲٫۸ همت (بیمارستان پارسا)</button>
+  <!-- تنظیمات -->
+  <details class="card" id="settingsBox">
+    <summary>تنظیمات و معیارها (قابل تغییر)</summary>
+    <div class="g g4">
+      <div class="grp">
+        <div class="grp-t">پله‌ها و نرخ</div>
+        <label>مقیاس پله‌ها</label>
+        <select data-s="scale">
+          <option value="1">میلیونی: ۴۰۰ میلیون، ۸۰۰ میلیون، ۱٫۵ و ۲٫۲ میلیارد</option>
+          <option value="1000">میلیاردی: ۴۰۰ میلیارد، ۸۰۰ میلیارد، ۱٫۵ و ۲٫۲ همت</option>
+        </select>
+        <label style="margin-top:6px">واحد نرخ اعلامی</label>
+        <select data-s="rateUnit">
+          <option value="100">در هزار (۸ ← ۰٫۸٪)</option>
+          <option value="1">هزارم درصد (۸ ← ۰٫۰۰۸٪)</option>
+        </select>
+        <label style="margin-top:6px">کاهش نرخ پایه: <b id="redTxt"></b> هزارم</label>
+        <input type="range" class="slider" data-s="reduce" min="0" max="1.5" step="0.5">
+        <label style="display:flex;gap:6px;align-items:center;color:var(--ink)"><input type="checkbox" data-s="slab"> محاسبهٔ پلکانی</label>
+      </div>
+      <div class="grp">
+        <div class="grp-t">روز کاری و جریمه</div>
+        <div class="g g2">
+          <div><label>روز کاری در هفته</label><input type="text" data-s="wdWeek"></div>
+          <div><label>روز کاری در ماه</label><input type="text" data-s="wdMonth"></div>
+          <div><label>کسر هر لید معوق (٪)</label><input type="text" data-s="leadPen"></div>
+          <div><label>کسر هر قرارداد لغوشده (٪)</label><input type="text" data-s="cancelPen"></div>
+          <div><label>سقف کل کسورات (٪)</label><input type="text" data-s="penCap"></div>
+        </div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">پاداش نرخ تبدیل</div>
+        <div class="g g2">
+          <div><label>حداقل نرخ تبدیل جلسه به قرارداد (٪)</label><input type="text" data-s="convTh"></div>
+          <div><label>پاداش (٪)</label><input type="text" data-s="convBonus"></div>
+        </div>
+        <div class="grp-t" style="margin-top:8px">هدف تیم (مدیر)</div>
+        <div><label>هدف فروش دوره (میلیون تومان)</label><input type="text" data-s="target"></div>
+        <div class="hint" id="targetTxt"></div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">جایزهٔ نفرات برتر</div>
+        <div class="g g2">
+          <div><label>نفر اول: حداقل فروش (میلیون)</label><input type="text" data-s="p1Th"></div>
+          <div><label>جایزه (میلیون تومان)</label><input type="text" data-s="p1Amt"></div>
+          <div><label>نفر دوم: حداقل فروش</label><input type="text" data-s="p2Th"></div>
+          <div><label>جایزه</label><input type="text" data-s="p2Amt"></div>
+          <div><label>نفر سوم: حداقل فروش</label><input type="text" data-s="p3Th"></div>
+          <div><label>جایزه</label><input type="text" data-s="p3Amt"></div>
+          <div><label>شرط: حداقل وصول (٪)</label><input type="text" data-s="pMinCollect"></div>
+          <div><label>شرط: حداکثر لید معوق ماه</label><input type="text" data-s="pMaxLeads"></div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <label>کاهش نرخ پایه (به ازای پاداش‌ها)</label>
-      <input type="range" class="slider" id="reduce" min="0" max="0.0015" step="0.0005" value="0.001">
-      <div class="small">هر نرخ اعلامی <b id="reduceTxt"></b> درصد کمتر می‌شود. مثلاً ۰٫۰۰۸٪ ← <b id="reduceEx"></b>٪</div>
-      <label class="toggle"><input type="checkbox" id="slab"> محاسبهٔ پلکانی (هر بخش از مبلغ با نرخ پلهٔ خودش)</label>
+    <h3>جدول پله‌ها با نرخ‌های جدید</h3>
+    <div class="g g2">
+      <div class="scroll"><div class="small">همکار</div><table class="tiers" id="tiersC"></table></div>
+      <div class="scroll"><div class="small">مدیر (بر اساس فروش کل تیم)</div><table class="tiers m" id="tiersM"></table></div>
     </div>
+  </details>
+
+  <!-- رتبه‌بندی -->
+  <div class="card">
+    <h2>رتبه‌بندی و خلاصهٔ پرداخت</h2>
+    <div class="scroll"><table id="board"></table></div>
   </div>
 
-  <div class="grid cols">
-    <div class="card colleague" id="c"></div>
-    <div class="card manager" id="m"></div>
-  </div>
+  <!-- مدیر -->
+  <div class="card manager" id="managerCard"></div>
 
-  <p class="note">
-    فرمول: پورسانت نهایی = مبلغ فروش × نرخ پله (پس از کاهش) × (۱ + درصد پاداش‌ها) × (۱ − جریمهٔ لید).
-    جریمه برای هر روزی که لید تماس‌گرفته‌نشده در CRM باشد ۱۰٪ است و حداکثر به ۱۰۰٪ می‌رسد.
-    «هزارم درصد» یعنی ۰٫۰۰۱٪؛ مثلاً ۰٫۰۲۵٪ از ۲٫۸ همت می‌شود ۷۰۰ میلیون تومان.
-    تعداد روزهای لید تماس‌گرفته‌نشده را از گزارش CRM وارد کنید.
-  </p>
+  <!-- همکاران -->
+  <div id="members"></div>
+
+  <div class="card">
+    <h2>قواعد محاسبه</h2>
+    <ul class="rules">
+      <li><b>پورسانت پایه:</b> مبلغ فروش × نرخ پله. از هر نرخ اعلامی به اندازهٔ «کاهش نرخ پایه» کم می‌شود تا هزینهٔ پاداش‌ها جبران شود.</li>
+      <li><b>پاداش قرارداد</b> (قراردادهای خالص یعنی منهای لغوشده): بیش از ۳ قرارداد ۸٪، بیش از ۶ قرارداد ۱۳٪ و بیش از ۱۰ قرارداد ۱۸٪.</li>
+      <li><b>پاداش جلسهٔ هدفمند:</b> میانگین ۲ جلسه در روز ۷٪ و ۳ جلسه ۱۱٪. اگر عدد ماه وارد شده باشد ملاک ماه است، وگرنه هفته و بعد روز. معادلش در هفته و ماه کنار هر خانه نمایش داده می‌شود.</li>
+      <li><b>پاداش نرخ تبدیل:</b> اگر قراردادها نسبت به جلسه‌های ماه از حد تعیین‌شده بیشتر باشد، این پاداش داده می‌شود تا جلسهٔ صوری تشویق نشود.</li>
+      <li><b>جریمهٔ لید معوق:</b> لیدی که در همان روز در CRM با آن تماس گرفته نشده باشد یک «لید معوق» حساب می‌شود و برای هر کدام درصد تعیین‌شده کسر می‌شود. ملاک: ماه، سپس هفته، سپس روز.</li>
+      <li><b>قرارداد لغوشده:</b> از تعداد قراردادها کم می‌شود و برای هر کدام هم درصدی کسر می‌شود. مجموع کسورات از سقف تعیین‌شده بیشتر نمی‌شود.</li>
+      <li><b>وصول:</b> پورسانت فقط به نسبت مبلغی پرداخت می‌شود که واقعاً وصول شده است.</li>
+      <li><b>جایزه:</b> همکاران بر اساس فروش رتبه‌بندی می‌شوند. نفر اول، دوم و سوم به شرط رسیدن به حداقل فروش، وصول کافی و نداشتن لید معوق بیش از حد جایزهٔ ثابت می‌گیرند.</li>
+      <li><b>مدیر:</b> پورسانت مدیر روی فروش کل تیم حساب می‌شود.
+        <ul>
+          <li>پاداش تحقق هدف: ۸۰٪ هدف ۵٪، ۱۰۰٪ هدف ۱۰٪ و ۱۲۰٪ هدف ۱۵٪.</li>
+          <li>پاداش قراردادهای تیم: بیش از ۱۰ قرارداد ۵٪، بیش از ۲۰ قرارداد ۸٪ و بیش از ۳۰ قرارداد ۱۲٪.</li>
+          <li>اگر دست‌کم ۷۰٪ همکاران به حداقل ۲ جلسه در روز برسند، ۵٪ پاداش اضافه می‌شود.</li>
+          <li>میانگین جریمهٔ لید همکاران از پورسانت مدیر هم کسر می‌شود.</li>
+          <li>پرداخت به نسبت وصول کل تیم انجام می‌شود.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <script>
-const TIERS = {
-  c: [ // همکار — مرزها به میلیارد تومان
-    {from:0,    to:400,  rate:0,     label:'تا ۳۹۹ میلیارد'},
-    {from:400,  to:800,  rate:0.008, label:'۴۰۰ تا ۷۹۹ میلیارد'},
-    {from:800,  to:1500, rate:0.012, label:'۸۰۰ میلیارد تا ۱٫۵ همت'},
-    {from:1500, to:2200, rate:0.018, label:'۱٫۵ تا ۲٫۲ همت'},
-    {from:2200, to:Infinity, rate:0.025, label:'۲٫۲ همت به بالا'},
-  ],
-  m: [ // مدیر
-    {from:0,    to:900,  rate:0,     label:'تا ۹۰۰ میلیارد'},
-    {from:900,  to:1500, rate:0.008, label:'۹۰۱ میلیارد تا ۱٫۵ همت'},
-    {from:1500, to:2200, rate:0.012, label:'۱٫۵ تا ۲٫۲ همت'},
-    {from:2200, to:Infinity, rate:0.025, label:'۲٫۲ همت به بالا'},
-  ]
+/* ---------- داده‌ها ---------- */
+const BASE_TIERS = { // مرزها در مقیاس میلیونی (میلیون تومان)، نرخ به واحد اعلامی
+  c: [[0,400,0],[400,800,8],[800,1500,12],[1500,2200,18],[2200,Infinity,25]],
+  m: [[0,900.001,0],[900.001,1500,8],[1500,2200,12],[2200,Infinity,25]]
 };
+const DEFAULT_SETTINGS = {
+  scale:'1', rateUnit:'100', reduce:'1', slab:false,
+  wdWeek:'6', wdMonth:'24', leadPen:'10', cancelPen:'5', penCap:'50',
+  convTh:'20', convBonus:'5', target:'2800',
+  p1Th:'1000', p1Amt:'30', p2Th:'800', p2Amt:'15', p3Th:'600', p3Amt:'7',
+  pMinCollect:'70', pMaxLeads:'3'
+};
+const blankMember = (name, sales) => ({name, sales:String(sales), collect:'100', contracts:'0', cancelled:'0',
+  md:'', mw:'', mm:'', ld:'', lw:'', lm:''});
+const DEFAULT_STATE = () => ({
+  settings:{...DEFAULT_SETTINGS},
+  members:[
+    {...blankMember('همکار ۱',1200), contracts:'7', mm:'55', lm:'1', collect:'90'},
+    {...blankMember('همکار ۲',850), contracts:'4', mw:'12', lw:'2', collect:'80'},
+    {...blankMember('همکار ۳',750), contracts:'3', md:'2', ld:'0'}
+  ]
+});
 
-const fa = (n, d=0) => Number(n).toLocaleString('fa-IR', {maximumFractionDigits:d, minimumFractionDigits:0});
-const toEn = s => String(s).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫,،]/g, m => m === '٫' ? '.' : '');
-const num = el => { const v = parseFloat(toEn(el.value)); return isFinite(v) && v > 0 ? v : 0; };
+let state;
+try { state = JSON.parse(localStorage.getItem('commission-v2')) || DEFAULT_STATE(); } catch(e){ state = DEFAULT_STATE(); }
+state.settings = {...DEFAULT_SETTINGS, ...state.settings};
+const save = () => { try { localStorage.setItem('commission-v2', JSON.stringify(state)); } catch(e){} };
 
-function contractBonus(n){ return n > 10 ? 18 : n > 6 ? 13 : n > 3 ? 8 : 0; }
-function meetingBonus(n){ return n >= 3 ? 11 : n >= 2 ? 7 : 0; }
+/* ---------- ابزارها ---------- */
+const fa = (n, d=0) => Number(n).toLocaleString('fa-IR', {maximumFractionDigits:d});
+const toEn = s => String(s ?? '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+  .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g,'.').replace(/[,،٬\s]/g,'');
+const N = v => { const x = parseFloat(toEn(v)); return isFinite(x) && x > 0 ? x : 0; };
+const filled = v => toEn(v) !== '';
+const S = () => {
+  const s = state.settings;
+  return { scale:+s.scale, ru:+s.rateUnit, red:N(s.reduce), slab:!!s.slab,
+    wdW:N(s.wdWeek)||6, wdM:N(s.wdMonth)||24, leadPen:N(s.leadPen), cancelPen:N(s.cancelPen), penCap:N(s.penCap),
+    convTh:N(s.convTh), convBonus:N(s.convBonus), target:N(s.target),
+    p:[[N(s.p1Th),N(s.p1Amt)],[N(s.p2Th),N(s.p2Amt)],[N(s.p3Th),N(s.p3Amt)]],
+    pMinCollect:N(s.pMinCollect), pMaxLeads:N(s.pMaxLeads) };
+};
+// مبلغ (میلیون تومان) به متن خوانا
+function amt(m){
+  if (m >= 1e6) return fa(m/1e6, 3) + ' همت';
+  if (m >= 1000) return fa(m/1000, 3) + ' میلیارد';
+  return fa(m, 1) + ' میلیون';
+}
+const toman = t => fa(Math.round(t)) + ' تومان';
+function tomanShort(t){ return amt(t/1e6) + ' تومان'; }
 
-function adjRate(r, red){ return r > 0 ? Math.max(0, r - red) : 0; }
+function tiers(key, s){
+  return BASE_TIERS[key].map(([f,t,r]) => ({from:f*s.scale, to:t*s.scale, rate:r}));
+}
+// نرخ نهایی به درصد
+function pct(r, s){ return r > 0 ? Math.max(0, r - s.red) * 0.001 * s.ru : 0; }
+function tierLabel(t, i, list){
+  if (i === 0) return 'تا ' + amt(t.to);
+  if (t.to === Infinity) return amt(t.from) + ' به بالا';
+  return amt(t.from) + ' تا ' + amt(t.to);
+}
+function base(key, million, s){
+  const list = tiers(key, s);
+  const tm = million * 1e6;
+  const tier = list.find(t => million < t.to) || list[list.length-1];
+  if (!s.slab) return {value: tm * pct(tier.rate, s)/100, tier, list};
+  let v = 0;
+  for (const t of list) if (million > t.from) v += (Math.min(million, t.to) - t.from) * 1e6 * pct(t.rate, s)/100;
+  return {value:v, tier, list};
+}
+// مبنای دوره: ماه، بعد هفته، بعد روز
+function period(d, w, m, s){
+  if (filled(m)) return {basis:'ماه', total:N(m), daily:N(m)/s.wdM, month:N(m)};
+  if (filled(w)) return {basis:'هفته', total:N(w), daily:N(w)/s.wdW, month:N(w)/s.wdW*s.wdM};
+  if (filled(d)) return {basis:'روز', total:N(d), daily:N(d), month:N(d)*s.wdM};
+  return {basis:'—', total:0, daily:0, month:0};
+}
+const contractBonus = n => n > 10 ? 18 : n > 6 ? 13 : n > 3 ? 8 : 0;
+const meetingBonus = d => d >= 3 ? 11 : d >= 2 ? 7 : 0;
 
-function baseCommission(key, amountB, red, slab){
-  const tiers = TIERS[key];
-  const toman = amountB * 1e9;
-  if (!slab){
-    const t = tiers.find(t => amountB >= t.from && amountB < t.to) || tiers[tiers.length-1];
-    return {value: toman * adjRate(t.rate, red) / 100, tier: t};
-  }
-  let v = 0, tier = tiers[0];
-  for (const t of tiers){
-    if (amountB > t.from){
-      const part = Math.min(amountB, t.to) - t.from;
-      v += part * 1e9 * adjRate(t.rate, red) / 100;
-      tier = t;
-    }
-  }
-  return {value: v, tier};
+/* ---------- محاسبهٔ همکار ---------- */
+function calcMember(m, s){
+  const sales = N(m.sales);
+  const b = base('c', sales, s);
+  const cancelled = Math.floor(N(m.cancelled));
+  const net = Math.max(0, Math.floor(N(m.contracts)) - cancelled);
+  const meet = period(m.md, m.mw, m.mm, s);
+  const leads = period(m.ld, m.lw, m.lm, s);
+  const cb = contractBonus(net), mb = meetingBonus(meet.daily);
+  const conv = meet.month > 0 ? net / meet.month * 100 : 0;
+  const vb = net > 0 && meet.month > 0 && conv >= s.convTh ? s.convBonus : 0;
+  const bonus = cb + mb + vb;
+  const leadP = leads.total * s.leadPen;
+  const cancelP = cancelled * s.cancelPen;
+  const penalty = Math.min(s.penCap, leadP + cancelP);
+  const collect = Math.min(100, N(m.collect));
+  const afterBonus = b.value * (1 + bonus/100);
+  const afterPen = afterBonus * (1 - penalty/100);
+  const payable = afterPen * collect / 100;
+  const warn = [];
+  if (filled(m.mm) && filled(m.mw) && N(m.mm) < N(m.mw)) warn.push('جلسه‌های ماه از هفته کمتر است.');
+  if (filled(m.lm) && filled(m.lw) && N(m.lm) < N(m.lw)) warn.push('لید معوق ماه از هفته کمتر است.');
+  if (cancelled > N(m.contracts)) warn.push('تعداد لغوشده از کل قراردادها بیشتر است.');
+  return {sales, b, net, cancelled, meet, leads, cb, mb, conv, vb, bonus, leadP, cancelP, penalty, collect,
+    afterBonus, afterPen, payable, warn, prize:0, rank:0, prizeNote:''};
 }
 
-function moneyTxt(t){
-  if (t >= 1e9) return fa(t/1e9, 2) + ' میلیارد تومان';
-  return fa(t/1e6, 1) + ' میلیون تومان';
+function applyPrizes(results, s){
+  const order = results.map((r,i) => i).sort((a,b) => results[b].sales - results[a].sales || results[b].payable - results[a].payable);
+  order.forEach((idx, k) => {
+    const r = results[idx]; r.rank = k + 1;
+    if (k > 2 || r.sales <= 0) return;
+    const [th, prize] = s.p[k];
+    const reasons = [];
+    if (r.sales < th) reasons.push('فروش کمتر از ' + amt(th));
+    if (r.collect < s.pMinCollect) reasons.push('وصول کمتر از ' + fa(s.pMinCollect) + '٪');
+    if (r.leads.month > s.pMaxLeads) reasons.push('لید معوق بیش از ' + fa(s.pMaxLeads) + ' در ماه');
+    if (!reasons.length){ r.prize = prize * 1e6; r.prizeNote = 'جایزهٔ نفر ' + ['اول','دوم','سوم'][k]; }
+    else r.prizeNote = 'بدون جایزه: ' + reasons.join('، ');
+  });
 }
 
-function buildCard(key, title){
-  const el = document.getElementById(key);
-  el.innerHTML = `
-    <h2>${title} <span class="tag">${key === 'c' ? 'همکار' : 'مدیر'}</span></h2>
-    <div class="row">
-      <div><label>تعداد قرارداد</label><input type="text" inputmode="numeric" id="${key}-contracts" value="0"></div>
-      <div><label>میانگین جلسهٔ هدفمند در روز</label><input type="text" inputmode="numeric" id="${key}-meet" value="0"></div>
-      <div><label>روزهای دارای لید تماس‌گرفته‌نشده</label><input type="text" inputmode="numeric" id="${key}-lead" value="0"></div>
+/* ---------- محاسبهٔ مدیر ---------- */
+function calcManager(results, s){
+  const total = results.reduce((a,r) => a + r.sales, 0);
+  const b = base('m', total, s);
+  const achv = s.target > 0 ? total / s.target * 100 : 0;
+  const tb = achv >= 120 ? 15 : achv >= 100 ? 10 : achv >= 80 ? 5 : 0;
+  const tc = results.reduce((a,r) => a + r.net, 0);
+  const cb = tc > 30 ? 12 : tc > 20 ? 8 : tc > 10 ? 5 : 0;
+  const n = results.length || 1;
+  const active = results.filter(r => r.meet.daily >= 2).length;
+  const activeShare = active / n * 100;
+  const ab = results.length && activeShare >= 70 ? 5 : 0;
+  const bonus = tb + cb + ab;
+  const penalty = Math.min(s.penCap, results.reduce((a,r) => a + Math.min(s.penCap, r.leadP), 0) / n);
+  const collect = total > 0 ? results.reduce((a,r) => a + r.sales * r.collect, 0) / total : 100;
+  const afterBonus = b.value * (1 + bonus/100);
+  const afterPen = afterBonus * (1 - penalty/100);
+  const payable = afterPen * collect / 100;
+  return {total, b, achv, tb, tc, cb, active, activeShare, ab, bonus, penalty, collect, afterBonus, afterPen, payable};
+}
+
+/* ---------- رابط کاربری ---------- */
+const FIELDS = [
+  ['sales','فروش (میلیون تومان)'],['collect','وصول‌شده (٪)'],['contracts','تعداد قرارداد'],['cancelled','قرارداد لغوشده']
+];
+function memberHTML(m, i){
+  const inp = (k, ph='') => `<input type="text" inputmode="decimal" data-i="${i}" data-k="${k}" value="${m[k] ?? ''}" placeholder="${ph}">`;
+  return `<div class="card member" id="mem-${i}">
+    <div class="head">
+      <h2><input type="text" class="name" data-i="${i}" data-k="name" value="${m.name}"> <span class="tag" id="rank-${i}"></span></h2>
+      <button class="btn del" data-del="${i}">حذف</button>
     </div>
-    <div class="result">
-      <div class="small">پورسانت نهایی</div>
-      <div class="big" id="${key}-final">۰</div>
-      <div class="small" id="${key}-finalM"></div>
-      <table id="${key}-break"></table>
+    <div class="g g4">${FIELDS.map(([k,l]) => `<div><label>${l}</label>${inp(k)}<div class="hint" id="h-${k}-${i}"></div></div>`).join('')}</div>
+    <div class="g g2" style="margin-top:10px">
+      <div class="grp"><div class="grp-t">جلسهٔ هدفمند</div>
+        <div class="g g3">
+          <div><label>امروز</label>${inp('md','—')}</div>
+          <div><label>این هفته</label>${inp('mw','—')}</div>
+          <div><label>این ماه</label>${inp('mm','—')}</div>
+        </div><div class="hint" id="h-meet-${i}"></div></div>
+      <div class="grp"><div class="grp-t">لید تماس‌گرفته‌نشده (CRM)</div>
+        <div class="g g3">
+          <div><label>امروز</label>${inp('ld','—')}</div>
+          <div><label>این هفته</label>${inp('lw','—')}</div>
+          <div><label>این ماه</label>${inp('lm','—')}</div>
+        </div><div class="hint" id="h-lead-${i}"></div></div>
     </div>
-    <div class="section-title">جدول پله‌ها (نرخ اعلامی ← نرخ پس از کاهش)</div>
-    <table id="${key}-tiers"></table>`;
-  el.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+    <div class="res">
+      <div class="box">
+        <div class="small">پورسانت قابل پرداخت</div>
+        <div class="big" id="final-${i}"></div>
+        <div class="small" id="finalS-${i}"></div>
+        <div class="small" id="prize-${i}" style="margin-top:6px"></div>
+        <div class="warn" id="warn-${i}"></div>
+      </div>
+      <div class="box scroll"><table id="br-${i}"></table></div>
+    </div>
+  </div>`;
 }
 
-function renderCard(key, amountB, red, slab){
-  const contracts = Math.floor(num(document.getElementById(key+'-contracts')));
-  const meet = num(document.getElementById(key+'-meet'));
-  const leadDays = Math.floor(num(document.getElementById(key+'-lead')));
-
-  const base = baseCommission(key, amountB, red, slab);
-  const cb = contractBonus(contracts), mb = meetingBonus(meet);
-  const bonus = cb + mb;
-  const penalty = Math.min(100, leadDays * 10);
-  const afterBonus = base.value * (1 + bonus/100);
-  const final = afterBonus * (1 - penalty/100);
-
-  document.getElementById(key+'-final').textContent = fa(Math.round(final)) + ' تومان';
-  document.getElementById(key+'-finalM').textContent = '≈ ' + moneyTxt(final);
-
-  document.getElementById(key+'-break').innerHTML = `
-    <tr><td>پلهٔ فعال</td><td>${base.tier.label}</td></tr>
-    <tr><td>پورسانت پایه</td><td>${fa(Math.round(base.value))} تومان</td></tr>
-    <tr><td>پاداش قرارداد (${fa(contracts)} قرارداد)</td><td><span class="pill plus">+${fa(cb)}٪</span></td></tr>
-    <tr><td>پاداش جلسهٔ هدفمند (${fa(meet,1)} در روز)</td><td><span class="pill plus">+${fa(mb)}٪</span></td></tr>
-    <tr><td>پس از پاداش</td><td class="plus">${fa(Math.round(afterBonus))} تومان</td></tr>
-    <tr><td>جریمهٔ لید (${fa(leadDays)} روز × ۱۰٪)</td><td><span class="pill minus">−${fa(penalty)}٪</span> <span class="minus">${fa(Math.round(afterBonus - final))} تومان</span></td></tr>`;
-
-  document.getElementById(key+'-tiers').innerHTML =
-    '<tr><th>بازه</th><th>نرخ اعلامی</th><th>نرخ جدید</th><th>پورسانت به ازای هر میلیارد</th></tr>' +
-    TIERS[key].map(t => {
-      const active = t === base.tier ? 'active' : '';
-      const r = adjRate(t.rate, red);
-      return `<tr class="${active}"><td>${t.label}</td><td>${fa(t.rate,4)}٪</td><td>${fa(r,4)}٪</td><td>${r ? fa(r*10,3) + ' میلیون تومان' : '—'}</td></tr>`;
-    }).join('');
+function renderMembers(){
+  document.getElementById('members').innerHTML = state.members.map(memberHTML).join('');
+  document.querySelectorAll('#members input').forEach(el => el.addEventListener('input', e => {
+    state.members[+e.target.dataset.i][e.target.dataset.k] = e.target.value; update();
+  }));
+  document.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+    state.members.splice(+b.dataset.del, 1); renderMembers(); update();
+  }));
 }
 
-function calc(){
-  const amountB = num(document.getElementById('amount'));
-  const red = parseFloat(document.getElementById('reduce').value);
-  const slab = document.getElementById('slab').checked;
-  document.getElementById('reduceTxt').textContent = fa(red, 4);
-  document.getElementById('reduceEx').textContent = fa(Math.max(0, 0.008 - red), 4);
-  document.getElementById('amountWords').textContent = amountB >= 1000
-    ? `${fa(amountB/1000, 3)} همت (${fa(amountB)} میلیارد تومان)` : `${fa(amountB)} میلیارد تومان`;
-  renderCard('c', amountB, red, slab);
-  renderCard('m', amountB, red, slab);
+const pill = (v, sign) => `<span class="pill ${sign > 0 ? 'plus' : 'minus'}">${sign > 0 ? '+' : '−'}${fa(v,1)}٪</span>`;
+
+function update(){
+  const s = S();
+  const results = state.members.map(m => calcMember(m, s));
+  applyPrizes(results, s);
+  const mg = calcManager(results, s);
+
+  document.getElementById('redTxt').textContent = fa(s.red, 1);
+  document.getElementById('targetTxt').textContent = 'معادل ' + amt(s.target) + ' تومان';
+  ['c','m'].forEach(k => {
+    const list = tiers(k, s);
+    const active = k === 'c' ? null : mg.b.tier;
+    document.getElementById(k === 'c' ? 'tiersC' : 'tiersM').innerHTML =
+      '<tr><th>بازه</th><th>نرخ اعلامی</th><th>نرخ جدید</th><th>به ازای هر ۱ میلیارد</th></tr>' +
+      list.map((t,i) => `<tr class="${active && active.from === t.from ? 'active' : ''}"><td>${tierLabel(t,i,list)}</td>
+        <td>${fa(t.rate * 0.001 * s.ru, 4)}٪</td><td>${fa(pct(t.rate, s), 4)}٪</td>
+        <td>${pct(t.rate,s) ? toman(1e9 * pct(t.rate,s)/100) : '—'}</td></tr>`).join('');
+  });
+
+  results.forEach((r, i) => {
+    const m = state.members[i];
+    document.getElementById('final-' + i).textContent = toman(r.payable + r.prize);
+    document.getElementById('finalS-' + i).textContent = '≈ ' + tomanShort(r.payable + r.prize) + (r.prize ? ' (با جایزه)' : '');
+    document.getElementById('h-sales-' + i).textContent = amt(r.sales) + ' تومان';
+    document.getElementById('h-contracts-' + i).textContent = 'خالص: ' + fa(r.net);
+    document.getElementById('h-meet-' + i).textContent = r.meet.basis === '—' ? 'وارد نشده' :
+      `مبنا: ${r.meet.basis} • میانگین روزانه ${fa(r.meet.daily,2)} (هدف ۲ در روز = ${fa(2*s.wdW)} در هفته = ${fa(2*s.wdM)} در ماه)`;
+    document.getElementById('h-lead-' + i).textContent = r.leads.basis === '—' ? 'وارد نشده (صفر در نظر گرفته می‌شود)' :
+      `مبنا: ${r.leads.basis} • ${fa(r.leads.total)} لید معوق × ${fa(s.leadPen)}٪ = ${fa(r.leadP)}٪ کسر`;
+    const rk = document.getElementById('rank-' + i);
+    rk.textContent = 'رتبهٔ ' + fa(r.rank); rk.className = 'tag' + (r.prize ? ' gold' : '');
+    document.getElementById('prize-' + i).innerHTML = r.prizeNote ? (r.prize ? `🏆 <b>${r.prizeNote}: ${toman(r.prize)}</b>` : r.prizeNote) : '';
+    document.getElementById('warn-' + i).textContent = r.warn.join(' ');
+    document.getElementById('br-' + i).innerHTML = `
+      <tr><td>پلهٔ فعال</td><td>${tierLabel(r.b.tier, r.b.list.indexOf(r.b.tier), r.b.list)} • ${fa(pct(r.b.tier.rate,s),4)}٪</td></tr>
+      <tr><td>پورسانت پایه</td><td>${toman(r.b.value)}</td></tr>
+      <tr><td>قرارداد خالص (${fa(r.net)})</td><td>${pill(r.cb,1)}</td></tr>
+      <tr><td>جلسهٔ هدفمند (${fa(r.meet.daily,2)} در روز)</td><td>${pill(r.mb,1)}</td></tr>
+      <tr><td>نرخ تبدیل (${fa(r.conv,1)}٪)</td><td>${pill(r.vb,1)}</td></tr>
+      <tr><td>بعد از پاداش</td><td class="plus">${toman(r.afterBonus)}</td></tr>
+      <tr><td>لید معوق + لغو قرارداد</td><td>${pill(r.penalty,-1)} ${r.leadP + r.cancelP > s.penCap ? '<span class="small">(سقف)</span>' : ''}</td></tr>
+      <tr><td>وصول ${fa(r.collect)}٪</td><td>${toman(r.afterPen)} ← <b>${toman(r.payable)}</b></td></tr>`;
+  });
+
+  document.getElementById('managerCard').innerHTML = `
+    <h2>مدیر فروش <span class="tag">بر اساس فروش کل تیم</span></h2>
+    <div class="res">
+      <div class="box">
+        <div class="small">پورسانت قابل پرداخت مدیر</div>
+        <div class="big">${toman(mg.payable)}</div>
+        <div class="small">≈ ${tomanShort(mg.payable)}</div>
+        <div class="small" style="margin-top:6px">فروش تیم: <b>${amt(mg.total)} تومان</b> • تحقق هدف: <b>${fa(mg.achv,1)}٪</b></div>
+      </div>
+      <div class="box scroll"><table>
+        <tr><td>پلهٔ فعال</td><td>${tierLabel(mg.b.tier, mg.b.list.indexOf(mg.b.tier), mg.b.list)} • ${fa(pct(mg.b.tier.rate,s),4)}٪</td></tr>
+        <tr><td>پورسانت پایه</td><td>${toman(mg.b.value)}</td></tr>
+        <tr><td>تحقق هدف (${fa(mg.achv,1)}٪)</td><td>${pill(mg.tb,1)}</td></tr>
+        <tr><td>قراردادهای تیم (${fa(mg.tc)})</td><td>${pill(mg.cb,1)}</td></tr>
+        <tr><td>همکاران فعال در جلسه (${fa(mg.active)} از ${fa(results.length)})</td><td>${pill(mg.ab,1)}</td></tr>
+        <tr><td>بعد از پاداش</td><td class="plus">${toman(mg.afterBonus)}</td></tr>
+        <tr><td>میانگین جریمهٔ لید تیم</td><td>${pill(mg.penalty,-1)}</td></tr>
+        <tr><td>وصول تیم ${fa(mg.collect,1)}٪</td><td><b>${toman(mg.payable)}</b></td></tr>
+      </table></div>
+    </div>`;
+
+  const order = results.map((r,i) => [r,i]).sort((a,b) => a[0].rank - b[0].rank);
+  const totalPay = results.reduce((a,r) => a + r.payable + r.prize, 0) + mg.payable;
+  document.getElementById('board').innerHTML =
+    '<tr><th>رتبه</th><th>نام</th><th>فروش</th><th>قرارداد</th><th>جلسه/روز</th><th>لید معوق</th><th>پورسانت</th><th>جایزه</th><th>جمع</th></tr>' +
+    order.map(([r,i]) => `<tr class="${r.prize && r.rank === 1 ? 'r1' : ''}"><td>${fa(r.rank)}</td><td>${state.members[i].name}</td>
+      <td>${amt(r.sales)}</td><td>${fa(r.net)}</td><td>${fa(r.meet.daily,1)}</td><td>${fa(r.leads.total)}</td>
+      <td>${toman(r.payable)}</td><td>${r.prize ? toman(r.prize) : '—'}</td><td><b>${toman(r.payable + r.prize)}</b></td></tr>`).join('') +
+    `<tr><td></td><td><b>مدیر</b></td><td>${amt(mg.total)}</td><td>${fa(mg.tc)}</td><td></td><td></td><td>${toman(mg.payable)}</td><td>—</td><td><b>${toman(mg.payable)}</b></td></tr>
+     <tr><td></td><td colspan="7"><b>جمع کل پرداختی</b> (${fa(mg.total ? totalPay / (mg.total*1e6) * 100 : 0, 3)}٪ از فروش)</td><td><b>${toman(totalPay)}</b></td></tr>`;
+  save();
 }
 
-buildCard('c', 'همکار فروش');
-buildCard('m', 'مدیر فروش');
-document.getElementById('amount').addEventListener('input', calc);
-document.getElementById('reduce').addEventListener('input', calc);
-document.getElementById('slab').addEventListener('change', calc);
-document.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
-  document.getElementById('amount').value = b.dataset.v; calc();
-}));
-calc();
+/* ---------- اتصال تنظیمات ---------- */
+function bindSettings(){
+  document.querySelectorAll('[data-s]').forEach(el => {
+    const k = el.dataset.s;
+    if (el.type === 'checkbox') el.checked = !!state.settings[k]; else el.value = state.settings[k];
+    el.addEventListener(el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'input', () => {
+      if (k === 'scale'){ // هم‌مقیاس کردن آستانه‌ها و هدف
+        const f = +el.value / +state.settings.scale;
+        ['target','p1Th','p2Th','p3Th'].forEach(x => {
+          state.settings[x] = String(N(state.settings[x]) * f);
+          document.querySelector(`[data-s="${x}"]`).value = state.settings[x];
+        });
+      }
+      state.settings[k] = el.type === 'checkbox' ? el.checked : el.value;
+      update();
+    });
+  });
+}
+document.getElementById('addMember').addEventListener('click', () => {
+  state.members.push(blankMember('همکار ' + (state.members.length + 1), 0)); renderMembers(); update();
+});
+document.getElementById('reset').addEventListener('click', () => {
+  if (!confirm('همهٔ اطلاعات به حالت پیش‌فرض برگردد؟')) return;
+  try { localStorage.removeItem('commission-v2'); } catch(e){}
+  location.reload();
+});
+bindSettings(); renderMembers(); update();
 </script>
 </body>
 </html>
