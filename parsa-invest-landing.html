@@ -128,6 +128,42 @@ section.block{padding-block:70px;border-bottom:1px solid var(--line)}
 footer{padding-block:22px 110px;font-size:13px;color:var(--mist)}
 footer p+p{margin-top:4px}
 
+
+/* step-by-step advisor */
+.wz-head{display:grid;gap:8px}
+.wz-progress{height:3px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+.wz-progress i{display:block;height:100%;width:0;background:var(--brass-hi);transition:width .35s ease}
+.wz-count{font-size:13px;color:var(--haze);min-height:1.2em}
+.wz-stage{display:grid;gap:12px;align-content:start}
+.wz-q{font-family:var(--display);font-size:23px;color:#fff;line-height:1.6;outline:none}
+.wz-sub{font-size:14px;color:var(--cloud)}
+.wz-opts{display:grid;gap:9px}
+.wz-opt{font:inherit;text-align:start;display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(184,138,68,.35);border-radius:14px;padding:12px 14px;color:#EEF1F4;cursor:pointer;min-height:52px;transition:border-color .15s,background .15s}
+.wz-opt:hover{border-color:var(--brass-hi);background:rgba(184,138,68,.08)}
+.wz-opt b{display:block;font-size:16px;font-weight:700}
+.wz-opt small{display:block;font-size:13px;color:var(--haze);line-height:1.6}
+.wz-opt .tick{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--brass);margin-top:3px;display:grid;place-items:center}
+.wz-opt[role=checkbox] .tick{border-radius:6px}
+.wz-opt.on{border-color:var(--brass-hi);background:rgba(184,138,68,.16)}
+.wz-opt.on .tick{background:var(--brass-hi)}
+.wz-opt.on .tick::after{content:"";width:9px;height:5px;border-left:2px solid var(--lapis);border-bottom:2px solid var(--lapis);transform:rotate(-45deg) translate(1px,-1px)}
+.wz-head[hidden]{display:none}
+.wz-stage .done{display:block}
+.wz-nav{display:flex;gap:10px;align-items:center;margin-top:auto;padding-top:6px}
+.wz-back{font:inherit;font-size:14.5px;background:none;border:0;color:var(--cloud);cursor:pointer;min-height:44px;padding:0 6px;text-decoration:underline;text-underline-offset:4px}
+.wz-back[hidden],.wz-next[hidden]{display:none}
+.wz-next{flex:1}
+.wz-next:disabled{opacity:.45;cursor:not-allowed}
+.wz-res{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.wz-res > li{border:1px solid rgba(184,138,68,.35);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.wz-res > li.top{border-color:var(--brass-hi);background:rgba(184,138,68,.12)}
+.wz-res .fit{font-size:12.5px;color:var(--brass-hi);font-weight:700}
+.wz-res b{font-family:var(--display);font-size:19px;color:#fff;line-height:1.5}
+.wz-res p{font-size:14px;color:var(--cloud)}
+.wz-res ul{margin:2px 0 0;padding-inline-start:18px;font-size:13.5px;color:#DCE2E8;display:grid;gap:1px}
+.wz-res small{font-size:12.5px;color:var(--haze)}
+.wz-form{display:grid;gap:10px}
+
 /* ---------- consultation panel: always at hand ---------- */
 aside.consult{position:sticky;top:0;height:100vh;background:var(--lapis-2);color:#EEF1F4;padding:26px 28px 20px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;border-inline-start:1px solid rgba(184,138,68,.4)}
 aside.consult.ping{animation:ping .9s ease}
@@ -189,7 +225,7 @@ aside.consult.ping{animation:ping .9s ease}
       <h1>سرمایه‌ای با پشتوانه، در دو بازار</h1>
       <p class="hook">دو فرصت منتخب برای سرمایه‌گذاران دعوت‌شده: یکی در دل یک بیمارستان فعال، با ملک و تجهیزات؛ و دیگری در یک پلتفرم دیجیتال بین‌المللی که به دلار درآمد دارد.</p>
       <div class="cta-row">
-        <a class="btn btn-solid" href="#consult" data-open-consult>جلسهٔ اختصاصی من را رزرو کنید</a>
+        <a class="btn btn-solid" href="#consult" data-open-consult>طرح مناسب من را پیدا کنید</a>
         <a class="btn btn-line" href="#opportunities">دیدن دو فرصت</a>
         <span class="scarce">ظرفیت جلسات هر هفته محدود است</span>
       </div>
@@ -224,7 +260,7 @@ aside.consult.ping{animation:ping .9s ease}
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12l4 4 10-10"/></svg><span><b>مدل درآمد عملیاتی</b><small>درآمد دوره‌ای از کجا می‌آید و چگونه با رشد بیمارستان همراه می‌شود</small></span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12l4 4 10-10"/></svg><span><b>سازوکار خروج</b><small>زمان، شکل و شرایط بازگشت سرمایهٔ شما</small></span></li>
             </ul>
-            <button class="go" type="button" data-plan="اکوسیستم سلامت">جلسه دربارهٔ این فرصت را رزرو کنید</button>
+            <button class="go" type="button" data-plan="بیمارستان و ملک">جلسه دربارهٔ این فرصت را رزرو کنید</button>
           </div>
         </article>
 
@@ -244,7 +280,7 @@ aside.consult.ping{animation:ping .9s ease}
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12l4 4 10-10"/></svg><span><b>نقشهٔ رشد</b><small>ورود به بازارهای تازه از راه شبکهٔ مرکز ایرانیان</small></span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12l4 4 10-10"/></svg><span><b>مسیر رشد سهم شما</b><small>درآمد دوره‌ای به دلار و افزایش ارزش سهم</small></span></li>
             </ul>
-            <button class="go" type="button" data-plan="پلتفرم دیجیتال (اپلیکیشن مخابراتی)">جلسه دربارهٔ این فرصت را رزرو کنید</button>
+            <button class="go" type="button" data-plan="اپلیکیشن مخابراتی">جلسه دربارهٔ این فرصت را رزرو کنید</button>
           </div>
         </article>
 
@@ -284,10 +320,10 @@ aside.consult.ping{animation:ping .9s ease}
 
   <section class="final">
     <div class="wrap">
-      <h2>بیست دقیقه، سه پاسخ</h2>
-      <p>ساختار سهام، لایه‌های تضمین و مسیر خروج؛ سه چیزی که در هیچ صفحه‌ای نوشته نشده و در جلسهٔ اختصاصی دقیق می‌شنوید.</p>
+      <h2>طرح مناسب شما، در ۸ قدم</h2>
+      <p>به چند سؤال کوتاه جواب دهید: ضمانت، نوع دارایی، درآمد یا رشد، و مدت. طرح‌های مناسب خودتان را می‌بینید و جلسهٔ اختصاصی رزرو می‌کنید.</p>
       <div class="cta-row">
-        <a class="btn btn-solid" href="#consult" data-open-consult>جلسهٔ اختصاصی من را رزرو کنید</a>
+        <a class="btn btn-solid" href="#consult" data-open-consult>شروع پرسش‌ها</a>
         <span class="scarce">ظرفیت جلسات هر هفته محدود است</span>
       </div>
     </div>
@@ -301,29 +337,24 @@ aside.consult.ping{animation:ping .9s ease}
   </footer>
 </main>
 
-<aside class="consult" id="consult" aria-label="رزرو جلسهٔ اختصاصی">
-  <button class="sheet-close" type="button" aria-label="بستن فرم">×</button>
-  <h2>جلسهٔ اختصاصی سرمایه‌گذاری</h2>
-  <p class="lure">در ۲۰ دقیقه، سه چیز را می‌فهمید که در هیچ صفحه‌ای نوشته نشده: <b>ساختار سهام، لایه‌های تضمین و مسیر خروج.</b></p>
-  <form novalidate>
-    <div class="field"><label for="f-name">نام و نام خانوادگی</label><input id="f-name" name="fullname" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
-    <div class="field"><label for="f-phone">شماره تماس (با کد کشور اگر خارج از ایران هستید)</label><input id="f-phone" name="phone" inputmode="tel" autocomplete="tel" dir="ltr" required><span class="err" aria-live="polite"></span></div>
-    <div class="field"><label for="f-plan">فرصت مورد نظر</label><select id="f-plan" name="opportunity"><option>هر دو فرصت</option><option>اکوسیستم سلامت</option><option>پلتفرم دیجیتال (اپلیکیشن مخابراتی)</option></select></div>
-    <div class="two">
-      <div class="field"><label for="f-budget">محدودهٔ سرمایه</label><select id="f-budget" name="budget"><option>در جلسه می‌گویم</option><option>۱ تا ۱۰ میلیارد</option><option>۱۰ تا ۵۰ میلیارد</option><option>۵۰ تا ۲۰۰ میلیارد</option><option>بیش از ۲۰۰ میلیارد</option></select></div>
-      <div class="field"><label for="f-meet">نوع جلسه</label><select id="f-meet" name="meeting"><option>تماس تلفنی</option><option>تماس صوتی آنلاین</option><option>جلسهٔ تصویری آنلاین</option><option>حضوری</option></select></div>
-    </div>
-    <label class="consent"><input type="checkbox" name="consent" required><span>می‌دانم بازده و رشد سرمایه به عملکرد واقعی و قرارداد بستگی دارد.</span></label>
-    <span class="err" id="consent-err" aria-live="polite"></span>
-    <button class="btn btn-solid" type="submit">جلسهٔ اختصاصی من را رزرو کنید</button>
-    <span class="scarce">ظرفیت جلسات هر هفته محدود است</span>
-  </form>
-  <div class="done" role="status"><b>جلسهٔ شما در نوبت هماهنگی است</b>مشاور ارشد مرکز ایرانیان ظرف ۲۴ ساعت برای تعیین زمان با شما تماس می‌گیرد.</div>
+<aside class="consult" id="consult" aria-label="مشاور قدم‌به‌قدم سرمایه‌گذاری">
+  <button class="sheet-close" type="button" aria-label="بستن">×</button>
+  <div class="wz-head">
+    <h2>طرح مناسب شما، در ۸ قدم</h2>
+    <p class="lure">به چند سؤال کوتاه جواب دهید؛ طرح‌هایی را که با شما جورند می‌بینید و جلسهٔ اختصاصی رزرو می‌کنید.</p>
+  </div>
+  <div class="wz-progress" aria-hidden="true"><i></i></div>
+  <p class="wz-count" aria-live="polite"></p>
+  <div class="wz-stage" id="wz-stage"></div>
+  <div class="wz-nav">
+    <button type="button" class="wz-back">قدم قبل</button>
+    <button type="button" class="wz-next btn btn-solid">ادامه</button>
+  </div>
   <div class="alt-contact"><a href="tel:PHONE_NUMBER">تماس مستقیم</a><a href="https://wa.me/WHATSAPP_NUMBER" target="_blank" rel="noopener">واتس‌اپ</a></div>
 </aside>
 </div>
 
-<div class="mobile-bar"><span>جلسهٔ اختصاصی ۲۰ دقیقه‌ای؛ ظرفیت هفتگی محدود</span><button class="btn btn-solid" type="button" data-open-consult>رزرو جلسه</button></div>
+<div class="mobile-bar"><span>۸ سؤال کوتاه؛ طرح مناسب خودتان را ببینید</span><button class="btn btn-solid" type="button" data-open-consult>شروع</button></div>
 <div class="scrim"></div>
 
 <script>
@@ -331,14 +362,206 @@ aside.consult.ping{animation:ping .9s ease}
 const FORM_ENDPOINT = '';
 const WHATSAPP_NUMBER = 'WHATSAPP_NUMBER';
 
+/* ---------- طرح‌ها ---------- */
+const PLANS = {
+  fixed:   {t:'درآمد ثابت ماهانه', d:'از ماه اول، هر ماه درآمد مشخص؛ اصل سرمایه پایان قرارداد یک‌جا برمی‌گردد.', g:'سند ملک در رهن + چک ضمانت'},
+  accrue:  {t:'سود روی اصل، بازگشت از سال دوم', d:'سال اول سود روی سرمایه می‌نشیند؛ از سال دوم اصل و سود در قسط‌های ماهانهٔ بزرگ برمی‌گردد.', g:'سند ملک در رهن'},
+  convert: {t:'درآمد ماهانه + حق خرید سهم', d:'یک سال درآمد ماهانه؛ آخر سال انتخاب با شماست: اصل پول یا خرید سهم با تخفیف.', g:'سند ملک در رهن'},
+  lease:   {t:'اجارهٔ تجهیزات پزشکی', d:'سهمی از یک دستگاه پزشکی به نام شما؛ اجارهٔ ماهانه و بازگشت اصل پایان قرارداد.', g:'مالکیت دستگاه + بیمه به نفع شما'},
+  share:   {t:'سهامدار بیمارستان', d:'مالک بخشی از یک بیمارستان فعال؛ رشد ارزش سهم و سود سالانه.', g:'سهم ثبت‌شده با حق رأی'},
+  dept:    {t:'شریک یک بخش درمانی', d:'شراکت در آزمایشگاه یا تصویربرداری؛ سهم از درآمد همان بخش و دیدن مستقیم آمار.', g:'سهم در دستگاه‌های بخش'},
+  app:     {t:'شراکت در اپلیکیشن مخابراتی', d:'کسب‌وکار دیجیتال بین‌المللی با درآمد دلاری؛ مستقل از فرصت سلامت.', g:'چک، ضمانت‌نامه و وثیقه'},
+  care:    {t:'سرمایه + مراقبت از خانواده', d:'سود سرمایه به‌صورت پرستاری، پزشک و مراقبت سالمند برای خانواده‌تان در تهران.', g:'سند ملک در رهن'},
+  corp:    {t:'طرح سلامت سازمانی', d:'خدمات درمانی کارکنان در سه سطح، با قیمت ثابت چندساله.', g:'قیمت قفل‌شده در قرارداد'},
+  block:   {t:'شریک بزرگ (کنسرسیوم)', d:'خرید بلوکی با تخفیف و نماینده در هیئت‌مدیره.', g:'سهم ثبت‌شده + صندلی هیئت‌مدیره'},
+  basket:  {t:'سبد متنوع مرکز ایرانیان', d:'سرمایه بین چند دارایی پخش می‌شود: بیمارستان، هتل درمانی و تجهیزات.', g:'ضمانت مرکز + سند دارایی‌ها'},
+};
+
+/* ---------- سؤال‌ها: هر گزینه به طرح‌ها امتیاز می‌دهد و دلیلش را می‌گوید ---------- */
+const Q = [
+  {id:'who', q:'به نام چه کسی سرمایه‌گذاری می‌کنید؟', o:[
+    {l:'خودم', s:{}},
+    {l:'شرکت یا سازمان', h:'برای کارکنان یا سرمایهٔ شرکت', s:{corp:5, block:2}, r:'سرمایه‌گذاری به نام شرکت است'},
+    {l:'گروهی از سرمایه‌گذاران', h:'چند نفر با هم', s:{block:5, share:1}, r:'با گروهی از سرمایه‌گذاران وارد می‌شوید'},
+  ]},
+  {id:'where', q:'کجا زندگی می‌کنید؟', o:[
+    {l:'ایران', s:{}},
+    {l:'خارج از ایران', h:'امارات، ترکیه، اروپا، آمریکا و…', s:{care:3, app:2, basket:1}, r:'خارج از ایران زندگی می‌کنید'},
+  ]},
+  {id:'asset', q:'دوست دارید سرمایه‌تان روی چه چیزی باشد؟', o:[
+    {l:'بیمارستان و ملک', h:'دارایی ملموس و قابل دیدن', s:{share:2, fixed:2, accrue:1, dept:1}, r:'دارایی ملموس برایتان مهم است'},
+    {l:'اپلیکیشن مخابراتی', h:'کسب‌وکار دیجیتال با درآمد دلاری', s:{app:6}, r:'درآمد دلاری از یک کسب‌وکار دیجیتال می‌خواهید'},
+    {l:'تجهیزات پزشکی مشخص', h:'دستگاهی که به نام شما ثبت شود', s:{lease:4, dept:2}, r:'می‌خواهید دستگاه مشخصی به نام شما باشد'},
+    {l:'ترکیبی و پخش‌شده', h:'چند دارایی با هم', s:{basket:4, app:1, share:1}, r:'ریسک پخش‌شده را ترجیح می‌دهید'},
+  ]},
+  {id:'goal', q:'از سرمایه‌تان بیشتر چه می‌خواهید؟', o:[
+    {l:'درآمد ثابت از ماه اول', h:'هر ماه مبلغ مشخص', s:{fixed:4, convert:2, lease:2, basket:1}, r:'می‌خواهید از ماه اول درآمد ثابت داشته باشید'},
+    {l:'رشد اصل سرمایه', h:'ارزش سرمایه چند برابر شود', s:{share:4, app:2, block:2, accrue:1}, r:'رشد اصل سرمایه برایتان مهم‌تر است'},
+    {l:'هر دو: کمی درآمد، کمی رشد', s:{convert:4, dept:2, basket:2, lease:1}, r:'هم درآمد می‌خواهید و هم رشد'},
+    {l:'خدمات درمانی به جای سود نقدی', h:'برای خانواده یا کارکنان', s:{care:6, corp:2}, r:'سود را به‌صورت خدمات درمانی می‌خواهید'},
+  ]},
+  {id:'guard', multi:true, q:'کدام ضمانت‌ها برایتان مهم است؟', sub:'می‌توانید چند گزینه را انتخاب کنید.', o:[
+    {l:'سند ملک', s:{fixed:2, accrue:2, convert:1, care:1}, r:'ضمانت سند ملک می‌خواهید'},
+    {l:'مالکیت دستگاه پزشکی', s:{lease:3, dept:2}, r:'مالکیت دستگاه برایتان ضمانت مهمی است'},
+    {l:'سهم ثبت‌شده با حق رأی', s:{share:2, block:2, convert:1}, r:'سهم ثبت‌شده با حق رأی می‌خواهید'},
+    {l:'چک و ضمانت‌نامه', s:{fixed:1, accrue:1, basket:1, app:1}, r:'چک و ضمانت‌نامه می‌خواهید'},
+    {l:'درآمد ارزی', s:{app:3}, r:'درآمد ارزی را پشتوانه می‌دانید'},
+  ]},
+  {id:'term', q:'سرمایه‌تان را چه مدت می‌توانید نگه دارید؟', o:[
+    {l:'حدود ۱ سال', s:{convert:3}, r:'افق کوتاه یک‌ساله دارید'},
+    {l:'حدود ۲ سال', s:{fixed:2, share:1}, r:'افق دوساله دارید'},
+    {l:'حدود ۳ سال', s:{accrue:3, basket:2, care:1, app:1, share:1, corp:1}, r:'می‌توانید سه سال صبر کنید'},
+    {l:'۴ سال یا بیشتر', s:{lease:3, dept:3, share:1}, r:'افق بلندمدت دارید'},
+  ]},
+  {id:'role', q:'دوست دارید در کار چه نقشی داشته باشید؟', o:[
+    {l:'فقط سرمایه‌گذار', h:'بدون درگیری در اجرا', s:{fixed:1, accrue:1, basket:1, lease:1}, r:'نمی‌خواهید درگیر اجرا شوید'},
+    {l:'نماینده در هیئت‌مدیره', h:'در تصمیم‌ها رأی داشته باشم', s:{block:3, share:2}, r:'در تصمیم‌ها رأی می‌خواهید'},
+    {l:'فعالیت مشترک', h:'پزشک، پرستار یا تاجر هستم', s:{dept:4, care:1}, r:'می‌خواهید کنار سرمایه، فعالیت هم داشته باشید'},
+  ]},
+  {id:'budget', q:'محدودهٔ سرمایهٔ شما چقدر است؟', o:[
+    {l:'۱ تا ۵ میلیارد تومان', s:{care:1, fixed:1}},
+    {l:'۵ تا ۲۰ میلیارد تومان', s:{}},
+    {l:'۲۰ تا ۱۰۰ میلیارد تومان', s:{share:1, lease:1}},
+    {l:'بیش از ۱۰۰ میلیارد تومان', s:{block:3, share:1}, r:'سرمایهٔ بزرگی در نظر دارید'},
+    {l:'ترجیح می‌دهم در جلسه بگویم', s:{}},
+  ]},
+];
+
+/* ---------- وضعیت ---------- */
+const answers = {};            // id -> index or [indexes]
+let step = 0;                  // 0..Q.length-1 questions, Q.length = result, Q.length+1 = contact, +2 = done
+const STEPS = Q.length;
 const aside = document.getElementById('consult');
+const stage = document.getElementById('wz-stage');
+const bar = aside.querySelector('.wz-progress i');
+const count = aside.querySelector('.wz-count');
+const back = aside.querySelector('.wz-back');
+const next = aside.querySelector('.wz-next');
+const head = aside.querySelector('.wz-head');
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function score(){
+  const pts = {}, why = {};
+  Q.forEach(q => {
+    const a = answers[q.id]; if (a === undefined) return;
+    (Array.isArray(a) ? a : [a]).forEach(i => {
+      const o = q.o[i];
+      Object.entries(o.s).forEach(([k, v]) => {
+        pts[k] = (pts[k] || 0) + v;
+        if (o.r && v >= 2) (why[k] = why[k] || []).includes(o.r) || why[k].push(o.r);
+      });
+    });
+  });
+  return Object.keys(pts).filter(k => pts[k] > 0).sort((a, b) => pts[b] - pts[a]).slice(0, 3).map((k, n) => ({k, n, p:pts[k], why:(why[k] || []).slice(0, 3)}));
+}
+
+function render(){
+  const q = Q[step];
+  head.hidden = step > 0;
+  const pct = Math.min(100, Math.round(step / STEPS * 100));
+  bar.style.width = pct + '%';
+  back.hidden = step === 0 || step > STEPS + 1;
+  if (q) {
+    count.textContent = `قدم ${fa(step + 1)} از ${fa(STEPS)}`;
+    const a = answers[q.id];
+    stage.innerHTML = `<h3 class="wz-q" tabindex="-1">${esc(q.q)}</h3>${q.sub ? `<p class="wz-sub">${esc(q.sub)}</p>` : ''}
+      <div class="wz-opts" role="${q.multi ? 'group' : 'radiogroup'}">${q.o.map((o, i) => {
+        const on = q.multi ? (a || []).includes(i) : a === i;
+        return `<button type="button" class="wz-opt${on ? ' on' : ''}" data-i="${i}" role="${q.multi ? 'checkbox' : 'radio'}" aria-checked="${on}">
+          <span class="tick" aria-hidden="true"></span><span><b>${esc(o.l)}</b>${o.h ? `<small>${esc(o.h)}</small>` : ''}</span></button>`;
+      }).join('')}</div>`;
+    next.hidden = !q.multi;
+    next.textContent = 'ادامه';
+    next.disabled = q.multi && !(a && a.length);
+    stage.querySelectorAll('.wz-opt').forEach(b => b.addEventListener('click', () => pick(q, +b.dataset.i)));
+  } else if (step === STEPS) {
+    count.textContent = 'طرح‌های مناسب شما';
+    const res = score();
+    const list = res.length ? res : [{k:'basket', n:0, why:[]}, {k:'fixed', n:1, why:[]}, {k:'share', n:2, why:[]}];
+    stage.innerHTML = `<h3 class="wz-q" tabindex="-1">این طرح‌ها با جواب‌های شما بیشترین تناسب را دارند</h3>
+      <ol class="wz-res">${list.map(r => { const P = PLANS[r.k]; return `<li class="${r.n === 0 ? 'top' : ''}">
+        <span class="fit">${r.n === 0 ? 'بیشترین تناسب' : 'تناسب خوب'}</span>
+        <b>${esc(P.t)}</b><p>${esc(P.d)}</p>
+        ${r.why.length ? `<ul>${r.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
+        <small>ضمانت: ${esc(P.g)}</small></li>`; }).join('')}</ol>
+      <p class="wz-sub">شرایط دقیق، سود و تضمین‌های هر طرح در جلسهٔ اختصاصی گفته می‌شود.</p>`;
+    next.hidden = false; next.disabled = false; next.textContent = 'رزرو جلسه دربارهٔ این طرح‌ها';
+  } else if (step === STEPS + 1) {
+    count.textContent = 'آخرین قدم';
+    stage.innerHTML = `<h3 class="wz-q" tabindex="-1">جلسهٔ اختصاصی شما</h3>
+      <p class="wz-sub">مشاور ارشد مرکز ایرانیان با پروندهٔ همین جواب‌ها با شما تماس می‌گیرد.</p>
+      <form class="wz-form" novalidate>
+        <div class="field"><label for="f-name">نام و نام خانوادگی</label><input id="f-name" name="fullname" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="f-phone">شماره تماس (با کد کشور اگر خارج از ایران هستید)</label><input id="f-phone" name="phone" inputmode="tel" autocomplete="tel" dir="ltr" required><span class="err" aria-live="polite"></span></div>
+        <div class="field"><label for="f-meet">نوع جلسه</label><select id="f-meet" name="meeting"><option>تماس تلفنی</option><option>تماس صوتی آنلاین</option><option>جلسهٔ تصویری آنلاین</option><option>حضوری</option></select></div>
+        <label class="consent"><input type="checkbox" name="consent"><span>می‌دانم بازده و رشد سرمایه به عملکرد واقعی و قرارداد بستگی دارد.</span></label>
+        <span class="err" id="consent-err" aria-live="polite"></span>
+      </form>`;
+    next.hidden = false; next.disabled = false; next.textContent = 'جلسهٔ اختصاصی من را رزرو کنید';
+  } else {
+    count.textContent = '';
+    bar.style.width = '100%';
+    stage.innerHTML = `<div class="done"><b>جلسهٔ شما در نوبت هماهنگی است</b>مشاور ارشد مرکز ایرانیان ظرف ۲۴ ساعت برای تعیین زمان با شما تماس می‌گیرد.</div>`;
+    next.hidden = true;
+  }
+  const h = stage.querySelector('.wz-q'); if (h && document.activeElement && aside.contains(document.activeElement)) h.focus({preventScroll:true});
+}
+
+function pick(q, i){
+  if (q.multi) {
+    const a = answers[q.id] = answers[q.id] || [];
+    const k = a.indexOf(i); k < 0 ? a.push(i) : a.splice(k, 1);
+    render();
+  } else {
+    answers[q.id] = i;
+    render();
+    setTimeout(() => { step++; render(); }, 220);
+  }
+}
+
+back.addEventListener('click', () => { if (step > 0) { step--; render(); } });
+next.addEventListener('click', async () => {
+  if (step < STEPS) { step++; render(); return; }
+  if (step === STEPS) { step++; render(); return; }
+  if (step === STEPS + 1) submit();
+});
+
+async function submit(){
+  const F = stage.querySelector('form').elements;
+  const name = F['fullname'].value.trim();
+  const phone = F['phone'].value.trim().replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+  let ok = true;
+  const setErr = (el, m) => { el.textContent = m; if (m) ok = false; };
+  setErr(F['fullname'].parentElement.querySelector('.err'), name ? '' : 'نام را بنویسید.');
+  setErr(F['phone'].parentElement.querySelector('.err'), /^\+?[0-9\s-]{8,}$/.test(phone) ? '' : 'شماره را کامل بنویسید؛ مثلاً ۰۹۱۲۱۲۳۴۵۶۷ یا ‎+971501234567');
+  setErr(document.getElementById('consent-err'), F['consent'].checked ? '' : 'برای رزرو، این گزینه را تأیید کنید.');
+  if (!ok) return;
+  const picked = Q.map(q => { const a = answers[q.id]; if (a === undefined) return null; return q.q + ' ' + (Array.isArray(a) ? a.map(i => q.o[i].l).join('، ') : q.o[a].l); }).filter(Boolean);
+  const plans = score().map(r => PLANS[r.k].t);
+  const d = {fullname:name, phone, meeting:F['meeting'].value, answers:picked, plans, page:'khaneh-iranian-invest'};
+  let sent = false;
+  if (FORM_ENDPOINT) {
+    try { const r = await fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}); sent = r.ok; } catch (_) {}
+  }
+  if (!sent) {
+    const msg = `رزرو جلسهٔ اختصاصی سرمایه‌گذاری\nنام: ${d.fullname}\nتماس: ${d.phone}\nنوع جلسه: ${d.meeting}\n\nطرح‌های پیشنهادی: ${plans.join('، ')}\n\nجواب‌ها:\n${picked.join('\n')}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  }
+  step++; render();
+}
+
+/* باز کردن مشاور از دکمه‌های صفحه */
 const scrim = document.querySelector('.scrim');
 const isMobile = () => matchMedia('(max-width:980px)').matches;
-function openConsult(plan){
-  if (plan) document.getElementById('f-plan').value = plan;
+function openConsult(preset){
+  if (preset && step === 0) {
+    const ai = Q[2].o.findIndex(o => o.l === preset);
+    if (ai >= 0) answers.asset = ai;
+  }
   if (isMobile()) { aside.classList.add('open'); scrim.classList.add('on'); }
   else { aside.classList.remove('ping'); void aside.offsetWidth; aside.classList.add('ping'); }
-  setTimeout(() => document.getElementById('f-name').focus({preventScroll:true}), isMobile() ? 300 : 0);
+  setTimeout(() => { const f = stage.querySelector('.wz-opt, input, .wz-q'); f && f.focus({preventScroll:true}); }, isMobile() ? 300 : 0);
 }
 function closeConsult(){ aside.classList.remove('open'); scrim.classList.remove('on'); }
 document.querySelectorAll('[data-open-consult]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); openConsult(); }));
@@ -346,31 +569,7 @@ document.querySelectorAll('[data-plan]').forEach(el => el.addEventListener('clic
 document.querySelector('.sheet-close').addEventListener('click', closeConsult);
 scrim.addEventListener('click', closeConsult);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeConsult(); });
-
-const form = aside.querySelector('form');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const F = form.elements;
-  const name = F['fullname'].value.trim();
-  const phone = F['phone'].value.trim().replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
-  let ok = true;
-  const setErr = (el, msg) => { el.textContent = msg; if (msg) ok = false; };
-  setErr(F['fullname'].parentElement.querySelector('.err'), name ? '' : 'نام را بنویسید.');
-  setErr(F['phone'].parentElement.querySelector('.err'), /^\+?[0-9\s-]{8,}$/.test(phone) ? '' : 'شماره را کامل بنویسید؛ مثلاً ۰۹۱۲۱۲۳۴۵۶۷ یا ‎+971501234567');
-  setErr(document.getElementById('consent-err'), F['consent'].checked ? '' : 'برای رزرو، این گزینه را تأیید کنید.');
-  if (!ok) return;
-  const d = {fullname:name, phone, opportunity:F['opportunity'].value, budget:F['budget'].value, meeting:F['meeting'].value, page:'khaneh-iranian-invest'};
-  if (FORM_ENDPOINT) {
-    try {
-      const r = await fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(d)});
-      if (!r.ok) throw 0;
-      aside.classList.add('sent'); return;
-    } catch (_) { /* falls back to WhatsApp */ }
-  }
-  const msg = `رزرو جلسهٔ اختصاصی سرمایه‌گذاری\nنام: ${d.fullname}\nتماس: ${d.phone}\nفرصت: ${d.opportunity}\nسرمایه: ${d.budget}\nنوع جلسه: ${d.meeting}`;
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
-  aside.classList.add('sent');
-});
+render();
 </script>
 </body>
 </html>
