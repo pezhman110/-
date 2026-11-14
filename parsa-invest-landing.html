@@ -229,6 +229,20 @@ aside.consult.ping{animation:ping .9s ease}
 .record div+div{padding-inline-start:24px;border-inline-start:1px solid rgba(184,138,68,.22)}
 .record h3{font-size:20px;color:#fff}
 .record p{font-size:15px;color:var(--cloud)}
+.cv{margin-top:34px;border:1px solid rgba(184,138,68,.45);border-radius:14px;padding:22px 24px;background:rgba(184,138,68,.06)}
+.cv-h{font-size:15px;font-weight:700;color:var(--brass-hi);margin:0 0 6px}
+.cv ol{list-style:none;margin:0;padding:0}
+.cv li{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(184,138,68,.2)}
+.cv-n{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--brass);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--brass-hi)}
+.cv h3{font-size:19px;color:#fff;margin:0}
+.cv li p{font-size:15px;color:var(--cloud);margin:2px 0 0}
+.cv-tag{font-size:13px;color:var(--brass-soft);border:1px solid rgba(184,138,68,.4);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.cv-more{font-size:14.5px;color:var(--cloud);margin:14px 0 0}
+@media (max-width:600px){.cv{padding:18px 16px}.cv li{grid-template-columns:40px 1fr}.cv-n{width:40px;height:40px}.cv-tag{grid-column:2;justify-self:start}}
+.wz-back,.wz-skip{white-space:nowrap}
+.wz-skip{font:inherit;font-size:13.5px;background:none;border:0;color:var(--mist);cursor:pointer;min-height:44px;padding:0 6px;text-decoration:underline;text-underline-offset:4px;margin-inline-start:auto}
+.wz-skip[hidden]{display:none}
+.done .congrats{display:block;font-size:20px;color:var(--brass);margin-bottom:4px}
 @media (max-width:760px){.record{grid-template-columns:1fr}.record div+div{padding-inline-start:0;border-inline-start:0;border-top:1px solid rgba(184,138,68,.22);padding-top:16px}}
 #why .spot{margin-top:30px;padding:22px 0;border-block:1px solid rgba(184,138,68,.4)}
 #why .spot h3{font-size:clamp(22px,2.8vw,28px);color:#fff}
@@ -255,6 +269,7 @@ aside.consult{background:var(--lapis-2);padding:22px 22px 18px}
 .form-sheet .wz-count{color:var(--brass);font-weight:700}
 .form-sheet .wz-q{color:var(--lapis);font-size:21px}
 .form-sheet .wz-sub{color:var(--mist)}
+@media (min-width:981px){.form-sheet .wz-nav{position:sticky;bottom:-18px;background:var(--paper);padding:10px 0 12px;border-top:1px solid #E3E6E0;z-index:2}}
 .form-sheet .wz-opt{background:var(--paper);border:1px solid #CFD5CC;color:var(--ink);border-radius:8px;min-height:48px}
 .form-sheet .wz-opt:hover{border-color:var(--lapis);background:#F7F8F5}
 .form-sheet .wz-opt small{color:var(--mist)}
@@ -369,6 +384,15 @@ aside.consult{background:var(--lapis-2);padding:22px 22px 18px}
         <div><h3>شبکه‌ای در ۶۳ نقطهٔ دنیا</h3><p>مرکزهایی که ایرانیان را به هم و به ایران وصل می‌کنند؛ همان شبکه‌ای که امروز بیمار، بازار و سرمایه به پروژه‌ها می‌آورد.</p></div>
         <div><h3>پروژه‌هایی که اجرا شده‌اند</h3><p>طراحی، مدیریت و اجرای پروژه‌های سرمایه‌گذاری در ایران و جهان، با نظارت و گزارش.</p></div>
       </div>
+      <div class="cv">
+        <p class="cv-h">بخشی از سوابق اجرایی</p>
+        <ol>
+          <li><span class="cv-n">۱</span><div><h3>تجهیز ماشین‌آلات صنعتی</h3><p>با همکاری طرف هلندی</p></div><span class="cv-tag">صنعت · هلند</span></li>
+          <li><span class="cv-n">۲</span><div><h3>کنترل پسماند شهرداری‌های سراسر کشور</h3><p>با تجهیزات آلمانی</p></div><span class="cv-tag">شهری · آلمان</span></li>
+          <li><span class="cv-n">۳</span><div><h3>سرمایه‌گذاری در لوکوموتیوسازی</h3><p>همراه با شرکت مپنا</p></div><span class="cv-tag">ریلی · مپنا</span></li>
+        </ol>
+        <p class="cv-more">و پروژه‌های دیگری که در جلسهٔ اختصاصی معرفی می‌شوند.</p>
+      </div>
       <div class="spot">
         <div class="medal" aria-hidden="true"><span><b>۲</b>دورهٔ دوم</span></div>
         <div>
@@ -441,6 +465,7 @@ aside.consult{background:var(--lapis-2);padding:22px 22px 18px}
       <div class="wz-stage" id="wz-stage"></div>
       <div class="wz-nav">
         <button type="button" class="wz-back">بخش قبل</button>
+        <button type="button" class="wz-skip" hidden>تمایلی به تکمیل فرم ندارم</button>
         <button type="button" class="wz-next btn btn-solid">ادامه</button>
       </div>
     </div>
@@ -473,6 +498,7 @@ const PLANS = {
 
 /* type: one = تک‌انتخابی و رفتن خودکار؛ many = چندانتخابی؛ contact = اطلاعات تماس */
 const STEPS = [
+  {id:'contact', type:'contact', q:'مشخصات متقاضی', d:'برای ثبت درخواست مشارکت، ابتدا مشخصات خود را وارد کنید. کد رهگیری به همین شماره فرستاده می‌شود.'},
   {id:'goal', type:'one', q:'از سرمایه‌گذاری بیشتر چه می‌خواهید؟', d:'اولویت اول را انتخاب کنید؛ بقیه را در قدم‌های بعد مشخص می‌کنید.', o:[
     {l:'درآمد دوره‌ای', h:'هر ماه یا هر فصل مبلغی به حسابم بیاید', s:{equip:3, city:3, health:2, telecom:2, basket:1}, r:'درآمد دوره‌ای برایتان اولویت دارد'},
     {l:'رشد اصل سرمایه', h:'ارزش سرمایه‌ام چند برابر شود', s:{ai:4, tv:3, health:2, telecom:2}, r:'رشد اصل سرمایه برایتان مهم‌تر است'},
@@ -480,7 +506,6 @@ const STEPS = [
     {l:'قدمی برای ایران، همراه با سود', h:'پروژه‌ای که برای کشور هم ارزش بسازد', s:{sport:3, city:3, health:2, basket:1}, r:'می‌خواهید سرمایه‌تان برای ایران هم ارزش بسازد'},
     {l:'کارآفرینی و نقش در اجرا', h:'کنار سرمایه، فعالیت هم داشته باشم', s:{ai:2, medtour:2, sport:2, tv:1}, r:'می‌خواهید در اجرا هم نقش داشته باشید'},
   ]},
-  {id:'contact', type:'contact', q:'مشخصات متقاضی', d:'کد رهگیری و پیشنهاد اختصاصی شما به همین شماره فرستاده می‌شود.'},
   {id:'profile', type:'one', q:'کدام توصیف به شما نزدیک‌تر است؟', o:[
     {l:'ایرانی ساکن ایران', h:'برای نخستین بار، فرصت شما هم هست', s:{city:1, health:1}},
     {l:'ایرانی خارج از کشور', h:'امارات، ترکیه، اروپا، آمریکا و…', s:{medtour:3, telecom:2, sport:2}, r:'خارج از ایران زندگی می‌کنید'},
@@ -531,8 +556,9 @@ const STEPS = [
 const N = STEPS.length;
 
 /* ---------- وضعیت (با بازگشت به جای قبلی در بازدید دوباره) ---------- */
-const KEY = 'ki-national-call-v1';
-let S = {leadId:'', step:0, answers:{}, contact:{}, callTime:'', done:false};
+const KEY = 'ki-national-call-v2';
+const SKIP_FROM = 3;   /* پس از مشخصات و دو سؤال، گزینهٔ «تمایلی به تکمیل فرم ندارم» */
+let S = {leadId:'', step:0, answers:{}, contact:{}, callTime:'', done:false, skipped:false};
 try { const saved = JSON.parse(localStorage.getItem(KEY)); if (saved && saved.leadId) S = Object.assign(S, saved); } catch (_) {}
 if (!S.leadId) S.leadId = 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (_) {} };
@@ -546,6 +572,7 @@ const stage = document.getElementById('wz-stage');
 const bar = aside.querySelector('.wz-progress i');
 const count = aside.querySelector('.wz-count');
 const back = aside.querySelector('.wz-back');
+const skip = aside.querySelector('.wz-skip');
 const next = aside.querySelector('.wz-next');
 const head = aside.querySelector('.wz-head') || {};
 const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -593,23 +620,25 @@ function render(moveFocus){
   head.hidden = S.step > 0;
   bar.style.width = Math.round((S.done ? N : S.step) / N * 100) + '%';
   back.hidden = S.step === 0 || S.done;
+  skip.hidden = S.done || S.step < SKIP_FROM;
   next.hidden = true;
   if (S.done) {
     count.textContent = 'درخواست ثبت شد';
     const res = score();
     const meet = STEPS[N - 1].o[S.answers.meeting] ? STEPS[N - 1].o[S.answers.meeting].l : 'تماس تلفنی';
-    stage.innerHTML = `<div class="done"><b>${esc(S.contact.name ? S.contact.name.split(' ')[0] + ' عزیز، ' : '')}درخواست مشارکت شما ثبت شد</b>مشاور ارشد مرکز ایرانیان خارج از کشور ظرف ۲۴ ساعت از راه «${esc(meet)}» با شما تماس می‌گیرد.</div>
-      <p class="wz-sub">کد رهگیری</p><p class="track" dir="ltr">${esc(track())}</p><h3 class="wz-q" tabindex="-1">پروژه‌های پیشنهادی برای شما</h3>
+    const first = S.contact.name ? S.contact.name.split(' ')[0] + ' عزیز، ' : '';
+    stage.innerHTML = `<div class="done"><span class="congrats">تبریک می‌گوییم!</span><b>${esc(first)}درخواست مشارکت شما در فراخوان ملی ثبت شد</b>ممنون از اعتمادتان. مشاوران مجموعه ${S.skipped ? '' : `از راه «${esc(meet)}» `}با شما تماس خواهند گرفت و به سؤالاتتان پاسخ می‌دهند.</div>
+      <p class="wz-sub">کد رهگیری</p><p class="track" dir="ltr">${esc(track())}</p>${S.skipped ? '' : `<h3 class="wz-q" tabindex="-1">پروژه‌های پیشنهادی برای شما</h3>
       <ol class="wz-res">${res.map(r => { const P = PLANS[r.k]; return `<li class="${r.n === 0 ? 'top' : ''}">
         <span class="fit">${r.n === 0 ? 'بیشترین تناسب' : 'تناسب خوب'}</span><b>${esc(P.t)}</b><p>${esc(P.d)}</p>
-        ${r.why.length ? `<ul>${r.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}<small>ضمانت: ${esc(P.g)}</small></li>`; }).join('')}</ol>
+        ${r.why.length ? `<ul>${r.why.map(w => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}<small>ضمانت: ${esc(P.g)}</small></li>`; }).join('')}</ol>`}
       <div class="wz-calltime"><span>چه ساعتی برای تماس بهتر است؟</span>
         <div>${['صبح','ظهر','عصر','شب'].map(t => `<button type="button" class="chip${S.callTime === t ? ' on' : ''}" data-t="${t}" aria-pressed="${S.callTime === t}">${t}</button>`).join('')}</div></div>
       <div class="wz-after"><a class="btn btn-line" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('سلام، درخواست مشارکت من در فراخوان ملی سرمایه‌گذاری با کد رهگیری ' + track() + ' ثبت شده است.')}" target="_blank" rel="noopener">پیگیری در واتس‌اپ</a>
       <button type="button" class="wz-restart">شروع دوباره</button></div>
       <p class="wz-sub">شرایط، درآمد و پشتوانهٔ هر پروژه در جلسهٔ اختصاصی گفته می‌شود. </p>`;
     stage.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { S.callTime = c.dataset.t; persist(); send('call-time'); render(); }));
-    stage.querySelector('.wz-restart').addEventListener('click', () => { S = {leadId:'L' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), step:0, answers:{}, contact:S.contact, callTime:'', done:false}; persist(); render(true); });
+    stage.querySelector('.wz-restart').addEventListener('click', () => { S = {leadId:'L' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), step:0, answers:{}, contact:S.contact, callTime:'', done:false, skipped:false}; persist(); render(true); });
   } else if (q.type === 'contact') {
     count.textContent = `بخش ${fa(S.step + 1)} از ${fa(N)} · مشخصات متقاضی`;
     const c = S.contact;
@@ -672,6 +701,7 @@ function advance(id){
 
 back.addEventListener('click', () => { if (S.step > 0) go(S.step - 1); });
 next.addEventListener('click', () => advance(STEPS[S.step].id));
+skip.addEventListener('click', () => { S.done = true; S.skipped = true; persist(); send('skipped'); render(true); });
 
 /* باز کردن مشاور از دکمه‌های صفحه */
 const isMobile = () => matchMedia('(max-width:980px)').matches;

@@ -22,6 +22,7 @@ function doPost(e) {
     const sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
     const status = d.stage === 'completed' || d.stage === 'call-time' ? 'تکمیل' :
+                   d.stage === 'skipped' ? 'تکمیل (ادامهٔ فرم را نخواست؛ تماس بگیرید)' :
                    d.stage === 'left-page' ? 'نیمه‌کاره (صفحه بسته شد)' : 'در حال تکمیل';
     const answers = (d.answers || []).map(x => x.q + ' ← ' + x.a).join('\n');
     const now = new Date();
@@ -38,7 +39,7 @@ function doPost(e) {
       const first = sh.getRange(r, 16).getValue();
       const prevStatus = sh.getRange(r, 2).getValue();
       row[15] = first || now;
-      if (prevStatus === 'تکمیل' && status !== 'تکمیل') row[1] = prevStatus;  // وضعیت تکمیل برنمی‌گردد
+      if (String(prevStatus).startsWith('تکمیل') && !status.startsWith('تکمیل')) row[1] = prevStatus;  // وضعیت تکمیل برنمی‌گردد
       sh.getRange(r, 1, 1, row.length).setValues([row]);
     }
     return ContentService.createTextOutput('ok');
