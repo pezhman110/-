@@ -153,6 +153,39 @@ body.manual-only .top{display:none}
 .pos{color:var(--green-2);font-weight:800}.neg{color:var(--red);font-weight:800}.done{color:var(--muted);font-size:12.5px}
 #cOut h3{margin-top:18px}
 
+/* تماس هدایت‌شده */
+.flow{border:2px solid var(--gold);background:#fffdf6}
+.fstart{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}.fstart b{font-size:18px;color:var(--green)}.fstart p{margin:2px 0 0}
+.fhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.fhead b{font-size:17px;color:var(--green)}.fhead .tm{background:#f1eee5;border-radius:999px;padding:2px 10px;font-size:13px}.fhead .btn{margin-inline-start:auto}
+.fprog{display:flex;gap:3px;margin:10px 0 14px}.fprog i{flex:1;height:6px;border-radius:99px;background:#e6e2d6}.fprog i.d{background:var(--green-2)}.fprog i.n{background:var(--gold)}
+.fgrid{display:grid;grid-template-columns:1fr 270px;gap:16px}
+.fstep{font-size:12.5px;color:var(--gold);font-weight:800}.qt{font-weight:800;color:var(--green);margin:4px 0 0}
+.fmain .say{font-size:16px;line-height:1.9}
+.fopts{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.fopts button{border:1px solid #cdd8d1;background:#fff;border-radius:12px;padding:10px 14px;font-size:14px;font-weight:600;min-height:46px;text-align:right}
+.fopts button:hover{background:#f1f6f2}.fopts button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.fopts button[data-ty]{border-right:5px solid var(--c)}.fopts .skip{color:var(--muted);font-weight:500}
+.fopts input{border:1px solid var(--line);border-radius:12px;padding:8px 12px;width:170px}
+.fnav{display:flex;justify-content:space-between;margin-top:14px}
+.ffocus{background:#fff;border:1px solid var(--line);border-top:4px solid var(--c,var(--gold));border-radius:14px;padding:12px 14px;font-size:13.5px;align-self:start}
+.ffocus ul{margin:6px 0;padding-inline-start:18px}.ffocus ul.on li::marker{content:'✓  ';color:var(--green-2)}.ffocus ul.off li::marker{content:'✗  ';color:var(--red)}.ffocus p{margin:6px 0 0}
+/* پنجره و پیام */
+.modal{position:fixed;inset:0;background:rgba(7,24,20,.55);z-index:50;display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none}
+.mbox{background:#fff;border-radius:18px;padding:20px 22px;width:min(520px,100%);max-height:90vh;overflow:auto;border-top:5px solid var(--gold)}
+.mbox h3{font-size:19px;margin:0}#mForm{display:grid;gap:10px;margin-top:8px}
+#mForm label{display:grid;gap:4px;font-size:13.5px;font-weight:700}
+#mForm input,#mForm select,#mForm textarea{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:400;min-height:42px}
+.quick{display:flex;flex-wrap:wrap;gap:5px}.quick button{border:1px solid var(--line);background:#f6f4ec;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600}
+.mact{display:flex;gap:8px;margin-top:4px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--green-d);color:#fff;padding:10px 18px;border-radius:12px;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:600}
+.chk{display:flex;gap:6px;align-items:center;font-size:13.5px;font-weight:600}
+/* گزارش */
+.fun{display:grid;grid-template-columns:120px 1fr 44px 48px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.fun i{height:16px;border-radius:6px;background:var(--green-2);display:block;min-width:2px}.fun em{font-style:normal;color:var(--gold);font-weight:800}
+@media (max-width:980px){.fgrid{grid-template-columns:1fr}}
+.flowcard .steps li{margin:8px 0}.flowcard small.opts{display:block;color:var(--muted);font-size:12px}.gt td small{display:block;color:var(--muted)}
+
 </style></head><body>
 <header class="top">
   <div class="wrap topin">
@@ -163,6 +196,7 @@ body.manual-only .top{display:none}
     <button data-tab="dash">داشبورد پیگیری <span id="lateBadge" class="badge" hidden></span></button>
     <button data-tab="lead">پروندهٔ مشتری</button>
     <button data-tab="calc">ماشین حساب ۱۲ طرح</button>
+    <button data-tab="report">گزارش مدیر</button>
     <button data-tab="guide">دستورالعمل</button>
   </nav>
 </header>
@@ -178,6 +212,9 @@ body.manual-only .top{display:none}
     <button class="btn ghost" id="importBtn">ورود از گوگل‌شیت (CSV)</button><input type="file" id="importFile" accept=".csv" hidden>
     <button class="btn ghost" id="exportBtn">خروجی CSV</button>
     <button class="btn ghost" id="demoBtn">مشتری نمونه</button>
+    <button class="btn ghost" id="teamPull">دریافت پرونده‌های تیم</button>
+    <button class="btn ghost" id="notifyBtn">🔔 فعال‌سازی اعلان</button>
+    <label class="chk"><input type="checkbox" id="fMine"> فقط مشتری‌های من</label>
     <span class="grow"></span>
     <select id="fStage"></select><input id="fq" placeholder="جستجوی نام یا شماره">
   </div>
@@ -201,6 +238,8 @@ body.manual-only .top{display:none}
       <div><h2 id="lName"></h2><p id="lMeta" class="muted"></p></div>
       <div class="lact"><a class="btn" id="lCall">📞 تماس</a><a class="btn ghost" id="lWa" target="_blank" rel="noopener">واتس‌اپ</a><button class="btn ghost danger" id="delLead">حذف</button></div>
     </div>
+
+    <div class="card flow" id="flow"></div>
 
     <div class="card">
       <h3>۱. مرحلهٔ مشتری <small>(برای رفت و برگشت روی هر مرحله کلیک کنید)</small></h3>
@@ -263,6 +302,12 @@ body.manual-only .top{display:none}
   <div class="card" id="cOut"></div>
 </section>
 
+<!-- ================= گزارش مدیر ================= -->
+<section class="view" id="report-view" hidden>
+  <div class="bar"><h2 style="margin:0">گزارش مدیر</h2><span class="grow"></span><label class="chk"><input type="checkbox" id="rMine"> فقط مشتری‌های من</label><button class="btn ghost" onclick="print()">چاپ / PDF</button></div>
+  <div id="report"></div>
+</section>
+
 <!-- ================= دستورالعمل ================= -->
 <section class="view guide" id="guide" hidden>
   <div class="card gcover">
@@ -301,7 +346,18 @@ body.manual-only .top{display:none}
     <p class="small">موتور داخلی بر پایهٔ قواعد و واژه‌نامه کار می‌کند و آفلاین است. اگر سرویس مدل زبانی دارید، آدرسش را در <code>AI_ENDPOINT</code> بگذارید تا نتیجهٔ آن هم ترکیب شود. تشخیص تیپ کمک به لحن و مسیر گفتگوست، نه برچسب زدن به آدم‌ها؛ هرگز آن را به مشتری نگویید.</p>
     <div class="tcards" id="gTypes"></div></div>
 
-  <div class="card"><h2>۶. اسکریپت مکالمه برای هر تیپ</h2><div id="gScripts"></div></div>
+  <div class="card"><h2>۶. تماس هدایت‌شده: از کجا ۴ اسکریپت جدا می‌شود</h2>
+    <p>هر تماس مهم را با دکمهٔ «▶ شروع تماس هدایت‌شده» در بالای پروندهٔ مشتری شروع کنید. مسیر:</p>
+    <ol class="steps"><li><b>شروع (مشترک):</b> لحن خنثی و گرم، اجازهٔ ۲ دقیقه.</li>
+    <li><b>۳ سؤال گرم‌کننده (مشترک):</b> سؤال‌ها طبیعی‌اند و مشتری حس امتحان شدن ندارد؛ شما «طرز» جواب را با یک کلیک ثبت می‌کنید. همراه با مشاهده‌ها و واژه‌های مشتری، تیپ تشخیص داده می‌شود.</li>
+    <li><b>نقطهٔ جدا شدن:</b> بعد از قدم «تیپ شخصیتی»، تماس به یکی از ۴ اسکریپت زیر می‌رود. ترتیب سؤال‌ها، جمله‌بندی هر سؤال، تمرکز، متن معرفی طرح و روش بستن برای هر تیپ فرق دارد. اگر حس شما چیز دیگری است، تیپ را دستی عوض کنید.</li>
+    <li><b>نیازسنجی (مخصوص تیپ):</b> مبلغ، نوع سود (ماهانه / افزایش سرمایه / هر دو / خدمات / کسب‌وکار)، دلیل سرمایه‌گذاری، مدت، ریسک، تصمیم‌گیرنده، زمان شروع و جای فعلی پول. با هر جواب، فرم خودکار جلو می‌رود.</li>
+    <li><b>معرفی طرح:</b> طرح اول و دوم با عدد واقعی همان مبلغ (بازده سالانه، درآمد ماهانه، جمع دریافتی، ضمانت) و با لحن همان تیپ.</li>
+    <li><b>اعتراض و بستن:</b> جواب مخصوص تیپ، و ثبت نتیجه با دکمه‌های CRM؛ پیگیری خودکار تنظیم می‌شود.</li></ol>
+    <h3>۳ سؤال گرم‌کننده و معنی هر جواب</h3><div class="tblwrap"><table class="gt"><tr><th>#</th><th>سؤال</th><th>D</th><th>I</th><th>S</th><th>C</th></tr><tbody id="gWarm"></tbody></table></div>
+    <h3>۴ اسکریپت</h3><div class="tcards" id="gFlow"></div>
+    <h3>سؤال‌های نیازسنجی و اثرشان روی پیشنهاد</h3><div class="tblwrap"><table class="gt" id="gQs"></table></div>
+    <h3>متن پایهٔ هر مرحله و نکتهٔ هر تیپ</h3><div id="gScripts"></div></div>
   <div class="card"><h2>۷. جواب اعتراض‌ها</h2><div id="gObj"></div></div>
 
   <div class="card"><h2>۸. ماشین حساب: چطور مقایسه کنیم</h2><ol class="steps">
@@ -312,7 +368,13 @@ body.manual-only .top{display:none}
     <li>«چاپ / PDF» بزنید و برای مشتری بفرستید.</li></ol>
     <h3>همهٔ ۱۲ طرح برای ۱ میلیارد تومان (پیش‌بینی معمولی)</h3><div class="tblwrap"><table class="gt" id="gPlans"></table></div></div>
 
-  <div class="card"><h2>۹. قواعد طلایی و خط قرمزها</h2><ul class="steps">
+  <div class="card"><h2>۹. گزارش مدیر، اعلان و کار تیمی</h2><ul class="steps">
+    <li><b>گزارش مدیر:</b> قیف فروش با درصد تبدیل هر مرحله، عملکرد هر کارشناس، دلیل‌های انصراف، منبع لید، تیپ مشتری‌ها و میانگین زمان اولین تماس. ضعیف‌ترین درصد قیف، موضوع آموزش هفته است.</li>
+    <li><b>مالک پرونده:</b> هر مشتری به نام کارشناسی ثبت می‌شود که او را اضافه کرده؛ «فقط مشتری‌های من» فهرست را فیلتر می‌کند.</li>
+    <li><b>اعلان:</b> «🔔 فعال‌سازی اعلان» را یک بار بزنید. تا وقتی پنل باز است، سر وقت هر پیگیری و ۱ روز و ۱ ساعت قبل از هر جلسه، بوق و اعلان می‌آید.</li>
+    <li><b>کار تیمی:</b> با <code>CRM_SYNC_ENDPOINT</code> هر کلیک در Google Sheet مشترک ثبت می‌شود و «دریافت پرونده‌های تیم» خلاصهٔ پرونده‌های بقیه را می‌آورد.</li></ul></div>
+
+  <div class="card"><h2>۱۰. قواعد طلایی و خط قرمزها</h2><ul class="steps">
     <li>هیچ‌وقت «سود تضمینی» نگویید مگر عددی که دقیقاً در قرارداد همان طرح نوشته شده؛ در طرح‌های سهمی بگویید «پیش‌بینی».</li>
     <li>پیش از امضا، ساختار قرارداد خرید (۲٫۸ همت به فروشنده، ۱٫۸ همت مرکز، باقی راه‌اندازی) و شرط حسابرسی سود ۷۵۰ میلیاردی را شفاف بگویید.</li>
     <li>فشار زمانی ساختگی ممنوع؛ فقط محدودیت واقعی (مثلاً سقف هر طرح یا ۱۰ هزار سهم پروژهٔ سلامت).</li>
@@ -320,15 +382,24 @@ body.manual-only .top{display:none}
     <li>شمارهٔ مشتری به هیچ‌کس داده نمی‌شود؛ لید فقط در همین پنل و شیت مرکز.</li>
   </ul></div>
 
-  <div class="card"><h2>۱۰. شاخص‌های عملکرد هفتگی</h2><div class="tblwrap"><table class="gt"><tr><th>شاخص</th><th>هدف</th><th>از کجا ببینیم</th></tr>
+  <div class="card"><h2>۱۱. شاخص‌های عملکرد هفتگی</h2><div class="tblwrap"><table class="gt"><tr><th>شاخص</th><th>هدف</th><th>از کجا ببینیم</th></tr>
     <tr><td>زمان اولین تماس با لید جدید</td><td>زیر ۵ دقیقه</td><td>تاریخچهٔ هر پرونده</td></tr>
     <tr><td>پیگیری عقب‌افتاده در پایان روز</td><td>صفر</td><td>داشبورد</td></tr>
     <tr><td>نرخ تماس اول ← نیازسنجی</td><td>بالای ۵۰٪</td><td>شمارندهٔ مراحل</td></tr>
     <tr><td>نرخ جلسه ← قرارداد</td><td>بالای ۲۵٪</td><td>شمارندهٔ مراحل</td></tr>
     <tr><td>درصد پرونده‌های دارای تیپ شخصیتی</td><td>بالای ۹۰٪</td><td>ستون «تیپ» در داشبورد</td></tr>
-    <tr><td>دلیل‌های انصراف</td><td>بررسی هفتگی</td><td>خروجی CSV · ستون آخرین رویداد</td></tr></table></div></div>
+    <tr><td>دلیل‌های انصراف</td><td>بررسی هفتگی</td><td>گزارش مدیر</td></tr>
+    <tr><td>درصد تماس‌های مهم با «تماس هدایت‌شده»</td><td>بالای ۸۰٪</td><td>تاریخچهٔ پرونده‌ها</td></tr></table></div></div>
+
+  <div class="card"><h2>۱۲. محدودیت‌ها (صادقانه) و قدم بعد</h2><ul class="steps">
+    <li><b>تشخیص تیپ:</b> با قواعد و واژه‌نامهٔ داخلی کار می‌کند، نه مدل زبانی. برای اتصال به یک سرویس هوش مصنوعی، <code>AI_ENDPOINT</code> را تنظیم کنید.</li>
+    <li><b>پیامک و واتس‌اپ:</b> متن آماده و دکمهٔ ارسال دارد، اما ارسال خودکار بدون کلیک نیاز به حساب سامانهٔ پیامکی و کلید API آن دارد.</li>
+    <li><b>اعلان:</b> فقط وقتی پنل در مرورگر باز است کار می‌کند.</li>
+    <li><b>دادهٔ مشترک:</b> پایگاه داده روی مرورگر هر کارشناس است؛ همگام‌سازی تیمی از راه Google Sheet انجام می‌شود (تاریخچهٔ کامل هر پرونده فقط نزد کارشناس خودش است).</li></ul></div>
 </section>
 </main>
+<div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mTitle"><h3 id="mTitle"></h3><p id="mRule" class="small"></p><form id="mForm"></form></div></div>
+<div class="toast" id="toast" hidden></div>
 
 <script>
 /* ============ دادهٔ ۱۲ طرح (برای هر ۱ میلیارد تومان، ارقام به میلیون تومان) ============
@@ -492,6 +563,62 @@ const TPL = {
  welcome:'سلام {n} عزیز، تبریک می‌گوییم! حالا شما در ساختن «ایران بزرگ» سهم دارید. شمارهٔ اختصاصی پیگیری شما: [ ]. ممنون از اعتمادتان. {a}',
 };
 
+/* ============ تماس هدایت‌شده: ۳ سؤال گرم‌کننده برای تشخیص تیپ ============
+   به «طرز» جواب دادن مشتری دقت کنید، نه فقط محتوا. هر جواب ۳ امتیاز به یک تیپ می‌دهد.                    */
+const WARM = [
+ {id:'w1', q:'«قبلاً کجا سرمایه‌گذاری کرده‌اید و از کدامش راضی بودید؟»', hint:'گوش کنید چطور تعریف می‌کند.',
+  o:[['D','کوتاه و سریع؛ از نتیجه و سود گفت'],['I','با داستان و آدم‌ها؛ گرم و پرحرف'],['S','محتاط؛ از ضرر یا نگرانی گفت'],['C','با عدد و درصد دقیق؛ سؤال برگرداند']]},
+ {id:'w2', q:'«برای انتخاب یک سرمایه‌گذاری، مهم‌ترین چیز برایتان چیست؟»', hint:'اولین چیزی که می‌گوید، مهم‌ترین است.',
+  o:[['D','سود بالا و نتیجهٔ سریع'],['I','اعتبار و آدم‌هایی که پشتش هستند'],['S','امنیت و آرامش خیال'],['C','سند، قرارداد و منطق عددی']]},
+ {id:'w3', q:'«معمولاً تصمیم‌های مالی‌تان را چطور می‌گیرید؟»', hint:'این جواب، روش بستن را هم مشخص می‌کند.',
+  o:[['D','سریع و خودم'],['I','با حس خودم و مشورت دوستان'],['S','با خانواده و بدون عجله'],['C','بعد از بررسی کامل مدارک']]},
+];
+
+/* ============ بانک سؤال‌های نیازسنجی (هر سؤال برای هر تیپ یک جمله‌بندی دارد) ============ */
+const DQ = {
+ amt:{t:'مبلغ سرمایه', o:[['0.6','زیر ۱ میلیارد'],['1','حدود ۱ میلیارد'],['3','۲ تا ۵ میلیارد'],['10','۵ تا ۲۰ میلیارد'],['50','۲۰ تا ۱۰۰ میلیارد'],['200','بیش از ۱۰۰ میلیارد']], input:true,
+  q:{D:'«چه مبلغی در نظرتان است؟ یک عدد تقریبی کافی است.»', I:'«برای شروع این همراهی، حدوداً چه مبلغی را در نظر دارید؟»', S:'«با چه مبلغی راحت‌اید شروع کنید؟ می‌شود کم شروع کرد و بعد بیشتر کرد.»', C:'«دقیقاً چه مبلغی را بررسی می‌کنید تا جدول را با همان عدد برایتان حساب کنم؟»'}},
+ payout:{t:'نوع سود', o:[['monthly','درآمد ماهانه'],['growth','افزایش سرمایه (چند برابر شدن)'],['both','هر دو: کمی ماهانه، کمی رشد'],['service','خدمات درمانی/مراقبت برای خانواده'],['business','کسب‌وکار و درآمد از کار']],
+  q:{D:'«کدام: هر ماه پول بگیرید یا اصل پولتان چند برابر شود؟»', I:'«دوست دارید این پول هر ماه به زندگی‌تان برسد، یا یک روز ببینید چند برابر شده؟»', S:'«برایتان مهم‌تر است هر ماه یک مبلغ ثابت به حسابتان بیاید، یا صبر کنید تا سرمایه رشد کند؟»', C:'«ترجیحتان جریان نقدی ماهانه است یا رشد ارزش دارایی؟ هر دو را با عدد مقایسه می‌کنم.»'}},
+ reason:{t:'دلیل سرمایه‌گذاری', o:[['inflation','حفظ ارزش پول در برابر تورم'],['retire','درآمد بازنشستگی'],['family','مراقبت از پدر و مادر/خانواده'],['kids','آیندهٔ فرزندان'],['dollar','درآمد ارزی/دلاری'],['partner','شراکت و نقش در مدیریت'],['iran','سهمی در ساختن ایران']],
+  q:{D:'«هدف اصلی‌تان از این سرمایه‌گذاری چیست؟»', I:'«چه چیزی باعث شد در فراخوان ثبت‌نام کنید؟ دوست دارم داستانش را بدانم.»', S:'«این پول قرار است در آینده چه کاری برای شما یا خانواده‌تان بکند؟»', C:'«دلیل اصلی‌تان برای خارج کردن پول از جای فعلی چیست؟»'}},
+ hz:{t:'مدت', o:[['1','۱ سال'],['2','۲ سال'],['3','۳ سال'],['4','۴ سال یا بیشتر']],
+  q:{D:'«پول را چند سال لازم ندارید؟»', I:'«برنامه‌تان برای این پول تا چند سال آینده است؟»', S:'«تا چه مدت مطمئنید به این پول نیاز پیدا نمی‌کنید؟»', C:'«افق سرمایه‌گذاری‌تان چند سال است؟ مدت هر طرح از ۱ تا ۴ سال است.»'}},
+ risk:{t:'ریسک', o:[['low','اول امنیت اصل پول'],['mid','سود بیشتر با ریسک متوسط']],
+  q:{D:'«برای سود بیشتر، ریسک متوسط را می‌پذیرید؟»', I:'«بیشتر دنبال هیجان رشد هستید یا آرامش؟»', S:'«اگر بازار بد شود، کدام برایتان مهم‌تر است: اصل پول امن بماند یا سود بیشتر؟»', C:'«ریسک‌پذیری‌تان چقدر است؟ در هر طرح بدترین حالت را هم با عدد نشان می‌دهم.»'}},
+ decider:{t:'تصمیم‌گیرنده', o:[['self','خودم'],['spouse','با همسرم'],['partner','با شریک/خانواده'],['company','شرکت/هیئت‌مدیره']],
+  q:{D:'«تصمیم نهایی با خودتان است؟»', I:'«کسی هست که دوست دارید در این تصمیم همراهتان باشد؟»', S:'«معمولاً با چه کسی مشورت می‌کنید؟ خوشحال می‌شوم او هم در جلسه باشد.»', C:'«چه کسی در بررسی و تصمیم نهایی نقش دارد؟»'}},
+ timing:{t:'زمان شروع', o:[['now','همین ماه'],['soon','۱ تا ۳ ماه دیگر'],['research','فعلاً فقط بررسی']],
+  q:{D:'«اگر عددها خوب بود، کی شروع می‌کنید؟»', I:'«کی دوست دارید شروع کنید؟»', S:'«عجله‌ای نیست؛ حدوداً چه زمانی برای شروع راحت‌ترید؟»', C:'«زمان‌بندی‌تان برای تصمیم چیست؟»'}},
+ source:{t:'پول الان کجاست؟', o:[['bank','سپردهٔ بانکی'],['fund','صندوق درآمد ثابت'],['gold','طلا یا سکه'],['usd','دلار یا ارز'],['property','فروش ملک'],['biz','از کسب‌وکار']],
+  q:{D:'«پولتان الان کجاست؟»', I:'«الان پولتان کجاست؟»', S:'«پولتان الان کجا نگه‌داری می‌شود؟»', C:'«سرمایه فعلاً در چه دارایی‌ای است؟ تا با همان مقایسه کنیم.»'}},
+};
+const ORDER = {D:['amt','payout','hz','timing','decider','reason'], I:['reason','payout','amt','decider','hz','timing'], S:['reason','risk','payout','hz','decider','amt','timing'], C:['amt','payout','hz','risk','source','reason','decider','timing']};
+const GENERIC_ORDER = ['amt','payout','reason','hz','risk','decider','timing','source'];
+
+/* ============ تمرکز هر تیپ در تماس ============ */
+const FOCUS = {
+ D:{on:['عدد نهایی را اول بگویید','حداکثر ۲ گزینه','کنترل تصمیم با خودش'], off:['مقدمهٔ طولانی','جزئیات قبل از پرسیدن','اصرار'], proof:'جدول یک‌خطی: بازده سالانه و جمع دریافتی', len:'کل تماس زیر ۷ دقیقه'},
+ I:{on:['رابطه و اسم کوچک','داستان و چشم‌انداز (ایران بزرگ، المپیاد)','دعوت به دیدن از نزدیک'], off:['جدول طولانی در شروع','لحن خشک','قطع کردن داستانش'], proof:'مثال‌های واقعی طرح‌ها و سوابق مرکز', len:'۱۰ تا ۱۵ دقیقه؛ بگذارید حرف بزند'},
+ S:{on:['اول ضمانت و سند ملک','درآمد ماهانهٔ منظم','همسر/خانواده در تصمیم'], off:['عجله و فشار زمانی','کلمهٔ «ریسک بالا»','عوض کردن ناگهانی پیشنهاد'], proof:'بند ضمانت، ذخیرهٔ ۶ ماهه، بازگشت اصل', len:'آرام؛ ۱۰ تا ۱۵ دقیقه'},
+ C:{on:['عدد دقیق و منبع','بدترین حالت را خودتان بگویید','پیش‌نویس قرارداد و جدول'], off:['اغراق و «به من اعتماد کنید»','عدد بی‌منبع','فشار برای تصمیم فوری'], proof:'جدول ماشین حساب + شرط حسابرسی + پیش‌نویس قرارداد', len:'به همهٔ سؤال‌ها دقیق؛ زمان مهم نیست'},
+};
+
+/* ============ متن معرفی طرح برای هر تیپ (عددها خودکار از ماشین حساب) ============ */
+const PITCH = {
+ D:(n, a, b) => `«${n}، خلاصه بگویم: با <b>${a.t}</b>، ${a.amt} شما در ${a.term} سال می‌شود <b>${a.total}</b>؛ یعنی بازده سالانه <b>${a.annual}</b>. ${b ? `گزینهٔ دوم <b>${b.t}</b> است با ${b.annual}. ` : ''}کدام را انتخاب می‌کنید؟»`,
+ I:(n, a, b, why) => `«${n} جان، چیزی که گفتید (${why}) دقیقاً همان است که <b>${a.t}</b> برایش ساخته شده. خیلی‌ها مثل شما ${a.who}. پول شما در ساختن یک بیمارستان واقعی سهم دارد و هر ماه حدود <b>${a.monthly}</b> هم به زندگی‌تان می‌رسد. بیایید از نزدیک ببینید.»`,
+ S:(n, a, b) => `«${n} عزیز، اول بگویم پشت پولتان چیست: <b>${a.g}</b>. بعد از امضا، هر ماه حدود <b>${a.monthly}</b> به حسابتان می‌آید و آخر کار، اصل پولتان برمی‌گردد. هیچ تصمیمی امروز لازم نیست.»`,
+ C:(n, a, b) => `«${n}، جدول را با عدد خودتان حساب کردم: <b>${a.t}</b>؛ بازده سالانه <b>${a.annual}</b>، جمع دریافتی ${a.total} در ${a.term} سال، ضمانت: ${a.g}. ${b ? `در مقایسه، <b>${b.t}</b> بازده ${b.annual} دارد. ` : ''}بدترین حالت هر دو را هم در جدول می‌بینید. پیش‌نویس قرارداد را بفرستم؟»`,
+};
+const CLOSE = {
+ D:'«کدام را انتخاب می‌کنید؟» و سکوت کنید. اگر گفت بعداً: «چه چیزی مانع تصمیم امروز است؟»',
+ I:'«فردا یا پس‌فردا بیایید از نزدیک ببینید؛ کدام روز بهتر است؟»',
+ S:'«پیشنهاد می‌کنم با همسرتان یک جلسهٔ کوتاه بگذاریم تا همهٔ سؤال‌ها جواب داده شود. چه روزی راحت‌ترید؟»',
+ C:'«پیش‌نویس قرارداد و جدول را امروز می‌فرستم؛ بعد از بررسی، جلسه با کارشناس مالی و حقوقی بگذاریم؟»',
+};
+const LOST_REASONS = ['سود کم است','اعتماد ندارد','مبلغ کافی ندارد','زمان مناسب نیست','جای دیگری سرمایه‌گذاری کرد','خانواده مخالف است','پاسخ نمی‌دهد','دیگر'];
+
 /* ================= تنظیمات =================
    CRM_SYNC_ENDPOINT: (اختیاری) آدرس Web app گوگل‌شیت فایل crm-sync-endpoint.gs؛ هر کلیک روی دکمه‌ها آنجا هم ثبت می‌شود.
    AI_ENDPOINT: (اختیاری) آدرس سرویس هوش مصنوعی شما. اگر خالی باشد، تشخیص تیپ با موتور قواعد داخل همین فایل انجام می‌شود.
@@ -523,10 +650,10 @@ function sync(lead, kind, text){
 }
 function log(lead, kind, text){ lead.timeline.unshift({at:Date.now(), kind, text, by:DB.agent || 'کارشناس'}); sync(lead, kind, text); }
 function newLead(o){ return Object.assign({id:uid(), name:'', phone:'', city:'', source:'فرم سایت', budget:'', interest:'', stage:'new', temp:'warm',
-  type:null, obs:{}, notes:'', disc:{}, attempts:0, next:{at:Date.now(), label:'تماس اول (ظرف ۵ دقیقه)'}, timeline:[], created:Date.now()}, o); }
+  type:null, obs:{}, notes:'', disc:{}, attempts:0, owner:DB.agent || '', maxStage:0, next:{at:Date.now(), label:'تماس اول (ظرف ۵ دقیقه)'}, timeline:[], created:Date.now()}, o); }
 
 /* ---------------- تب‌ها ---------------- */
-function tab(id){ $$('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === id)); $$('.view').forEach(v => v.hidden = v.id !== id); if (id === 'dash') renderDash(); if (id === 'lead') renderLead(); if (id === 'calc') renderCalc(); scrollTo(0, 0); }
+function tab(id){ $$('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === id)); $$('.view').forEach(v => v.hidden = v.id !== (id === 'report' ? 'report-view' : id)); if (id === 'dash') renderDash(); if (id === 'lead') renderLead(); if (id === 'calc') renderCalc(); if (id === 'report') renderReport(); scrollTo(0, 0); }
 $$('.tabs button').forEach(b => b.onclick = () => tab(b.dataset.tab));
 $('#agent').value = DB.agent; $('#agent').oninput = e => { DB.agent = e.target.value.trim(); save(); };
 
@@ -542,11 +669,11 @@ function renderDash(){
     .map(([k, t, c]) => `<div class="kpi ${c}"><b>${fa(counts[k])}</b><span>${t}</span></div>`).join('');
   $('#pipe').innerHTML = STAGES.concat([LOST]).map(s => `<button class="pst${f === s.id ? ' on' : ''}" data-s="${s.id}"><b>${fa(L.filter(l => l.stage === s.id).length)}</b>${s.t}</button>`).join('');
   $$('#pipe .pst').forEach(b => b.onclick = () => { $('#fStage').value = $('#fStage').value === b.dataset.s ? '' : b.dataset.s; renderDash(); });
-  let rows = L.filter(l => (!f || l.stage === f) && (!q || (l.name + l.phone + l.city).includes(q)));
+  let rows = L.filter(l => (!f || l.stage === f) && (!q || (l.name + l.phone + l.city).includes(q)) && (!$('#fMine').checked || l.owner === DB.agent));
   const order = {late:0, today:1, later:2, none:3, done:4};
   rows.sort((a, b) => order[bucket(a)] - order[bucket(b)] || (a.next?.at || 9e15) - (b.next?.at || 9e15) || score(b) - score(a));
   $('#list').innerHTML = rows.length ? rows.map(l => { const b = bucket(l), T = l.type ? TYPES[l.type.code] : null;
-    return `<tr class="${b}"><td><button class="lk" data-id="${l.id}">${esc(l.name || 'بی‌نام')}</button><small>${esc(l.city || '')} ${l.source ? '· ' + esc(l.source) : ''}</small></td>
+    return `<tr class="${b}"><td><button class="lk" data-id="${l.id}">${esc(l.name || 'بی‌نام')}</button><small>${esc(l.city || '')} ${l.source ? '· ' + esc(l.source) : ''}${l.owner ? ' · کارشناس: ' + esc(l.owner) : ''}</small></td>
       <td dir="ltr" class="ph"><a href="tel:${esc(l.phone)}">${esc(fa(l.phone))}</a></td>
       <td><span class="tag">${stageOf(l.stage).t}</span></td>
       <td>${T ? `<span class="tp" style="--c:${T.color}">${l.type.code}</span>` : '<span class="muted">—</span>'}</td>
@@ -557,7 +684,7 @@ function renderDash(){
   $$('#list [data-id]').forEach(b => b.onclick = () => { DB.cur = b.dataset.id; save(); tab('lead'); });
 }
 $('#fStage').innerHTML = '<option value="">همهٔ مراحل</option>' + STAGES.concat([LOST]).map(s => `<option value="${s.id}">${s.t}</option>`).join('');
-$('#fStage').onchange = renderDash; $('#fq').oninput = renderDash;
+$('#fStage').onchange = renderDash; $('#fq').oninput = renderDash; $('#fMine').onchange = renderDash;
 
 $('#addLead').onclick = () => { const f = $('#addForm'); f.hidden = !f.hidden; if (!f.hidden) f.querySelector('input').focus(); };
 $('#addForm').onsubmit = e => { e.preventDefault(); const F = e.target.elements;
@@ -581,11 +708,11 @@ function parseCSV(t){ const out = []; let row = [], f = '', q = false; for (let 
   if (q) { if (c === '"') { if (t[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
   else if (c === '"') q = true; else if (c === ',') { row.push(f); f = ''; } else if (c === '\n' || c === '\r') { if (c === '\r' && t[i + 1] === '\n') i++; row.push(f); out.push(row); row = []; f = ''; } else f += c; }
   if (f || row.length) { row.push(f); out.push(row); } return out.filter(r => r.some(x => x.trim())); }
-$('#exportBtn').onclick = () => { const head = ['شناسه','نام','موبایل','شهر','منبع','مرحله','دما','تیپ','اطمینان تیپ','سرمایه','پیگیری بعدی','عنوان پیگیری','تعداد تلاش','آخرین رویداد','یادداشت'];
-  const rows = DB.leads.map(l => [l.id, l.name, l.phone, l.city, l.source, stageOf(l.stage).t, l.temp, l.type?.code || '', l.type ? Math.round(l.type.conf * 100) + '%' : '', l.budget, l.next ? new Date(l.next.at).toLocaleString('fa-IR') : '', l.next?.label || '', l.attempts, l.timeline[0]?.text || '', l.notes]);
+$('#exportBtn').onclick = () => { const head = ['شناسه','نام','موبایل','شهر','منبع','کارشناس','مرحله','دما','تیپ','اطمینان تیپ','سرمایه (فرم)','مبلغ (میلیارد)','نوع سود','دلیل سرمایه‌گذاری','مدت','تصمیم‌گیرنده','زمان شروع','دلیل انصراف','پیگیری بعدی','عنوان پیگیری','تعداد تلاش','آخرین رویداد','یادداشت'];
+  const rows = DB.leads.map(l => [l.id, l.name, l.phone, l.city, l.source, l.owner || '', stageOf(l.stage).t, l.temp, l.type?.code || '', l.type ? Math.round(l.type.conf * 100) + '%' : '', l.budget, l.disc?.amt || '', label('payout', l.disc?.payout), label('reason', l.disc?.reason), label('hz', l.disc?.hz), label('decider', l.disc?.decider), label('timing', l.disc?.timing), l.lostReason || '', l.next ? new Date(l.next.at).toLocaleString('fa-IR') : '', l.next?.label || '', l.attempts, l.timeline[0]?.text || '', l.notes]);
   const csv = '﻿' + [head].concat(rows).map(r => r.map(x => '"' + String(x ?? '').replace(/"/g, '""') + '"').join(',')).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = 'crm-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click(); };
-$('#demoBtn').onclick = () => { if (!confirm('سه مشتری نمونه (ساختگی، برای آموزش) اضافه شود؟')) return;
+$('#demoBtn').onclick = () => { if (!confirm('سه مشتری نمونه (ساختگی، برای آموزش) اضافه شود؟')) return; if (!DB.agent) DB.agent = 'کارشناس نمونه';
   [['نمونه · آقای رضایی','09120000001','تهران','۱ تا ۱۰ میلیارد تومان'],['نمونه · خانم کریمی','09120000002','دبی','۱۰ تا ۵۰ میلیارد تومان'],['نمونه · دکتر صالحی','09120000003','شیراز','۵۰ تا ۱۰۰ میلیارد تومان']]
     .forEach(([name, phone, city, budget]) => { const l = newLead({name, phone, city, budget, source:'نمونهٔ آموزشی'}); log(l, 'ثبت', 'مشتری نمونه'); DB.leads.push(l); });
   save(); renderDash(); };
@@ -607,39 +734,17 @@ function renderLead(){
   $('#outcomes').innerHTML = groups.map(g => `<div class="og"><span>${g}</span><div>${OUTCOMES.filter(o => o.g === g).map(o => `<button class="ob ${o.cls}" data-o="${o.id}" title="${esc(o.rule)}">${o.t}</button>`).join('')}</div></div>`).join('');
   $$('#outcomes .ob').forEach(b => b.onclick = () => outcome(l, OUTCOMES.find(o => o.id === b.dataset.o)));
   $('#lNotes').value = l.notes || '';
-  renderType(l); renderDisc(l); renderScript(l); renderTimeline(l);
+  renderType(l); renderDisc(l); renderScript(l); renderTimeline(l); renderFlow();
 }
 const waNum = p => { p = en(p).replace(/[^\d]/g, ''); return p.startsWith('00') ? p.slice(2) : p.startsWith('0') ? '98' + p.slice(1) : p; };
 function moveStage(l, id, why){ if (l.stage === id) return; const from = stageOf(l.stage).t; l.stage = id; if (id === 'won') l.temp = 'won'; if (id === 'lost') l.temp = 'cold';
-  log(l, 'مرحله', `${from} ← ${stageOf(id).t}${why ? ' (' + why + ')' : ''}`); save(); renderLead(); }
+  bumpMax(l); log(l, 'مرحله', `${from} ← ${stageOf(id).t}${why ? ' (' + why + ')' : ''}`); save(); renderLead(); }
 $('#stBack').onclick = () => { const l = cur(); const i = STAGES.findIndex(s => s.id === l.stage); moveStage(l, l.stage === 'lost' ? STAGES[STAGES.length - 2].id : STAGES[Math.max(0, i - 1)].id, 'برگشت'); };
 $('#stFwd').onclick = () => { const l = cur(); const i = STAGES.findIndex(s => s.id === l.stage); moveStage(l, STAGES[Math.min(STAGES.length - 1, i + 1)].id, 'جلو'); };
 $('#lNotes').onchange = e => { const l = cur(); l.notes = e.target.value; save(); };
 $('#delLead').onclick = () => { const l = cur(); if (!confirm('پروندهٔ «' + l.name + '» حذف شود؟ این کار برگشت ندارد.')) return; DB.leads = DB.leads.filter(x => x.id !== l.id); DB.cur = null; save(); tab('dash'); };
 $('#setNext').onclick = () => { const l = cur(); const v = $('#nextAt').value; if (!v) return; l.next = {at:new Date(v).getTime(), label:$('#nextLbl').value || 'پیگیری دستی'}; log(l, 'پیگیری', 'تنظیم دستی: ' + when(l.next.at) + ' · ' + l.next.label); save(); renderLead(); };
 
-function outcome(l, o){
-  let note = prompt(`«${o.t}»\nقاعده: ${o.rule}\n\nیادداشت کوتاه (اختیاری):`, ''); if (note === null) return;
-  if (o.needsReason) { const r = prompt('دلیل انصراف؟ (سود کم، اعتماد، مبلغ، زمان، رقیب، دیگر)', ''); if (r === null) return; note = 'دلیل: ' + r + (note ? ' · ' + note : ''); }
-  if (o.count) l.attempts++; else if (o.g !== 'تماس ناموفق') l.attempts = 0;
-  const n = o.next(l); let at = null, label = '';
-  if (n.ask) { const v = prompt('تاریخ و ساعت (مثلاً ۱۴۰۵/۰۸/۲۵ ۱۰:۳۰ یا 2026-11-16 10:30):', ''); if (!v) return; at = parseWhen(v); if (!at) { alert('تاریخ را نفهمیدم. با قالب 2026-11-16 10:30 بنویسید.'); return; }
-    label = o.id === 'meet' ? 'جلسه' : 'تماس طبق قرار'; }
-  else if (n.close) { l.next = null; l.stage = 'lost'; l.temp = 'cold'; log(l, o.t, n.close + (note ? ' · ' + note : '')); save(); renderLead(); return; }
-  else { at = Date.now() + n.h * 3600e3; label = o.id === 'noans' && n.temp === 'cold' ? 'پیگیری نرم (لید سرد)' : o.id === 'paid' ? 'تماس خوش‌آمد' : o.id === 'senddocs' ? 'پرونده را دیدید؟' : o.id === 'lost' ? 'پیگیری نرم پس از انصراف' : 'تماس پیگیری'; }
-  if (o.id === 'meet') { l.reminders = [at - 864e5, at - 36e5]; label = 'جلسه (یادآوری ۱ روز و ۱ ساعت قبل)'; }
-  if (n.h === 0 && o.makesLead) { const name = prompt('نام فرد معرفی‌شده:'); const phone = name && en(prompt('شمارهٔ او:') || '').replace(/[^\d+]/g, '');
-    if (name && phone) { const r = newLead({name, phone, source:'معرفی · ' + l.name, temp:'hot'}); log(r, 'ثبت', 'معرفی‌شده توسط ' + l.name); DB.leads.unshift(r); log(l, o.t, 'معرفی: ' + name); save(); renderLead(); alert('لید تازه ساخته شد و در داشبورد است.'); }
-    return; }
-  if (o.stage) { const from = l.stage; if (STAGES.findIndex(s => s.id === o.stage) > STAGES.findIndex(s => s.id === from) || from === 'lost') l.stage = o.stage; }
-  if (n.lost) { l.stage = 'lost'; l.temp = 'cold'; }
-  if (o.temp) l.temp = o.temp; if (n.temp) l.temp = n.temp;
-  l.next = {at, label};
-  log(l, o.t, (note || '') + ' → پیگیری: ' + when(at) + (o.count ? ' · تلاش ' + fa(l.attempts) : ''));
-  save(); renderLead();
-  const tk = n.tpl || o.tpl; if (tk) showTpl(l, tk);
-  if (o.opensObj) { $('#objBox').open = true; $('#objBox').scrollIntoView({behavior:'smooth'}); }
-}
 function parseWhen(v){ v = en(v).trim(); let m = v.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?$/); if (!m) return null;
   let [_, y, mo, d, h = 10, mi = 0] = m.map(Number); if (y < 1700) { const g = jalaliToGregorian(y, mo, d); [y, mo, d] = g; } return new Date(y, mo - 1, d, h, mi).getTime(); }
 function jalaliToGregorian(jy, jm, jd){ jy += 1595; let days = -355668 + 365 * jy + Math.floor(jy / 33) * 8 + Math.floor(((jy % 33) + 3) / 4) + jd + (jm < 7 ? (jm - 1) * 31 : (jm - 7) * 30 + 186);
@@ -695,36 +800,6 @@ function typeCard(r){ const T = TYPES[r.code];
   ${r.conf < .45 ? '<p class="warnline">اطمینان پایین است؛ در تماس بعدی سؤال‌های مشاهده‌ای بیشتری را جواب دهید و دوباره تشخیص بزنید.</p>' : ''}</div>`; }
 
 /* ---------------- نیازسنجی و پیشنهاد طرح ---------------- */
-const DISC_Q = [
- {id:'goal', q:'هدف اصلی', o:[['income','درآمد ماهانه'],['growth','رشد سرمایه'],['service','خدمات برای خانواده/سالمند'],['business','کسب‌وکار خودم'],['corp','مزایای درمانی کارکنان']]},
- {id:'hz', q:'پول را چه مدت لازم ندارد؟', o:[['1','۱ سال'],['2','۲ سال'],['3','۳ سال'],['4','۴ سال یا بیشتر']]},
- {id:'risk', q:'اولویت در بازار بد', o:[['low','اصل پول امن باشد'],['mid','سود بیشتر، ریسک متوسط']]},
- {id:'amt', q:'مبلغ (میلیارد تومان)', input:true},
- {id:'abroad', q:'ساکن خارج / خانواده در ایران؟', o:[['y','بله'],['n','خیر']]},
-];
-function renderDisc(l){
-  $('#disc').innerHTML = DISC_Q.map(d => `<div class="obq"><span>${d.q}</span><div>${d.input ? `<input id="dAmt" inputmode="decimal" value="${esc(fa(l.disc.amt || ''))}" placeholder="مثلاً ۲">` : d.o.map(([v, t]) => `<button class="${l.disc[d.id] === v ? 'on' : ''}" data-d="${d.id}" data-v="${v}">${t}</button>`).join('')}</div></div>`).join('');
-  $$('#disc button').forEach(b => b.onclick = () => { l.disc[b.dataset.d] = b.dataset.v; save(); renderDisc(l); renderScript(l); });
-  $('#dAmt').onchange = e => { l.disc.amt = parseFloat(en(e.target.value).replace(/[^\d.]/g, '')) || ''; save(); renderDisc(l); renderScript(l); };
-  const rec = recommend(l);
-  $('#recs').innerHTML = rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('') +
-    `<button class="btn" id="toCalc">مقایسهٔ این ${fa(rec.length)} طرح در ماشین حساب ←</button>`;
-  $('#toCalc').onclick = () => { CALC.sel = new Set(rec.map(p => p.n)); CALC.amt = l.disc.amt || 1; tab('calc'); };
-}
-function recommend(l){
-  const d = l.disc || {}, T = l.type ? TYPES[l.type.code] : null, amt = (d.amt || 1) * 1000;
-  return PLANS.map(p => { let s = 0; const why = [];
-    const G = {income:[1,3,5,2,7], growth:[6,11,4], service:[8,9], business:[12,7], corp:[10]}[d.goal] || [];
-    if (G.includes(p.n)) { s += 6 - G.indexOf(p.n); why.push('با هدف «' + DISC_Q[0].o.find(o => o[0] === d.goal)[1] + '» می‌خواند'); }
-    if (d.hz) { if (p.term <= +d.hz) { s += 2; } else { s -= 3 * (p.term - d.hz); why.push('مدتش (' + fa(p.term) + ' سال) از افق مشتری بیشتر است'); } }
-    if (d.risk === 'low') { if (p.risk === 'کم') { s += 2; why.push('ریسک کم'); } else s -= 2; } else if (d.risk === 'mid' && p.risk !== 'کم') { s += 1; why.push('رشد بیشتر با ریسک متوسط'); }
-    if (d.abroad === 'y' && [8,9].includes(p.n)) { s += 3; why.push('برای خانوادهٔ ساکن ایران'); }
-    if (p.n === 10 && d.goal !== 'corp') s -= 8; if (p.n === 12 && d.goal !== 'business') s -= 3; if (p.n === 11 && amt < 5000) s -= 2;
-    if (amt < p.min) { s -= 6; why.push('مبلغ از حداقل کمتر است'); }
-    if (T && T.plans.includes(p.n)) { s += 3 - T.plans.indexOf(p.n) * .4; why.push('با تیپ ' + l.type.code + ' جور است'); }
-    return Object.assign({}, p, {fit:s, why:why.length ? why : ['گزینهٔ عمومی']}); }).sort((a, b) => b.fit - a.fit).slice(0, 3);
-}
-
 /* ---------------- اسکریپت تطبیقی ---------------- */
 function renderScript(l){
   const c = l.type?.code; const rec = recommend(l);
@@ -828,9 +903,201 @@ function tick(){ const late = DB.leads.filter(l => bucket(l) === 'late').length;
   document.title = (late ? '(' + fa(late) + ') ' : '') + 'پنل فروش و CRM'; }
 setInterval(tick, 30000);
 
-/* ---------------- شروع ---------------- */
-if (new URLSearchParams(location.search).has('manual')) { document.body.classList.add('manual-only'); }
-tick(); tab(DB.leads.length ? 'dash' : 'guide');
+
+/* ================= پنجرهٔ داخلی (به جای prompt) ================= */
+function ask(cfg){
+  return new Promise(res => {
+    const box = $('#modal'), f = $('#mForm');
+    $('#mTitle').textContent = cfg.title; $('#mRule').innerHTML = cfg.rule ? esc(cfg.rule) : ''; $('#mRule').hidden = !cfg.rule;
+    f.innerHTML = cfg.fields.map(x => {
+      if (x.type === 'datetime') return `<label>${x.label}<div class="quick">${[['۲ ساعت دیگر',2],['امروز عصر','e'],['فردا ۱۰ صبح','t10'],['پس‌فردا ۱۰','p10'],['۳ روز بعد',72],['هفتهٔ بعد',168]].map(([t, v]) => `<button type="button" data-q="${v}">${t}</button>`).join('')}</div><input type="datetime-local" name="${x.id}" required></label>`;
+      if (x.type === 'select') return `<label>${x.label}<select name="${x.id}" ${x.req ? 'required' : ''}><option value="">انتخاب کنید</option>${x.options.map(o => `<option>${o}</option>`).join('')}</select></label>`;
+      if (x.type === 'textarea') return `<label>${x.label}<textarea name="${x.id}" rows="3" placeholder="${x.ph || ''}"></textarea></label>`;
+      return `<label>${x.label}<input name="${x.id}" ${x.req ? 'required' : ''} ${x.ltr ? 'dir="ltr"' : ''} placeholder="${x.ph || ''}"></label>`;
+    }).join('') + `<div class="mact"><button class="btn">ثبت</button><button type="button" class="btn ghost" id="mCancel">انصراف</button></div>`;
+    const pad = n => String(n).padStart(2, '0'), toLocal = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    f.querySelectorAll('.quick button').forEach(b => b.onclick = () => { const v = b.dataset.q, d = new Date();
+      if (v === 'e') d.setHours(18, 0, 0); else if (v === 't10') { d.setDate(d.getDate() + 1); d.setHours(10, 0, 0); } else if (v === 'p10') { d.setDate(d.getDate() + 2); d.setHours(10, 0, 0); } else d.setTime(d.getTime() + v * 36e5);
+      b.closest('label').querySelector('input').value = toLocal(d); });
+    const done = v => { box.hidden = true; res(v); };
+    $('#mCancel').onclick = () => done(null); box.onclick = e => { if (e.target === box) done(null); };
+    f.onsubmit = e => { e.preventDefault(); const o = {}; cfg.fields.forEach(x => { const v = f.elements[x.id].value.trim(); o[x.id] = x.type === 'datetime' ? new Date(v).getTime() : v; }); done(o); };
+    box.hidden = false; setTimeout(() => { const i = f.querySelector('input,textarea,select'); i && i.focus(); }, 30);
+  });
+}
+
+/* ================= دکمه‌های نتیجهٔ تماس (نسخهٔ نهایی) ================= */
+async function outcome(l, o){
+  const n0 = o.next(Object.assign({}, l, {attempts:l.attempts + (o.count ? 1 : 0)}));
+  const fields = [];
+  if (o.needsReason) fields.push({id:'reason', type:'select', label:'دلیل انصراف', options:LOST_REASONS, req:true});
+  if (o.makesLead) fields.push({id:'rname', label:'نام فرد معرفی‌شده', req:true}, {id:'rphone', label:'شمارهٔ او', req:true, ltr:true});
+  if (n0.ask) fields.push({id:'at', type:'datetime', label:o.id === 'meet' ? 'روز و ساعت جلسه' : 'روز و ساعتی که گفت'});
+  if (o.id === 'meet') fields.push({id:'mtype', type:'select', label:'نوع جلسه', options:['حضوری','تصویری آنلاین','تلفنی'], req:true});
+  fields.push({id:'note', type:'textarea', label:'یادداشت کوتاه (اختیاری)', ph:'مثلاً: گفت عصرها بهتر است'});
+  const v = await ask({title:o.t, rule:'قاعده: ' + o.rule, fields}); if (!v) return;
+  let note = v.note || '';
+  if (o.makesLead) { const phone = en(v.rphone).replace(/[^\d+]/g, ''); const r = newLead({name:v.rname, phone, source:'معرفی · ' + l.name, temp:'hot'});
+    log(r, 'ثبت', 'معرفی‌شده توسط ' + l.name); DB.leads.unshift(r); log(l, o.t, 'معرفی: ' + v.rname + (note ? ' · ' + note : '')); save(); renderLead(); toast('لید تازه «' + v.rname + '» ساخته شد'); return; }
+  if (o.needsReason) { note = 'دلیل: ' + v.reason + (note ? ' · ' + note : ''); l.lostReason = v.reason; }
+  if (o.count) l.attempts++; else if (o.g !== 'تماس ناموفق') l.attempts = 0;
+  const n = o.next(l); let at, label;
+  if (n.close) { l.next = null; l.stage = 'lost'; l.temp = 'cold'; log(l, o.t, n.close + (note ? ' · ' + note : '')); save(); renderLead(); return; }
+  if (n.ask) { at = v.at; label = o.id === 'meet' ? 'جلسهٔ ' + v.mtype + ' (یادآوری ۱ روز و ۱ ساعت قبل)' : 'تماس طبق قرار'; if (o.id === 'meet') l.reminders = [at - 864e5, at - 36e5]; }
+  else { at = Date.now() + n.h * 36e5; label = o.id === 'noans' && n.temp === 'cold' ? 'پیگیری نرم (لید سرد)' : o.id === 'paid' ? 'تماس خوش‌آمد' : o.id === 'senddocs' ? 'پرونده را دیدید؟' : o.id === 'lost' ? 'پیگیری نرم پس از انصراف' : o.id === 'aftermeet' ? 'پیگیری پیشنهاد مکتوب' : 'تماس پیگیری'; }
+  if (o.stage) { if (STAGES.findIndex(s => s.id === o.stage) > STAGES.findIndex(s => s.id === l.stage) || l.stage === 'lost') l.stage = o.stage; }
+  if (n.lost) { l.stage = 'lost'; l.temp = 'cold'; }
+  if (o.temp) l.temp = o.temp; if (n.temp) l.temp = n.temp;
+  if (!l.firstTouch && o.g !== 'تماس ناموفق') l.firstTouch = Date.now();
+  if (!l.firstDial) l.firstDial = Date.now();
+  bumpMax(l); l.next = {at, label}; l.notified = 0;
+  log(l, o.t, (note ? note + ' → ' : '') + 'پیگیری: ' + when(at) + (o.count ? ' · تلاش ' + fa(l.attempts) : ''));
+  save(); renderLead();
+  const tk = n.tpl || o.tpl; if (tk) showTpl(l, tk);
+  if (o.opensObj) { $('#objBox').open = true; $('#objBox').scrollIntoView({behavior:'smooth'}); }
+}
+function bumpMax(l){ const i = STAGES.findIndex(s => s.id === l.stage); if (i > (l.maxStage ?? 0)) l.maxStage = i; }
+function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2600); }
+
+/* ================= نیازسنجی (یکی با تماس هدایت‌شده) ================= */
+const DISC_Q = GENERIC_ORDER.map(id => ({id, q:DQ[id].t, o:DQ[id].o, input:DQ[id].input})).concat([{id:'abroad', q:'ساکن خارج / خانواده در ایران؟', o:[['y','بله'],['n','خیر']]}]);
+function discBtns(l, id, rerender){
+  const d = DQ[id] || DISC_Q.find(x => x.id === id);
+  return d.o.map(([v, t]) => `<button class="${String(l.disc[id]) === v ? 'on' : ''}" data-d="${id}" data-v="${v}">${t}</button>`).join('') +
+    (d.input ? `<input class="amtIn" data-d="${id}" inputmode="decimal" value="${esc(l.disc.amtCustom ? fa(l.disc.amt) : '')}" placeholder="عدد دیگر (میلیارد)">` : '');
+}
+function bindDisc(root, l, after){
+  root.querySelectorAll('button[data-d]').forEach(b => b.onclick = () => { const id = b.dataset.d; l.disc[id] = id === 'amt' ? +b.dataset.v : b.dataset.v; if (id === 'amt') l.disc.amtCustom = false; save(); after(id); });
+  root.querySelectorAll('.amtIn').forEach(i => i.onchange = () => { const v = parseFloat(en(i.value).replace(/[^\d.]/g, '')); if (v) { l.disc.amt = v; l.disc.amtCustom = true; save(); after('amt'); } });
+}
+function renderDisc(l){
+  $('#disc').innerHTML = DISC_Q.map(d => `<div class="obq"><span>${d.q}</span><div>${discBtns(l, d.id)}</div></div>`).join('');
+  bindDisc($('#disc'), l, () => { renderDisc(l); renderScript(l); });
+  const rec = recommend(l);
+  $('#recs').innerHTML = rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('') +
+    `<button class="btn" id="toCalc">مقایسهٔ این ${fa(rec.length)} طرح در ماشین حساب ←</button>`;
+  $('#toCalc').onclick = () => { CALC.sel = new Set(rec.map(p => p.n)); CALC.amt = l.disc.amt || 1; tab('calc'); };
+}
+const label = (id, v) => (DQ[id]?.o.find(o => o[0] === String(v)) || [, ''])[1];
+function recommend(l){
+  const d = l.disc || {}, T = l.type ? TYPES[l.type.code] : null, amt = (d.amt || 1) * 1000;
+  const G = {monthly:[1,3,5,2,7], growth:[6,11,4], both:[2,7,6,4], service:[8,9], business:[12,7], income:[1,3,5,2,7], corp:[10]}[d.payout || d.goal] || [];
+  const RS = {inflation:[[6,11,4,7], 2, 'در برابر تورم، دارایی واقعی و رشد ارزش'], retire:[[1,5,3], 2.5, 'درآمد منظم برای بازنشستگی'], family:[[8,9], 4, 'خدمات برای خانواده'],
+    kids:[[6,3,5], 1.5, 'برای آیندهٔ فرزندان'], dollar:[[7], 1.5, 'کف بازخرید به دلار دستگاه'], partner:[[11,7,12], 2.5, 'نقش در مدیریت/اجرا'], iran:[[6,11], 1, 'مالکیت در یک پروژهٔ ملی']}[d.reason];
+  return PLANS.map(p => { let s = 0; const why = [];
+    if (G.includes(p.n)) { s += 6 - G.indexOf(p.n); why.push('با نوع سود «' + (label('payout', d.payout) || 'درآمد ماهانه') + '» می‌خواند'); }
+    if (RS && RS[0].includes(p.n)) { s += RS[1]; why.push(RS[2]); }
+    if (d.hz) { if (p.term <= +d.hz) s += 2; else { s -= 3 * (p.term - d.hz); why.push('مدتش (' + fa(p.term) + ' سال) از افق مشتری بیشتر است'); } }
+    if (d.risk === 'low') { if (p.risk === 'کم') { s += 2; why.push('ریسک کم'); } else s -= 2; } else if (d.risk === 'mid' && p.risk !== 'کم') { s += 1; why.push('رشد بیشتر با ریسک متوسط'); }
+    if (d.abroad === 'y' && [8,9].includes(p.n)) { s += 3; why.push('برای خانوادهٔ ساکن ایران'); }
+    if (d.decider === 'company' && p.n === 10) s += 3;
+    if (p.n === 10 && d.decider !== 'company' && d.goal !== 'corp') s -= 8; if (p.n === 12 && d.payout !== 'business') s -= 3; if (p.n === 11 && amt < 5000) s -= 2;
+    if (amt < p.min) { s -= 6; why.push('مبلغ از حداقل کمتر است'); }
+    if (T && T.plans.includes(p.n)) { s += 3 - T.plans.indexOf(p.n) * .4; why.push('با تیپ ' + l.type.code + ' جور است'); }
+    return Object.assign({}, p, {fit:s, why:why.length ? why : ['گزینهٔ عمومی']}); }).sort((a, b) => b.fit - a.fit).slice(0, 3);
+}
+
+/* ================= تماس هدایت‌شده: ۴ اسکریپت جدا پس از تشخیص تیپ ================= */
+let CALL = null;   /* {leadId, step, t0} */
+function steps(l){ const c = l.type?.code; const qs = c ? ORDER[c] : GENERIC_ORDER;
+  return ['open', 'w1', 'w2', 'w3', 'type'].concat(qs.map(q => 'q:' + q), ['pitch', 'obj', 'close']); }
+function startCall(){ const l = cur(); CALL = {leadId:l.id, step:0, t0:Date.now()}; l.warm = l.warm || {}; if (!l.firstDial) l.firstDial = Date.now(); log(l, 'تماس هدایت‌شده', 'شروع'); save(); renderFlow(); }
+function endCall(){ const l = cur(); if (CALL) log(l, 'تماس هدایت‌شده', 'پایان · مدت ' + fa(Math.round((Date.now() - CALL.t0) / 60000)) + ' دقیقه'); CALL = null; save(); renderLead(); }
+function warmDetect(l){
+  const {s, ev, hits} = ruleEngine(l); let n = 0;
+  Object.values(l.warm || {}).forEach(k => { if (k) { s[k] += 3; n++; } });
+  const tot = Object.values(s).reduce((a, b) => a + b, 0); if (!tot) return null;
+  const pct = {}; ['D','I','S','C'].forEach(k => pct[k] = s[k] / tot);
+  const sorted = Object.entries(pct).sort((a, b) => b[1] - a[1]);
+  const conf = Math.min(.95, (sorted[0][1] - sorted[1][1]) * 2 + Math.min(ev + n * 1.5, 10) / 20);
+  return {code:sorted[0][0], second:sorted[1][0], pct, conf, src:'۳ سؤال گرم‌کننده + مشاهده + تحلیل واژه‌ها', hits, at:Date.now()};
+}
+function planFacts(p, l){ const amt = l.disc.amt || 1, r = calcPlan(p, amt, p.sc.exp ? 'exp' : 'min');
+  return {t:'طرح ' + fa(p.n) + ' · ' + p.t, amt:num(amt) + ' میلیارد', term:fa(p.term), total:money(r.total), annual:pct(r.annual), monthly:money(r.perMonth), g:p.g, who:p.who,
+    note:['growth','hybrid','business'].includes(p.kind) ? ' (پیش‌بینی، نه تضمین)' : ''}; }
+function renderFlow(){
+  const l = cur(), box = $('#flow'); if (!l) return;
+  if (!CALL || CALL.leadId !== l.id) { box.innerHTML = `<div class="fstart"><div><b>تماس هدایت‌شده</b><p class="small">قدم به قدم: شروع ← ۳ سؤال گرم‌کننده (تشخیص تیپ) ← اسکریپت مخصوص همان تیپ (سؤال‌های مبلغ، نوع سود، دلیل و…) ← معرفی طرح با عدد ← اعتراض ← بستن.</p></div><button class="btn" id="fGo">▶ شروع تماس هدایت‌شده</button></div>`; $('#fGo').onclick = startCall; return; }
+  const S = steps(l), k = S[CALL.step], c = l.type?.code, T = c ? TYPES[c] : null, F = c ? FOCUS[c] : null;
+  const mins = Math.floor((Date.now() - CALL.t0) / 60000);
+  let body = '', canNext = true;
+  if (k === 'open') body = `<p class="say">${esc(fill(SCRIPT.opening.base, l))}</p><p class="small">لحن را خنثی و گرم نگه دارید تا تیپ مشتری مشخص شود.</p>`;
+  else if (k[0] === 'w') { const w = WARM.find(x => x.id === k); body = `<p class="say">${w.q}</p><p class="small">${w.hint}</p><div class="fopts">${w.o.map(([t, txt]) => `<button class="${l.warm[k] === t ? 'on' : ''}" data-w="${t}">${txt}</button>`).join('')}<button class="skip" data-w="">مشخص نبود</button></div>`; canNext = k in l.warm; }
+  else if (k === 'type') { const r = warmDetect(l); if (r && !l.typeLocked) { l.type = r; save(); }
+    body = l.type ? typeCard(l.type) + `<p class="small">اگر حس شما چیز دیگری است، تیپ را دستی انتخاب کنید:</p><div class="fopts">${['D','I','S','C'].map(x => `<button class="${c === x ? 'on' : ''}" data-ty="${x}" style="--c:${TYPES[x].color}">${TYPES[x].t}</button>`).join('')}</div>` : '<p class="warnline">شواهد کافی نیست؛ دست‌کم یکی از سؤال‌های گرم‌کننده را جواب دهید.</p>';
+    canNext = !!l.type; }
+  else if (k.startsWith('q:')) { const id = k.slice(2), q = DQ[id]; body = `<p class="qt">${q.t}</p><p class="say">${c ? q.q[c] : q.q.S}</p><div class="fopts">${discBtns(l, id)}</div>`; canNext = l.disc[id] !== undefined && l.disc[id] !== ''; }
+  else if (k === 'pitch') { if (STAGES.findIndex(x => x.id === l.stage) < 2) { const from = stageOf(l.stage).t; l.stage = 'qualified'; l.temp = l.disc.timing === 'now' ? 'hot' : l.temp; bumpMax(l); log(l, 'مرحله', from + ' ← نیازسنجی (خودکار پس از تماس هدایت‌شده)'); save(); } const rec = recommend(l), a = planFacts(rec[0], l), b = rec[1] && planFacts(rec[1], l);
+    const why = [label('reason', l.disc.reason), label('payout', l.disc.payout)].filter(Boolean).join('، ') || 'هدفتان';
+    body = `<p class="say">${(PITCH[c] || PITCH.S)((l.name || '').replace('نمونه · ', '').split(' ')[0], a, b, why)}</p>${a.note ? `<p class="warnline">${a.t}${a.note}: این را صادقانه بگویید.</p>` : ''}${(l.disc.amt || 1) < 1 ? '<p class="warnline">مبلغ مشتری زیر حداقل ۱ میلیارد است. صادقانه بگویید و دو راه پیشنهاد دهید: سهم ۶۰۰ میلیونی پروژهٔ سلامت در فراخوان، یا شراکت با یک نفر دیگر برای رسیدن به ۱ میلیارد.</p>' : ''}
+      <div class="recs">${rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('')}</div>
+      <button class="btn ghost sm" id="fCalc">باز کردن مقایسه در ماشین حساب</button>`; }
+  else if (k === 'obj') body = `<p class="small">اگر مشتری اعتراضی کرد، روی همان بزنید تا جواب مخصوص تیپ ${c} بیاید:</p><div class="fopts">${OBJECTIONS.map((o, i) => `<button data-ob="${i}">${o.q}</button>`).join('')}</div><div id="fObj"></div>`;
+  else if (k === 'close') body = `<p class="say">${CLOSE[c] || CLOSE.S}</p><p class="small">نتیجه را با یکی از این دکمه‌ها ثبت کنید (پیگیری خودکار تنظیم می‌شود):</p><div class="fopts">${['meet','senddocs','ready','think','objection','later','lost'].map(id => `<button class="ob ${OUTCOMES.find(o => o.id === id).cls}" data-out="${id}">${OUTCOMES.find(o => o.id === id).t}</button>`).join('')}</div>`;
+  const stepName = {open:'شروع', w1:'گرم‌کننده ۱', w2:'گرم‌کننده ۲', w3:'گرم‌کننده ۳', type:'تیپ شخصیتی', pitch:'معرفی طرح', obj:'اعتراض‌ها', close:'بستن'}[k] || DQ[k.slice(2)]?.t;
+  box.innerHTML = `<div class="fhead"><b>تماس هدایت‌شده · ${esc(l.name)}</b><span class="tm">⏱ ${fa(mins)} دقیقه</span>${T ? `<span class="tp" style="--c:${T.color}">${c}</span>` : ''}<button class="btn sm ghost" id="fEnd">پایان تماس</button></div>
+    <div class="fprog">${S.map((s, i) => `<i class="${i < CALL.step ? 'd' : i === CALL.step ? 'n' : ''}"></i>`).join('')}</div>
+    <div class="fgrid"><div class="fmain"><span class="fstep">قدم ${fa(CALL.step + 1)} از ${fa(S.length)} · ${stepName}</span>${body}
+      <div class="fnav"><button class="btn ghost sm" id="fBack" ${CALL.step ? '' : 'disabled'}>→ قبلی</button><button class="btn sm" id="fNext" ${canNext && CALL.step < S.length - 1 ? '' : 'disabled'}>بعدی ←</button></div></div>
+    ${F ? `<aside class="ffocus" style="--c:${T.color}"><b>تمرکز با تیپ ${c}</b><ul class="on">${F.on.map(x => `<li>${x}</li>`).join('')}</ul><ul class="off">${F.off.map(x => `<li>${x}</li>`).join('')}</ul><p><b>مدرک:</b> ${F.proof}</p><p><b>زمان:</b> ${F.len}</p></aside>` : '<aside class="ffocus"><b>تمرکز</b><p class="small">بعد از ۳ سؤال گرم‌کننده، تمرکز مخصوص تیپ مشتری اینجا می‌آید.</p></aside>'}</div>`;
+  $('#fEnd').onclick = endCall; $('#fBack').onclick = () => { CALL.step--; renderFlow(); }; $('#fNext').onclick = () => { CALL.step++; renderFlow(); };
+  box.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { l.warm[k] = b.dataset.w; l.typeLocked = false; save(); CALL.step++; renderFlow(); });
+  box.querySelectorAll('[data-ty]').forEach(b => b.onclick = () => { const r = l.type || {pct:{D:.25,I:.25,S:.25,C:.25}, conf:.5, hits:{}, second:'S'}; l.type = Object.assign({}, r, {code:b.dataset.ty, src:'انتخاب دستی کارشناس', conf:Math.max(r.conf, .6)}); l.typeLocked = true; log(l, 'تیپ شخصیتی', 'انتخاب دستی: ' + TYPES[b.dataset.ty].t); save(); renderFlow(); });
+  bindDisc(box, l, id => { renderFlow(); setTimeout(() => { if (CALL && steps(l)[CALL.step] === 'q:' + id) { CALL.step++; renderFlow(); } }, 300); });
+  box.querySelectorAll('[data-ob]').forEach(b => b.onclick = () => { const o = OBJECTIONS[b.dataset.ob]; $('#fObj').innerHTML = `<p>${o.a}</p><p class="tip" style="--c:${T ? T.color : '#888'}"><b>برای ${c || '—'}:</b> ${c ? o[c] : ''}</p>`; log(l, 'اعتراض', o.q); save(); });
+  box.querySelectorAll('[data-out]').forEach(b => b.onclick = async () => { await outcome(l, OUTCOMES.find(o => o.id === b.dataset.out)); if (l.timeline[0]?.kind === OUTCOMES.find(o => o.id === b.dataset.out).t) { CALL = null; log(l, 'تماس هدایت‌شده', 'پایان با نتیجه'); save(); renderLead(); } });
+  const fc = $('#fCalc'); if (fc) fc.onclick = () => { CALC.sel = new Set(recommend(l).map(p => p.n)); CALC.amt = l.disc.amt || 1; tab('calc'); };
+}
+setInterval(() => { if (CALL && !$('#lead').hidden) { const t = $('.fhead .tm'); if (t) t.textContent = '⏱ ' + fa(Math.floor((Date.now() - CALL.t0) / 60000)) + ' دقیقه'; } }, 15000);
+
+/* ================= گزارش مدیر ================= */
+function renderReport(){
+  const L = DB.leads.filter(l => !$('#rMine').checked || l.owner === DB.agent);
+  const reached = i => L.filter(l => (l.maxStage ?? STAGES.findIndex(s => s.id === l.stage)) >= i || (l.stage === 'won' && i <= 7)).length;
+  const funnel = STAGES.map((s, i) => ({s, n:reached(i)}));
+  const max = Math.max(1, funnel[0].n);
+  const owners = [...new Set(L.map(l => l.owner || '—'))];
+  const late = l => bucket(l) === 'late';
+  const resp = L.filter(l => l.firstDial).map(l => (l.firstDial - l.created) / 60000);
+  const avgResp = resp.length ? resp.reduce((a, b) => a + b, 0) / resp.length : null;
+  const reasons = {}; L.filter(l => l.lostReason).forEach(l => reasons[l.lostReason] = (reasons[l.lostReason] || 0) + 1);
+  const src = {}; L.forEach(l => { const k = (l.source || '—').split(' · ')[0]; src[k] = src[k] || {n:0, won:0}; src[k].n++; if (l.stage === 'won') src[k].won++; });
+  const types = {D:0, I:0, S:0, C:0, '—':0}; L.forEach(l => types[l.type?.code || '—']++);
+  const p = (a, b) => b ? fa(Math.round(a / b * 100)) + '٪' : '—';
+  $('#report').innerHTML = `
+  <div class="kpis">${[['کل مشتری‌ها', L.length, ''], ['واریز شده', L.filter(l => l.stage === 'won').length, 'good'], ['نرخ تبدیل کل', p(L.filter(l => l.stage === 'won').length, L.length), 'good'], ['پیگیری عقب‌افتاده', L.filter(late).length, 'bad'], ['میانگین زمان اولین تماس', avgResp === null ? '—' : (avgResp < 60 ? fa(Math.round(avgResp)) + ' دقیقه' : fa(Math.round(avgResp / 60)) + ' ساعت'), avgResp !== null && avgResp > 5 ? 'warn' : '']].map(([t, v, c]) => `<div class="kpi ${c}"><b>${typeof v === 'number' ? fa(v) : v}</b><span>${t}</span></div>`).join('')}</div>
+  <div class="grid2"><div class="card"><h3>قیف فروش و نرخ تبدیل هر مرحله</h3>${funnel.map((f, i) => `<div class="fun"><span>${f.s.t}</span><i style="width:${f.n / max * 100}%"></i><b>${fa(f.n)}</b><em>${i ? p(f.n, funnel[i - 1].n) : ''}</em></div>`).join('')}<p class="small">عدد = مشتری‌هایی که دست‌کم به این مرحله رسیده‌اند · درصد = تبدیل از مرحلهٔ قبل. ضعیف‌ترین درصد، جایی است که باید آموزش دهید.</p></div>
+  <div class="card"><h3>عملکرد کارشناسان</h3><div class="tblwrap"><table class="gt"><tr><th>کارشناس</th><th>مشتری</th><th>تماس موفق</th><th>جلسه</th><th>واریز</th><th>تبدیل</th><th>عقب‌افتاده</th></tr>${owners.map(o => { const M = L.filter(l => (l.owner || '—') === o), won = M.filter(l => l.stage === 'won').length;
+    return `<tr><td>${esc(o)}</td><td>${fa(M.length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 1).length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 4).length)}</td><td>${fa(won)}</td><td>${p(won, M.length)}</td><td class="${M.filter(late).length ? 'neg' : ''}">${fa(M.filter(late).length)}</td></tr>`; }).join('')}</table></div></div></div>
+  <div class="grid2"><div class="card"><h3>دلیل‌های انصراف</h3>${Object.keys(reasons).length ? Object.entries(reasons).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div class="fun"><span>${esc(r)}</span><i style="width:${n / Math.max(...Object.values(reasons)) * 100}%;background:var(--red)"></i><b>${fa(n)}</b><em></em></div>`).join('') : '<p class="muted">هنوز انصرافی ثبت نشده.</p>'}</div>
+  <div class="card"><h3>منبع لید و تیپ مشتری‌ها</h3><div class="tblwrap"><table class="gt"><tr><th>منبع</th><th>تعداد</th><th>واریز</th><th>تبدیل</th></tr>${Object.entries(src).sort((a, b) => b[1].n - a[1].n).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${fa(v.n)}</td><td>${fa(v.won)}</td><td>${p(v.won, v.n)}</td></tr>`).join('')}</table></div>
+    <p>${Object.entries(types).map(([k, n]) => `<span class="tp" style="--c:${TYPES[k]?.color || '#999'}">${k}</span> ${fa(n)}`).join(' &nbsp; ')}</p><p class="small">مشتری بدون تیپ (—) یعنی تماس هدایت‌شده یا تشخیص انجام نشده.</p></div></div>`;
+}
+$('#rMine').onchange = renderReport;
+
+/* ================= اعلان پیگیری (وقتی پنل باز است) ================= */
+let audio; function beep(){ try { audio = audio || new AudioContext(); const o = audio.createOscillator(), g = audio.createGain(); o.connect(g); g.connect(audio.destination); o.frequency.value = 880; g.gain.value = .08; o.start(); o.stop(audio.currentTime + .25); } catch (_) {} }
+$('#notifyBtn').onclick = async () => { if (!('Notification' in window)) { alert('این مرورگر اعلان ندارد؛ نشان قرمز روی تب و صدای بوق کار می‌کند.'); return; }
+  const r = await Notification.requestPermission(); $('#notifyBtn').textContent = r === 'granted' ? '🔔 اعلان فعال است' : '🔕 اعلان رد شد'; beep(); };
+function notifyDue(){ const now = Date.now();
+  DB.leads.forEach(l => { const due = []; if (l.next && l.next.at <= now && l.notified !== l.next.at) { due.push(l.next.label); l.notified = l.next.at; }
+    (l.reminders || []).forEach((t, i) => { if (t <= now && t > now - 36e5 * 2 && !(l.remDone || []).includes(i)) { due.push(i ? 'جلسه تا ۱ ساعت دیگر' : 'جلسه فردا'); l.remDone = (l.remDone || []).concat(i); } });
+    if (due.length) { beep(); toast('⏰ ' + l.name + ': ' + due.join('، ')); if (window.Notification && Notification.permission === 'granted') new Notification('پیگیری: ' + l.name, {body:due.join('، ') + ' · ' + fa(l.phone)}); } });
+  save(); }
+setInterval(notifyDue, 30000);
+
+/* ================= تیم: دریافت پرونده‌های بقیه از گوگل‌شیت مشترک ================= */
+$('#teamPull').onclick = async () => {
+  if (!CRM_SYNC_ENDPOINT) { alert('اول آدرس CRM_SYNC_ENDPOINT را در فایل تنظیم کنید (راهنما: دستورالعمل، بخش ۱).'); return; }
+  try { const r = await fetch(CRM_SYNC_ENDPOINT); const rows = await r.json(); let add = 0, upd = 0;
+    rows.forEach(x => { const l = DB.leads.find(y => y.id === x.id);
+      if (!l) { const n = newLead({id:x.id, name:x.name, phone:String(x.phone).replace(/^'/, ''), owner:x.agent, source:'تیم', next:x.next ? {at:new Date(x.next).getTime(), label:'از شیت تیم'} : null});
+        const st = STAGES.find(s => s.t === x.stage); if (st) n.stage = st.id; if (x.stage === LOST.t) n.stage = 'lost'; if (x.type) n.type = {code:x.type, pct:{D:0,I:0,S:0,C:0,[x.type]:1}, conf:.5, hits:{}, second:x.type, src:'شیت تیم'};
+        log(n, 'ثبت', 'دریافت از شیت تیم · آخرین رویداد: ' + (x.last || '')); DB.leads.push(n); add++; }
+      else if (l.owner !== DB.agent) { const st = STAGES.find(s => s.t === x.stage); if (st) l.stage = st.id; if (x.next) l.next = {at:new Date(x.next).getTime(), label:'از شیت تیم'}; upd++; } });
+    save(); renderDash(); toast(`${fa(add)} پرونده اضافه و ${fa(upd)} پرونده به‌روز شد`); }
+  catch (e) { alert('دریافت از شیت نشد. مطمئن شوید نسخهٔ جدید crm-sync-endpoint.gs منتشر شده است.'); }
+};
 
 /* ---------------- محتوای دستورالعمل (از همان داده‌ها ساخته می‌شود تا همیشه یکی باشد) ---------------- */
 (function renderGuide(){
@@ -842,11 +1109,38 @@ tick(); tab(DB.leads.length ? 'dash' : 'guide');
     <dl><dt>نشانه‌ها</dt><dd>${OBS.filter(o => (o.a[1][k] || 0) >= 2).map(o => o.a[0]).concat(OBS.filter(o => (o.b[1][k] || 0) >= 2).map(o => o.b[0])).join('، ')}</dd>
     <dt>واژه‌های شاخص</dt><dd>${LEX[k].slice(0, 10).join('، ')}</dd><dt>چطور حرف بزنید</dt><dd>${T.how}</dd><dt>نکنید</dt><dd>${T.dont}</dd>
     <dt>طرح‌های مناسب</dt><dd>${T.plans.map(n => 'طرح ' + fa(n) + ' (' + PLANS[n - 1].short + ')').join('، ')}</dd><dt>بستن</dt><dd>${T.close}</dd><dt>پیگیری</dt><dd>${T.channel}</dd></dl></div>`).join('');
-  $('#gScripts').innerHTML = Object.values(SCRIPT).map(s => `<details open><summary>${s.t}</summary><p class="say">«${esc(fill(s.base, null))}»</p>${['D','I','S','C'].map(k => `<p class="tip" style="--c:${TYPES[k].color}"><b>${TYPES[k].t}:</b> ${esc(fill(s[k], null))}</p>`).join('')}</details>`).join('');
+  $('#gScripts').innerHTML = Object.values(SCRIPT).map(s => `<details><summary>${s.t}</summary><p class="say">«${esc(fill(s.base, null))}»</p>${['D','I','S','C'].map(k => `<p class="tip" style="--c:${TYPES[k].color}"><b>${TYPES[k].t}:</b> ${esc(fill(s[k], null))}</p>`).join('')}</details>`).join('');
   $('#gObj').innerHTML = OBJECTIONS.map(o => `<details open><summary>${o.q}</summary><p>${o.a}</p>${['D','I','S','C'].map(k => `<p class="tip" style="--c:${TYPES[k].color}"><b>${k}:</b> ${o[k]}</p>`).join('')}</details>`).join('');
   const R = PLANS.map(p => calcPlan(p, 1, 'exp'));
   $('#gPlans').innerHTML = '<tr><th>طرح</th><th>مدت</th><th>بازده سالانه (هم‌تراز)</th><th>سود یک سال</th><th>جمع دریافتی کل دوره</th><th>سود خالص کل دوره</th><th>ضمانت</th><th>ریسک</th><th>تیپ مناسب</th></tr>' +
     R.map(r => `<tr><td><b>${fa(r.p.n)} · ${r.p.t}</b></td><td>${fa(r.p.term)} سال</td><td><b>${r.p.n === 10 ? 'صرفه‌جویی ۳۱–۳۸٪' : pct(r.annual)}</b></td><td>${money(r.perYear)}</td><td>${r.p.n === 10 ? '—' : money(r.total)}</td><td>${money(r.gain)}${r.p.n === 10 ? ' <small>صرفه‌جویی</small>' : ''}</td><td>${r.p.g}</td><td>${r.p.risk}</td><td>${r.p.types.join('، ')}</td></tr>`).join('');
 })();
+
+/* ---------------- دستورالعمل: ۴ اسکریپت تماس هدایت‌شده ---------------- */
+(function(){
+  const ex = {n:'[نام]', a:{t:'[طرح اول]', amt:'[مبلغ]', term:'[مدت]', total:'[جمع دریافتی]', annual:'[بازده سالانه]', monthly:'[درآمد ماهانه]', g:'[ضمانت طرح]', who:'[مناسب برای]'}, b:{t:'[طرح دوم]', annual:'[بازده]'}};
+  $('#gWarm').innerHTML = WARM.map((w, i) => `<tr><td>${fa(i + 1)}</td><td>${w.q}<small>${w.hint}</small></td>${['D','I','S','C'].map(k => `<td>${w.o.find(o => o[0] === k)[1]}</td>`).join('')}</tr>`).join('');
+  $('#gFlow').innerHTML = ['D','I','S','C'].map(k => { const T = TYPES[k], F = FOCUS[k];
+    return `<div class="tcard flowcard" style="--c:${T.color}"><div class="th"><span class="big">${k}</span><div><b>اسکریپت ${T.t}</b><small>${F.len}</small></div></div>
+      <p><b>تمرکز:</b> ${F.on.join('، ')} · <b>نکنید:</b> ${F.off.join('، ')} · <b>مدرک:</b> ${F.proof}</p>
+      <ol class="steps"><li><b>شروع:</b> ${esc(fill(SCRIPT.opening[k], null))}</li>
+      ${ORDER[k].map(id => `<li><b>${DQ[id].t}:</b> ${DQ[id].q[k]}<small class="opts">گزینه‌ها: ${DQ[id].o.map(o => o[1]).join(' · ')}</small></li>`).join('')}
+      <li><b>معرفی طرح:</b> ${PITCH[k](ex.n, ex.a, ex.b, '[دلیل و نوع سود مشتری]')}</li>
+      <li><b>بستن:</b> ${CLOSE[k]}</li></ol></div>`; }).join('');
+  $('#gQs').innerHTML = '<tr><th>سؤال</th><th>گزینه‌ها</th><th>اثر روی پیشنهاد طرح</th></tr>' + [
+    ['amt','حداقل اکثر طرح‌ها ۱ میلیارد است؛ کمتر از آن، طرح‌ها امتیاز منفی می‌گیرند و سهم ۶۰۰ میلیونی پروژهٔ سلامت فراخوان پیشنهاد می‌شود.'],
+    ['payout','درآمد ماهانه ← طرح ۱، ۳، ۵، ۲، ۷ · افزایش سرمایه ← ۶، ۱۱، ۴ · هر دو ← ۲، ۷، ۶، ۴ · خدمات ← ۸، ۹ · کسب‌وکار ← ۱۲، ۷'],
+    ['reason','تورم ← دارایی واقعی و رشد (۶، ۱۱، ۴، ۷) · بازنشستگی ← ۱، ۵، ۳ · خانواده ← ۸، ۹ · فرزندان ← ۶، ۳، ۵ · دلار ← ۷ · شراکت ← ۱۱، ۷، ۱۲ · ساختن ایران ← ۶، ۱۱'],
+    ['hz','طرحی که مدتش از افق مشتری بیشتر است، امتیاز منفی می‌گیرد.'],
+    ['risk','«اول امنیت» ← طرح‌های ریسک کم؛ «سود بیشتر» ← طرح‌های سهمی و بخش.'],
+    ['decider','با همسر/شریک ← جلسهٔ مشترک در بستن · شرکت ← طرح ۱۰'],
+    ['timing','همین ماه ← لید داغ؛ فقط بررسی ← پیگیری با محتوا، بدون فشار'],
+    ['source','بانک/صندوق ← مقایسه با بانک و صندوق در ماشین حساب · دلار/طلا ← طرح‌های دارایی‌محور']
+  ].map(([id, e]) => `<tr><td><b>${DQ[id].t}</b></td><td>${DQ[id].o.map(o => o[1]).join('، ')}</td><td>${e}</td></tr>`).join('');
+})();
+
+/* ---------------- شروع ---------------- */
+if (new URLSearchParams(location.search).has('manual')) { document.body.classList.add('manual-only'); }
+tick(); tab(DB.leads.length ? 'dash' : 'guide');
 
 </script></body></html>

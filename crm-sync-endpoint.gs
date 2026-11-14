@@ -6,6 +6,15 @@
  * Deploy › New deployment › Web app (Execute as: Me · Who has access: Anyone) ›
  * آدرس را در پنل جای CRM_SYNC_ENDPOINT = '' بگذارید.
  */
+/** دکمهٔ «دریافت پرونده‌های تیم» در پنل: خلاصهٔ همهٔ مشتریان را به‌صورت JSON برمی‌گرداند. */
+function doGet() {
+  const sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('مشتریان');
+  const rows = sh && sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, 9).getValues() : [];
+  const out = rows.map(r => ({id: r[0], name: r[1], phone: String(r[2]), agent: r[3], stage: r[4], type: r[5], last: r[6],
+    next: r[7] instanceof Date ? r[7].toISOString() : '', updated: r[8] instanceof Date ? r[8].toISOString() : ''}));
+  return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   const lock = LockService.getScriptLock(); lock.waitLock(10000);
   try {
