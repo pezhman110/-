@@ -148,6 +148,10 @@ code{background:#f1eee5;border-radius:6px;padding:1px 6px;font-size:13px;directi
 @media print{.top,.bar,.presets,.pchks,.cin,#addForm,.lact,.manual{display:none!important}body{background:#fff;font-size:12px}.card{break-inside:avoid;border-color:#ddd}.view[hidden]{display:none!important}
   details{break-inside:avoid}details>summary{list-style:none}.cmp thead th{position:static}}
 body.manual-only .top{display:none}
+.hterm{display:block;font-weight:500;color:var(--gold-2);font-size:12px}
+.cmp b.big{font-size:18px}.rank{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-weight:900}
+.pos{color:var(--green-2);font-weight:800}.neg{color:var(--red);font-weight:800}.done{color:var(--muted);font-size:12.5px}
+#cOut h3{margin-top:18px}
 
 </style></head><body>
 <header class="top">
@@ -336,7 +340,7 @@ const PLANS = [
   sc:{min:{cash:[390,420], back:{y:2,v:1000}}}, who:'بازنشسته، صاحب ملک، کسی که پولش در بانک یا صندوق است', types:['S','C']},
  {n:2, t:'سبد سرمایه‌گذاری مرکز', short:'سبد مرکز', term:3, min:1000, minTxt:'۱ میلیارد', rate:'حداقل ۲٪ ماهانه + ۷۰٪ مازاد (۲۴ تا ۳۶٪ در سال)', pay:'از ماه ۴ هر ماه', g:'چک یا ضمانت‌نامهٔ مرکز برای حداقل ۲٪ + سند دارایی‌های سبد', exit:'—', risk:'کم تا متوسط', kind:'income',
   sc:{min:{cash:[180,240,300], back:{y:3,v:1000}}, exp:{cash:[270,360,450], back:{y:3,v:1000}}}, who:'کسی که نمی‌خواهد خودش انتخاب کند و ریسک پخش‌شده می‌خواهد', types:['S','I']},
- {n:3, t:'سود روی اصل، بازگشت از سال دوم', short:'بازگشت از سال ۲', term:3, min:1000, minTxt:'۱ میلیارد', rate:'۳٪ ماهانه؛ معادل حدود ۳۹٪ در سال', pay:'سال ۱ هیچ؛ سال ۲ و ۳ ماهی ۸۰٫۳ میلیون', g:'سند ملک در رهن + چک ضمانت کل مبلغ + ذخیرهٔ ۶ قسط', exit:'—', risk:'کم', kind:'income',
+ {n:3, t:'سود روی اصل، بازگشت از سال دوم', short:'بازگشت از سال ۲', term:3, min:1000, minTxt:'۱ میلیارد', rate:'۳٪ ماهانه؛ سود سال اول پرداخت نمی‌شود و روی اصل می‌نشیند', pay:'سال ۱ هیچ؛ سال ۲ و ۳ ماهی ۸۰٫۳ میلیون', g:'سند ملک در رهن + چک ضمانت کل مبلغ + ذخیرهٔ ۶ قسط', exit:'—', risk:'کم', kind:'income',
   sc:{min:{cash:[0,763,164], back:{y:0,v:0}, inPrin:[0,201,799]}}, who:'کسی که سال اول پول لازم ندارد و بعد درآمد ماهانهٔ بزرگ می‌خواهد', types:['C','S']},
  {n:4, t:'سود ماهانه + حق خرید سهم با تخفیف', short:'سود + حق خرید', term:1, min:1000, minTxt:'۱ میلیارد', rate:'۲٫۷۵٪ ماهانه + حق خرید سهم ۲۰٪ ارزان‌تر', pay:'هر ماه', g:'سند ملک در رهن', exit:'قرارداد ۱ ساله (تا ۲ سال تمدید)', risk:'کم', kind:'hybrid',
   sc:{min:{cash:[330], back:{y:1,v:1000}}, exp:{cash:[330], back:{y:0,v:0}, end:1750}}, who:'کسی که اول می‌خواهد از نزدیک ببیند و بعد شریک شود', types:['D','C']},
@@ -730,17 +734,35 @@ function renderScript(l){
 }
 
 /* ---------------- ماشین حساب ۱۲ طرح ---------------- */
-const CALC = {sel:new Set([1, 5, 6]), amt:1, sc:'exp'};
+const CALC = {sel:new Set([1, 2, 3, 5, 6]), amt:1, sc:'exp'};
 function flows(p, sc){ const S = p.sc[sc] || p.sc.exp || p.sc.min; return S; }
+/* جریان نقدی ماهانه برای محاسبهٔ بازده سالانهٔ هم‌تراز (نرخ ماهانه × ۱۲؛ همان روشی که طرح‌ها نرخشان را می‌گویند: ۳٫۵٪ ماهانه = ۴۲٪ سالانه) */
+function monthly(p, S, k, A){
+  const m = new Array(p.term * 12 + 1).fill(0); m[0] = -A;
+  for (let y = 1; y <= p.term; y++) {
+    const c = (S.cash[y - 1] || 0) * k + ((S.inPrin || [])[y - 1] || 0) * k;
+    let from = 1; if (y === 1 && p.n === 2) from = 4; if (y === 1 && (p.n === 6 || p.n === 11)) from = 7;   /* سبد از ماه ۴، سهم از ماه ۷ */
+    const n = 13 - from; for (let i = from; i <= 12; i++) m[(y - 1) * 12 + i] += c / n;
+  }
+  if (S.back.y) m[S.back.y * 12] += S.back.v * k;
+  if (S.end) m[p.term * 12] += S.end * k;
+  return m;
+}
+function irr(cf){ const npv = r => cf.reduce((s, v, i) => s + v / Math.pow(1 + r, i), 0); let lo = -0.5, hi = 1.5;
+  if (npv(lo) * npv(hi) > 0) return null; for (let i = 0; i < 100; i++) { const mid = (lo + hi) / 2; npv(mid) > 0 ? lo = mid : hi = mid; } return (lo + hi) / 2; }
 function calcPlan(p, amtB, sc){
-  const k = p.n === 10 ? amtB * 1000 / 1000 : amtB, S = flows(p, sc), A = amtB * 1000;   /* طرح ۱۰: مبلغ = حق اشتراک سالانه */
+  const k = amtB, S = flows(p, sc), A = amtB * 1000;   /* طرح ۱۰: مبلغ = حق اشتراک سالانهٔ شرکت */
   const cash = S.cash.map(v => v * k), prin = (S.inPrin || []).map(v => v * k), back = S.back.v * k, end = (S.end || 0) * k;
   const years = []; for (let y = 1; y <= 4; y++) years.push((cash[y - 1] || 0) + (prin[y - 1] || 0) + (S.back.y === y ? back : 0));
   const profit = cash.reduce((a, b) => a + b, 0), principal = back + prin.reduce((a, b) => a + b, 0);
   const total = p.n === 10 ? profit : profit + principal + end, gain = p.n === 10 ? profit : total - A;
   const used = S === p.sc[sc] ? sc : (p.sc.exp ? 'exp' : 'min');
-  return {p, A, cash, years, profit, principal, end, total, gain, x:p.n === 10 ? null : total / A, svc:!!S.svc, used, bank:A * BENCH.bank / 100 * p.term, fund:A * BENCH.fund / 100 * p.term};
+  const r = p.n === 10 ? null : irr(monthly(p, S, k, A));
+  return {p, A, S, cash, years, profit, principal, end, total, gain, x:p.n === 10 ? null : total / A, svc:!!S.svc, used,
+    annual:r === null ? null : r * 1200, perYear:gain / p.term, perMonth:profit / (p.term * 12), first:years[0] - (S.back.y === 1 ? back : 0),
+    bank:A * BENCH.bank / 100 * p.term, fund:A * BENCH.fund / 100 * p.term, bank1:A * BENCH.bank / 100, fund1:A * BENCH.fund / 100};
 }
+const pct = v => v === null ? '—' : num(Math.round(v * 10) / 10) + '٪';
 function renderCalc(){
   $('#cAmt').value = fa(CALC.amt); $$('#cSc button').forEach(b => b.classList.toggle('on', b.dataset.sc === CALC.sc));
   $('#cPlans').innerHTML = PLANS.map(p => `<label class="pchk ${CALC.sel.has(p.n) ? 'on' : ''}"><input type="checkbox" value="${p.n}" ${CALC.sel.has(p.n) ? 'checked' : ''}><b>${fa(p.n)}</b>${p.short}</label>`).join('');
@@ -749,35 +771,53 @@ function renderCalc(){
   $('#cCount').textContent = fa(R.length) + ' طرح انتخاب شده';
   if (R.length < 2) { $('#cOut').innerHTML = '<p class="empty">حداقل ۲ طرح را انتخاب کنید.</p>'; return; }
   const scT = {min:'حداقل / اگر خوب پیش نرود', exp:'پیش‌بینی معمولی', opt:'خوش‌بینانه'};
-  const best = R.filter(r => r.x).sort((a, b) => b.gain / b.p.term - a.gain / a.p.term)[0];
-  const row = (t, f, cls = '') => `<tr class="${cls}"><th>${t}</th>${R.map(r => `<td class="${best && r === best && cls === 'tot' ? 'best' : ''}">${f(r)}</td>`).join('')}</tr>`;
-  const maxGain = Math.max(...R.map(r => r.gain / r.p.term), ...R.map(r => r.fund / r.p.term));
-  $('#cOut').innerHTML = `<p class="cnote">مبلغ: <b>${money(CALC.amt * 1000)} تومان</b> · سناریو: <b>${scT[CALC.sc]}</b> · طرح‌هایی که این سناریو را ندارند، با تنها جدول موجودشان حساب شده‌اند (علامت *).</p>
-  <div class="tblwrap"><table class="cmp"><thead><tr><th></th>${R.map(r => `<th><span class="pn">${fa(r.p.n)}</span>${r.p.t}${r.used !== CALC.sc ? ' *' : ''}</th>`).join('')}</tr></thead><tbody>
+  const ranked = R.filter(r => r.annual !== null).sort((a, b) => b.annual - a.annual), rank = r => { const i = ranked.indexOf(r); return i < 0 ? '—' : fa(i + 1); };
+  const best = ranked[0];
+  const head = `<thead><tr><th></th>${R.map(r => `<th><span class="pn">${fa(r.p.n)}</span>${r.p.t}${r.used !== CALC.sc ? ' *' : ''}<small class="hterm">${fa(r.p.term)} ساله</small></th>`).join('')}</tr></thead>`;
+  const row = (t, f, cls = '', hl) => `<tr class="${cls}"><th>${t}</th>${R.map(r => `<td class="${hl && r === best ? 'best' : ''}">${f(r)}</td>`).join('')}</tr>`;
+  const tag = r => r.p.n === 10 ? ' <small>(صرفه‌جویی)</small>' : r.svc ? ' <small>(خدمات)</small>' : '';
+  const growthNote = r => ['growth','hybrid'].includes(r.p.kind) && r.end ? '<br><small>با رشد ارزش سهم (پیش‌بینی)</small>' : r.p.kind === 'business' ? '<br><small>کسب‌وکار؛ به کار تیم بسته است</small>' : r.p.n === 10 ? '<small>صرفه‌جویی ۳۱ تا ۳۸٪؛ سرمایه‌گذاری نیست</small>' : '';
+  const maxA = Math.max(BENCH.fund, ...R.map(r => r.annual || 0));
+  $('#cOut').innerHTML = `<p class="cnote">مبلغ: <b>${money(CALC.amt * 1000)} تومان</b> · سناریو: <b>${scT[CALC.sc]}</b> · * یعنی این طرح سناریوی انتخاب‌شده را ندارد و با تنها جدول موجودش حساب شده.</p>
+  <h3>الف) مقایسهٔ هم‌تراز در «یک سال» <small>(مدت طرح‌ها از ۱ تا ۴ سال فرق دارد؛ همه به یک سال برگردانده شده‌اند)</small></h3>
+  <div class="tblwrap"><table class="cmp">${head}<tbody>
+   ${row('رتبه (بر اساس بازده سالانه)', r => `<span class="rank">${rank(r)}</span>`)}
+   ${row('بازده سالانه', r => `<b class="big">${pct(r.annual)}</b>${growthNote(r)}`, 'tot', true)}
+   ${row('سود یک سال (میانگین)', r => money(r.perYear) + tag(r), 'tot')}
+   ${row('درآمد ماهانه (میانگین)', r => r.p.n === 10 ? 'مقایسه ندارد' : money(r.perMonth) + tag(r) + (r.end ? '<br><small>+ رشد ارزش سهم، جدا</small>' : ''))}
+   ${row('دریافتی سال اول (بدون اصل)', r => r.first ? money(r.first) + tag(r) : 'صفر؛ سال اول پرداختی ندارد')}
+   ${row('همین پول در بانک، یک سال', r => r.p.n === 10 ? 'مقایسه ندارد' : money(r.bank1))}
+   ${row('همین پول در صندوق درآمد ثابت، یک سال', r => r.p.n === 10 ? 'مقایسه ندارد' : money(r.fund1))}
+   ${row('تفاوت با صندوق در یک سال', r => r.p.n === 10 ? 'مقایسه ندارد' : (Math.abs(r.perYear - r.fund1) < 1 ? "برابر صندوق" : `<span class="${r.perYear >= r.fund1 ? "pos" : "neg"}">${r.perYear >= r.fund1 ? "+" : "−"}${money(Math.abs(r.perYear - r.fund1))}</span>`))}
+   ${row('مدت قفل بودن پول', r => fa(r.p.term) + ' سال · خروج: ' + (r.p.exit === '—' ? 'با توافق' : r.p.exit))}
+   ${row('ریسک', r => `<span class="risk ${r.p.risk === 'کم' ? 'lo' : 'md'}">${r.p.risk}</span>`)}
+  </tbody></table></div>
+  <div class="chart">${R.map(r => `<div class="cr"><span>${fa(r.p.n)} · ${r.p.short}</span><i style="width:${r.annual === null ? 0 : Math.max(2, r.annual / maxA * 100)}%" class="${r.p.kind}"></i><b>${r.p.n === 10 ? '<small>صرفه‌جویی</small>' : pct(r.annual)}</b></div>`).join('')}
+   <div class="cr ref"><span>بانک</span><i style="width:${BENCH.bank / maxA * 100}%"></i><b>${pct(BENCH.bank)}</b></div>
+   <div class="cr ref"><span>صندوق درآمد ثابت</span><i style="width:${BENCH.fund / maxA * 100}%"></i><b>${pct(BENCH.fund)}</b></div></div>
+  ${best ? `<p class="verdict">در یک سال، بیشترین بازده: <b>طرح ${fa(best.p.n)} · ${best.p.t}</b> (${pct(best.annual)}). اما «بهترین» برای هر مشتری به هدف، مدت و ریسک او بستگی دارد؛ قاعدهٔ فروشنده: سود بیشتر یعنی پول دیرتر آزاد می‌شود یا ریسک بیشتر است.</p>` : ''}
+
+  <h3>ب) کل دورهٔ هر طرح، سال به سال</h3>
+  <div class="tblwrap"><table class="cmp">${head}<tbody>
    ${row('حداقل سرمایه', r => r.p.minTxt + (r.A < r.p.min ? '<br><em class="red">مبلغ کمتر از حداقل</em>' : ''))}
    ${row('مدت', r => fa(r.p.term) + ' سال')}
    ${row('نوع سود', r => r.p.rate)}
    ${row('زمان پرداخت', r => r.p.pay)}
-   ${[1,2,3,4].map(y => row('دریافتی سال ' + fa(y), r => y > r.p.term ? '<span class="muted">—</span>' : money(r.years[y - 1]) + (r.svc ? ' <small>(خدمات)</small>' : '') + (r.p.n === 10 && y > 1 ? ' <small>(صرفه‌جویی)</small>' : ''))).join('')}
-   ${row('بازگشت اصل پول', r => r.p.n === 10 ? '<small>هزینه است، نه سرمایه</small>' : r.principal ? money(r.principal) + (r.p.n === 3 ? ' <small>(داخل قسط‌ها)</small>' : '') : r.end ? '<small>با فروش سهم</small>' : '<small>ندارد (کسب‌وکار)</small>')}
-   ${row('ارزش سهم/دارایی آخر دوره', r => r.end ? money(r.end) : '<span class="muted">—</span>')}
-   ${row('جمع آنچه می‌گیرید', r => money(r.total), 'tot')}
-   ${row('سود خالص', r => money(r.gain), 'tot')}
-   ${row('چند برابر شدن پول', r => r.x ? num(Math.round(r.x * 100) / 100) + ' برابر' : '—')}
-   ${row('همین پول در بانک (۲۰٫۵٪)', r => r.p.n === 10 ? '—' : money(r.bank))}
-   ${row('همین پول در صندوق (۳۶٪)', r => r.p.n === 10 ? '—' : money(r.fund))}
+   ${[1,2,3,4].map(y => row('دریافتی سال ' + fa(y), r => y > r.p.term ? `<span class="done">قرارداد در سال ${fa(r.p.term)} تمام شده${r.principal || r.end ? '؛ پول آزاد است' : ''}</span>` : money(r.years[y - 1]) + tag(r) + (r.p.n === 3 && y > 1 ? '<br><small>سود + بخشی از اصل</small>' : '') + (r.S.back.y === y ? '<br><small>شامل بازگشت اصل</small>' : ''))).join('')}
+   ${row('بازگشت اصل پول', r => r.p.n === 10 ? 'هزینه است، نه سرمایه' : r.principal ? money(r.principal) + (r.p.n === 3 ? ' (داخل قسط‌ها)' : ' · آخر سال ' + fa(r.S.back.y)) : r.end ? 'با فروش سهم (پنجرهٔ فروش سالانه)' : 'ندارد؛ کسب‌وکار است')}
+   ${row('ارزش سهم/دارایی آخر دوره', r => r.end ? money(r.end) + '<br><small>پیش‌بینی</small>' : r.p.n === 10 || r.p.n === 12 ? 'ندارد' : 'ندارد (اصل پول نقد برمی‌گردد)')}
+   ${row('جمع آنچه در کل دوره می‌گیرید', r => money(r.total), 'tot')}
+   ${row('سود خالص کل دوره', r => money(r.gain), 'tot')}
+   ${row('چند برابر شدن پول', r => r.x ? num(Math.round(r.x * 100) / 100) + ' برابر' : 'سرمایه‌گذاری نیست')}
+   ${row('همین پول در بانک، همین مدت', r => r.p.n === 10 ? 'مقایسه ندارد' : money(r.bank))}
+   ${row('همین پول در صندوق، همین مدت', r => r.p.n === 10 ? 'مقایسه ندارد' : money(r.fund))}
    ${row('ضمانت', r => r.p.g)}
-   ${row('خروج زودهنگام', r => r.p.exit)}
-   ${row('ریسک', r => `<span class="risk ${r.p.risk === 'کم' ? 'lo' : 'md'}">${r.p.risk}</span>`)}
+   ${row('خروج زودهنگام', r => r.p.exit === '—' ? 'پیش‌بینی نشده؛ با توافق' : r.p.exit)}
    ${row('مناسب برای', r => r.p.who + '<br><small>تیپ: ' + r.p.types.join('، ') + '</small>')}
   </tbody></table></div>
-  <h3>سود خالص سالانه (میانگین)</h3>
-  <div class="chart">${R.map(r => { const v = r.gain / r.p.term; return `<div class="cr"><span>${fa(r.p.n)} · ${r.p.short}</span><i style="width:${Math.max(2, v / maxGain * 100)}%" class="${r.p.kind}"></i><b>${money(v)}</b></div>`; }).join('')}
-   <div class="cr ref"><span>بانک</span><i style="width:${R[0].A * BENCH.bank / 100 / maxGain * 100}%"></i><b>${money(R[0].A * BENCH.bank / 100)}</b></div>
-   <div class="cr ref"><span>صندوق درآمد ثابت</span><i style="width:${R[0].A * BENCH.fund / 100 / maxGain * 100}%"></i><b>${money(R[0].A * BENCH.fund / 100)}</b></div></div>
-  ${best ? `<p class="verdict">بیشترین سود خالص سالانه در این مقایسه: <b>طرح ${fa(best.p.n)} · ${best.p.t}</b>. اما «بهترین» برای هر مشتری به هدف، مدت و ریسک او بستگی دارد؛ قاعدهٔ فروشنده: سود بیشتر یعنی پول دیرتر آزاد می‌شود یا ریسک بیشتر است.</p>` : ''}
-  <p class="small">ارقام از «۱۲ طرح سرمایه‌گذاری پارسا» (آبان ۱۴۰۵) است. در طرح‌های سهمی (۴، ۶، ۱۱) ارزش سهم پیش‌بینی است، نه تضمین. طرح ۸ و ۹ در سناریوی پیش‌بینی، ارزش خدمات را نشان می‌دهند. طرح ۱۲ کسب‌وکار است و درآمدش به کار تیم بستگی دارد. در طرح ۱۰، مبلغ = حق اشتراک سالانهٔ شرکت و «دریافتی» = صرفه‌جویی نسبت به قرارداد سالانه با تورم ۴۰٪.</p>`;
+  <p class="small">«بازده سالانه» از جریان پول ماه به ماه هر طرح حساب شده (نرخ ماهانه × ۱۲)، مثل خود طرح‌ها که ۳٫۵٪ ماهانه را ۴۲٪ سالانه می‌گویند. چون پولی که زودتر برمی‌گردد ارزش بیشتری دارد، این عدد از «سود کل ÷ تعداد سال» دقیق‌تر است و طرح‌های ۲، ۳ و ۴ ساله را واقعاً هم‌تراز می‌کند. ارقام از «۱۲ طرح سرمایه‌گذاری پارسا» (آبان ۱۴۰۵). در طرح‌های ۴، ۶ و ۱۱ ارزش سهم پیش‌بینی است، نه تضمین. طرح ۸ و ۹ در سناریوی پیش‌بینی ارزش خدمات را نشان می‌دهند. طرح ۱۲ کسب‌وکار است. در طرح ۱۰، مبلغ = حق اشتراک سالانهٔ شرکت و «دریافتی» = صرفه‌جویی نسبت به قرارداد سالانه با تورم ۴۰٪.</p>`;
 }
+
 $('#cAmt').onchange = e => { CALC.amt = Math.max(.1, parseFloat(en(e.target.value).replace(/[^\d.]/g, '')) || 1); renderCalc(); };
 $$('#cSc button').forEach(b => b.onclick = () => { CALC.sc = b.dataset.sc; renderCalc(); });
 $$('[data-preset]').forEach(b => b.onclick = () => { const P = {all:PLANS.map(p => p.n), none:[], income:[1,3,5,2,7], growth:[4,6,11], service:[8,9], two:[1,5]}[b.dataset.preset]; CALC.sel = new Set(P); renderCalc(); });
@@ -805,8 +845,8 @@ tick(); tab(DB.leads.length ? 'dash' : 'guide');
   $('#gScripts').innerHTML = Object.values(SCRIPT).map(s => `<details open><summary>${s.t}</summary><p class="say">«${esc(fill(s.base, null))}»</p>${['D','I','S','C'].map(k => `<p class="tip" style="--c:${TYPES[k].color}"><b>${TYPES[k].t}:</b> ${esc(fill(s[k], null))}</p>`).join('')}</details>`).join('');
   $('#gObj').innerHTML = OBJECTIONS.map(o => `<details open><summary>${o.q}</summary><p>${o.a}</p>${['D','I','S','C'].map(k => `<p class="tip" style="--c:${TYPES[k].color}"><b>${k}:</b> ${o[k]}</p>`).join('')}</details>`).join('');
   const R = PLANS.map(p => calcPlan(p, 1, 'exp'));
-  $('#gPlans').innerHTML = '<tr><th>طرح</th><th>مدت</th><th>سود</th><th>جمع دریافتی</th><th>سود خالص</th><th>ضمانت</th><th>ریسک</th><th>تیپ مناسب</th></tr>' +
-    R.map(r => `<tr><td><b>${fa(r.p.n)} · ${r.p.t}</b></td><td>${fa(r.p.term)} سال</td><td>${r.p.rate}</td><td>${r.p.n === 10 ? '—' : money(r.total)}</td><td>${money(r.gain)}${r.p.n === 10 ? ' <small>صرفه‌جویی</small>' : ''}</td><td>${r.p.g}</td><td>${r.p.risk}</td><td>${r.p.types.join('، ')}</td></tr>`).join('');
+  $('#gPlans').innerHTML = '<tr><th>طرح</th><th>مدت</th><th>بازده سالانه (هم‌تراز)</th><th>سود یک سال</th><th>جمع دریافتی کل دوره</th><th>سود خالص کل دوره</th><th>ضمانت</th><th>ریسک</th><th>تیپ مناسب</th></tr>' +
+    R.map(r => `<tr><td><b>${fa(r.p.n)} · ${r.p.t}</b></td><td>${fa(r.p.term)} سال</td><td><b>${r.p.n === 10 ? 'صرفه‌جویی ۳۱–۳۸٪' : pct(r.annual)}</b></td><td>${money(r.perYear)}</td><td>${r.p.n === 10 ? '—' : money(r.total)}</td><td>${money(r.gain)}${r.p.n === 10 ? ' <small>صرفه‌جویی</small>' : ''}</td><td>${r.p.g}</td><td>${r.p.risk}</td><td>${r.p.types.join('، ')}</td></tr>`).join('');
 })();
 
 </script></body></html>
