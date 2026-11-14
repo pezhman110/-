@@ -185,6 +185,14 @@ body.manual-only .top{display:none}
 .fun i{height:16px;border-radius:6px;background:var(--green-2);display:block;min-width:2px}.fun em{font-style:normal;color:var(--gold);font-weight:800}
 @media (max-width:980px){.fgrid{grid-template-columns:1fr}}
 .flowcard .steps li{margin:8px 0}.flowcard small.opts{display:block;color:var(--muted);font-size:12px}.gt td small{display:block;color:var(--muted)}
+.blk{margin:6px 0 10px;padding-inline-start:20px}.blk li{margin:4px 0}
+.okline{background:#eaf4ee;color:var(--green-2);border-radius:8px;padding:6px 10px;font-size:13px;margin:0 0 8px;font-weight:700}
+.obq.consent{background:#fffaf0;border-radius:10px;padding:8px}.obq button.neg.on{background:var(--red);border-color:var(--red)}
+.chkrow{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:6px 0}
+.chkrow.ok{background:#f3f8f4;border-color:#b9d6c6}.chkrow small{display:block;color:var(--muted);font-size:12.5px}.chkrow small.by{color:var(--green-2);font-weight:700}
+.own{border:1px solid var(--line);border-radius:10px;padding:6px 10px;width:130px}
+.fta{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:15px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 
 </style></head><body>
 <header class="top">
@@ -236,7 +244,7 @@ body.manual-only .top{display:none}
   <div id="leadBody" hidden>
     <div class="card lhead">
       <div><h2 id="lName"></h2><p id="lMeta" class="muted"></p></div>
-      <div class="lact"><a class="btn" id="lCall">📞 تماس</a><a class="btn ghost" id="lWa" target="_blank" rel="noopener">واتس‌اپ</a><button class="btn ghost danger" id="delLead">حذف</button></div>
+      <div class="lact"><label class="chk">کارشناس مسئول <input id="lOwner" class="own" placeholder="نام"></label><a class="btn" id="lCall">📞 تماس</a><a class="btn ghost" id="lWa" target="_blank" rel="noopener">واتس‌اپ</a><button class="btn ghost danger" id="delLead">حذف</button></div>
     </div>
 
     <div class="card flow" id="flow"></div>
@@ -283,7 +291,9 @@ body.manual-only .top{display:none}
       </div>
     </div>
 
-    <div class="card"><h3>۶. تاریخچه</h3><ul class="timeline" id="timeline"></ul></div>
+    <div class="card" id="checksCard"><h3>۶. کنترل پیش از قرارداد و واریز <small>(تا همه تأیید نشود، «واریز کرد» ثبت نمی‌شود)</small></h3><div id="checks"></div></div>
+
+    <div class="card"><h3>۷. تاریخچه</h3><ul class="timeline" id="timeline"></ul></div>
   </div>
 </section>
 
@@ -368,13 +378,23 @@ body.manual-only .top{display:none}
     <li>«چاپ / PDF» بزنید و برای مشتری بفرستید.</li></ol>
     <h3>همهٔ ۱۲ طرح برای ۱ میلیارد تومان (پیش‌بینی معمولی)</h3><div class="tblwrap"><table class="gt" id="gPlans"></table></div></div>
 
-  <div class="card"><h2>۹. گزارش مدیر، اعلان و کار تیمی</h2><ul class="steps">
+  <div class="card"><h2>۹. قفل دکمه‌ها، رضایت تماس و کنترل واریز</h2>
+    <p><b>اصل:</b> تیپ شخصیتی فقط لحن و ترتیب گفتگو را تعیین می‌کند؛ اینکه کدام طرح مناسب مشتری است را جواب‌های نیازسنجی (مبلغ، نوع سود، دلیل، مدت، ریسک، نقدشوندگی) تعیین می‌کنند.</p>
+    <ul class="steps"><li><b>رضایت:</b> در شروع هر تماس هدایت‌شده اجازهٔ تماس و ارسال مدارک پرسیده می‌شود. اگر «خیر» باشد، پیگیری‌ها حذف و همهٔ دکمه‌ها جز «انصراف» و «شمارهٔ اشتباه» قفل می‌شوند.</li>
+    <li><b>قفل دکمه‌ها:</b> هر دکمه شرط دارد؛ اگر کامل نباشد، پنل می‌گوید چه چیزی کم است و شما را به همان بخش می‌برد.</li>
+    <li><b>واریز:</b> کلیک کارشناس به‌تنهایی واریز را ثبت نمی‌کند؛ اول ۶ مورد چک‌لیست با نام تأییدکننده.</li></ul>
+    <div class="tblwrap"><table class="gt" id="gReq"></table></div>
+    <h3>چک‌لیست کنترل پیش از واریز</h3><div class="tblwrap"><table class="gt" id="gChecks"></table></div>
+    <h3>اتصال به CRM یا سرور واقعی</h3><p class="small">برای برنامه‌نویس: نقشهٔ رویدادها، ساختار دادهٔ هر مشتری، قواعد پیگیری و شرط‌ها در یک فایل JSON.</p>
+    <div class="bar"><button class="btn" id="specBtn">دریافت نقشهٔ اتصال (JSON)</button><button class="btn ghost" id="leadsJson">پشتیبان کامل مشتری‌ها (JSON)</button></div></div>
+
+  <div class="card"><h2>۱۰. گزارش مدیر، اعلان و کار تیمی</h2><ul class="steps">
     <li><b>گزارش مدیر:</b> قیف فروش با درصد تبدیل هر مرحله، عملکرد هر کارشناس، دلیل‌های انصراف، منبع لید، تیپ مشتری‌ها و میانگین زمان اولین تماس. ضعیف‌ترین درصد قیف، موضوع آموزش هفته است.</li>
-    <li><b>مالک پرونده:</b> هر مشتری به نام کارشناسی ثبت می‌شود که او را اضافه کرده؛ «فقط مشتری‌های من» فهرست را فیلتر می‌کند.</li>
+    <li><b>مالک پرونده:</b> هر مشتری به نام کارشناسی ثبت می‌شود که او را اضافه کرده؛ مدیر می‌تواند در بالای پرونده «کارشناس مسئول» را عوض کند (در تاریخچه ثبت می‌شود). «فقط مشتری‌های من» فهرست را فیلتر می‌کند.</li>
     <li><b>اعلان:</b> «🔔 فعال‌سازی اعلان» را یک بار بزنید. تا وقتی پنل باز است، سر وقت هر پیگیری و ۱ روز و ۱ ساعت قبل از هر جلسه، بوق و اعلان می‌آید.</li>
     <li><b>کار تیمی:</b> با <code>CRM_SYNC_ENDPOINT</code> هر کلیک در Google Sheet مشترک ثبت می‌شود و «دریافت پرونده‌های تیم» خلاصهٔ پرونده‌های بقیه را می‌آورد.</li></ul></div>
 
-  <div class="card"><h2>۱۰. قواعد طلایی و خط قرمزها</h2><ul class="steps">
+  <div class="card"><h2>۱۱. قواعد طلایی و خط قرمزها</h2><ul class="steps">
     <li>هیچ‌وقت «سود تضمینی» نگویید مگر عددی که دقیقاً در قرارداد همان طرح نوشته شده؛ در طرح‌های سهمی بگویید «پیش‌بینی».</li>
     <li>پیش از امضا، ساختار قرارداد خرید (۲٫۸ همت به فروشنده، ۱٫۸ همت مرکز، باقی راه‌اندازی) و شرط حسابرسی سود ۷۵۰ میلیاردی را شفاف بگویید.</li>
     <li>فشار زمانی ساختگی ممنوع؛ فقط محدودیت واقعی (مثلاً سقف هر طرح یا ۱۰ هزار سهم پروژهٔ سلامت).</li>
@@ -382,7 +402,7 @@ body.manual-only .top{display:none}
     <li>شمارهٔ مشتری به هیچ‌کس داده نمی‌شود؛ لید فقط در همین پنل و شیت مرکز.</li>
   </ul></div>
 
-  <div class="card"><h2>۱۱. شاخص‌های عملکرد هفتگی</h2><div class="tblwrap"><table class="gt"><tr><th>شاخص</th><th>هدف</th><th>از کجا ببینیم</th></tr>
+  <div class="card"><h2>۱۲. شاخص‌های عملکرد هفتگی</h2><div class="tblwrap"><table class="gt"><tr><th>شاخص</th><th>هدف</th><th>از کجا ببینیم</th></tr>
     <tr><td>زمان اولین تماس با لید جدید</td><td>زیر ۵ دقیقه</td><td>تاریخچهٔ هر پرونده</td></tr>
     <tr><td>پیگیری عقب‌افتاده در پایان روز</td><td>صفر</td><td>داشبورد</td></tr>
     <tr><td>نرخ تماس اول ← نیازسنجی</td><td>بالای ۵۰٪</td><td>شمارندهٔ مراحل</td></tr>
@@ -391,7 +411,7 @@ body.manual-only .top{display:none}
     <tr><td>دلیل‌های انصراف</td><td>بررسی هفتگی</td><td>گزارش مدیر</td></tr>
     <tr><td>درصد تماس‌های مهم با «تماس هدایت‌شده»</td><td>بالای ۸۰٪</td><td>تاریخچهٔ پرونده‌ها</td></tr></table></div></div>
 
-  <div class="card"><h2>۱۲. محدودیت‌ها (صادقانه) و قدم بعد</h2><ul class="steps">
+  <div class="card"><h2>۱۳. محدودیت‌ها (صادقانه) و قدم بعد</h2><ul class="steps">
     <li><b>تشخیص تیپ:</b> با قواعد و واژه‌نامهٔ داخلی کار می‌کند، نه مدل زبانی. برای اتصال به یک سرویس هوش مصنوعی، <code>AI_ENDPOINT</code> را تنظیم کنید.</li>
     <li><b>پیامک و واتس‌اپ:</b> متن آماده و دکمهٔ ارسال دارد، اما ارسال خودکار بدون کلیک نیاز به حساب سامانهٔ پیامکی و کلید API آن دارد.</li>
     <li><b>اعلان:</b> فقط وقتی پنل در مرورگر باز است کار می‌کند.</li>
@@ -619,6 +639,61 @@ const CLOSE = {
 };
 const LOST_REASONS = ['سود کم است','اعتماد ندارد','مبلغ کافی ندارد','زمان مناسب نیست','جای دیگری سرمایه‌گذاری کرد','خانواده مخالف است','پاسخ نمی‌دهد','دیگر'];
 
+/* ============ سؤال‌های تکمیلی نیازسنجی ============ */
+Object.assign(DQ, {
+ liquid:{t:'نیاز به نقدشوندگی', o:[['none','هیچ؛ افق بلند'],['lt25','کمتر از ۲۵٪ پول'],['25_50','۲۵ تا ۵۰٪'],['gt50','بیش از ۵۰٪']],
+  q:{D:'«چقدر از این پول ممکن است زودتر لازم شود؟»', I:'«ممکن است بخشی از این پول را زودتر بخواهید؟»', S:'«برای آرامش خیالتان، چه بخشی از پول باید همیشه در دسترس باشد؟»', C:'«چه درصدی از سرمایه باید نقدشونده بماند؟»'}},
+ history:{t:'تجربهٔ قبلی', o:[['dep','سپرده/صندوق'],['gold','طلا/ارز/ملک'],['stock','بورس'],['biz','کسب‌وکار خصوصی'],['none','بدون تجربه']],
+  q:{D:'«قبلاً کجا سرمایه‌گذاری کرده‌اید؟»', I:'«تا حالا کجا سرمایه‌گذاری کرده‌اید؟ تجربه‌اش چطور بود؟»', S:'«قبلاً پولتان را کجا نگه می‌داشتید؟»', C:'«سوابق سرمایه‌گذاری‌تان در چه دارایی‌هایی بوده؟»'}},
+ channel:{t:'راه ارتباطی', o:[['call','تماس تلفنی'],['wa','واتس‌اپ'],['sms','پیامک'],['email','ایمیل'],['meet','جلسهٔ حضوری'],['online','جلسهٔ آنلاین']],
+  q:{D:'«از چه راهی خبرتان کنم؟»', I:'«کدام راه برای شما راحت‌تر است؟»', S:'«ترجیح می‌دهید از چه راهی با شما در ارتباط باشیم؟»', C:'«مدارک را از چه راهی بفرستم؟»'}},
+});
+const TEXTQ = [
+ {id:'concern', t:'بزرگ‌ترین سؤال یا نگرانی (به زبان خود مشتری)', ph:'مثلاً: اگر بیمارستان سود نداد، پولم چه می‌شود؟'},
+ {id:'docs', t:'برای تصمیم چه مدارکی لازم دارد؟', ph:'مثلاً: سند ملک، پیش‌نویس قرارداد، صورت مالی حسابرسی‌شده'},
+ {id:'basis', t:'چه چیزی او را به تصمیم می‌رساند؟', ph:'مثلاً: بازدید حضوری، جواب کتبی حقوقی'},
+];
+const CONSENT = {yes:'بله؛ اجازهٔ تماس و ارسال مدارک دارد', no:'خیر؛ تماس نگیرید'};
+
+/* ============ شرط هر دکمه: تا این‌ها ثبت نشده، دکمه کار نمی‌کند ============ */
+const REQ = {
+ qualified:['consent','amt','payout','reason','hz','risk','decider'],
+ senddocs:['consent'],
+ meet:['consent','decider'],
+ aftermeet:['consent'],
+ ready:['consent','amt','payout','decider','docs'],
+ paid:['consent','amt','decider','docs','#checks'],
+};
+const REQ_LABEL = {consent:'اجازهٔ تماس', amt:'مبلغ', payout:'نوع سود', reason:'دلیل سرمایه‌گذاری', hz:'مدت', risk:'ریسک', decider:'تصمیم‌گیرنده', docs:'مدارک لازم', '#checks':'چک‌لیست کنترل پیش از واریز (همهٔ موارد)'};
+
+/* ============ کنترل پیش از قرارداد و واریز ============ */
+const CHECKS = [
+ {id:'disclose', t:'افشا', d:'ریسک‌ها، پیش‌بینی بودن سود طرح‌های سهمی، ساختار قرارداد خرید و شرط حسابرسی به مشتری گفته و امضا شد.'},
+ {id:'kyc', t:'احراز هویت', d:'کارت ملی/پاسپورت دیده و نسخهٔ آن بایگانی شد.'},
+ {id:'auth', t:'اختیار امضا', d:'برای شرکت یا وکالت: روزنامهٔ رسمی/وکالت‌نامه بررسی شد. (برای شخص حقیقی: «مورد ندارد» را ثبت کنید.)'},
+ {id:'contract', t:'قرارداد امضاشده', d:'قرارداد با طرح، مبلغ و ضمانت مشخص امضا و بایگانی شد.'},
+ {id:'account', t:'حساب رسمی', d:'واریز فقط به حساب رسمی مرکز انجام شد، نه حساب شخصی.'},
+ {id:'finance', t:'تأیید واحد مالی', d:'واحد مالی دریافت وجه را مستقل تأیید کرد (نام تأییدکننده ثبت شود).'},
+];
+
+/* ============ نقشهٔ اتصال برای برنامه‌نویس (CRM واقعی/سرور) ============ */
+const EVENT_MAP = [
+ ['lead.created','ثبت مشتری، منبع، جلوگیری از تکرار شماره'],
+ ['call.outcome','نتیجهٔ هر تماس، تعداد تلاش، پیگیری بعدی'],
+ ['lead.consent','ثبت یا لغو اجازهٔ تماس'],
+ ['lead.persona','تیپ پیشنهادی با درصد اطمینان و شواهد'],
+ ['lead.qualified','مبلغ، نوع سود، دلیل، مدت، ریسک، تصمیم‌گیرنده'],
+ ['document.sent','ارسال پرونده/مدارک و کانال آن'],
+ ['meeting.booked','روز و ساعت جلسه، نوع، یادآوری‌ها'],
+ ['proposal.sent','پیشنهاد مکتوب: طرح و مبلغ'],
+ ['compliance.check','هر مورد چک‌لیست با نام تأییدکننده و زمان'],
+ ['payment.verified','تأیید مستقل واحد مالی؛ فقط بعد از کامل شدن چک‌لیست'],
+ ['lead.lost','انصراف با دلیل'],
+];
+
+GENERIC_ORDER.push('liquid', 'history', 'channel');
+ORDER.S.push('liquid'); ORDER.C.splice(4, 0, 'liquid', 'history');
+
 /* ================= تنظیمات =================
    CRM_SYNC_ENDPOINT: (اختیاری) آدرس Web app گوگل‌شیت فایل crm-sync-endpoint.gs؛ هر کلیک روی دکمه‌ها آنجا هم ثبت می‌شود.
    AI_ENDPOINT: (اختیاری) آدرس سرویس هوش مصنوعی شما. اگر خالی باشد، تشخیص تیپ با موتور قواعد داخل همین فایل انجام می‌شود.
@@ -675,7 +750,7 @@ function renderDash(){
   $('#list').innerHTML = rows.length ? rows.map(l => { const b = bucket(l), T = l.type ? TYPES[l.type.code] : null;
     return `<tr class="${b}"><td><button class="lk" data-id="${l.id}">${esc(l.name || 'بی‌نام')}</button><small>${esc(l.city || '')} ${l.source ? '· ' + esc(l.source) : ''}${l.owner ? ' · کارشناس: ' + esc(l.owner) : ''}</small></td>
       <td dir="ltr" class="ph"><a href="tel:${esc(l.phone)}">${esc(fa(l.phone))}</a></td>
-      <td><span class="tag">${stageOf(l.stage).t}</span></td>
+      <td><span class="tag">${stageOf(l.stage).t}</span>${l.disc?.consent === 'no' ? '<small class="neg">تماس نگیرید</small>' : ''}</td>
       <td>${T ? `<span class="tp" style="--c:${T.color}">${l.type.code}</span>` : '<span class="muted">—</span>'}</td>
       <td><span class="temp ${l.temp}">${{hot:'داغ', warm:'گرم', cold:'سرد', won:'مشتری'}[l.temp] || ''}</span></td>
       <td class="nx"><b>${l.next ? when(l.next.at) : '—'}</b><small>${esc(l.next?.label || '')}</small></td>
@@ -734,7 +809,7 @@ function renderLead(){
   $('#outcomes').innerHTML = groups.map(g => `<div class="og"><span>${g}</span><div>${OUTCOMES.filter(o => o.g === g).map(o => `<button class="ob ${o.cls}" data-o="${o.id}" title="${esc(o.rule)}">${o.t}</button>`).join('')}</div></div>`).join('');
   $$('#outcomes .ob').forEach(b => b.onclick = () => outcome(l, OUTCOMES.find(o => o.id === b.dataset.o)));
   $('#lNotes').value = l.notes || '';
-  renderType(l); renderDisc(l); renderScript(l); renderTimeline(l); renderFlow();
+  renderType(l); renderDisc(l); renderScript(l); renderTimeline(l); renderFlow(); renderChecks(l); $('#lOwner').value = l.owner || '';
 }
 const waNum = p => { p = en(p).replace(/[^\d]/g, ''); return p.startsWith('00') ? p.slice(2) : p.startsWith('0') ? '98' + p.slice(1) : p; };
 function moveStage(l, id, why){ if (l.stage === id) return; const from = stageOf(l.stage).t; l.stage = id; if (id === 'won') l.temp = 'won'; if (id === 'lost') l.temp = 'cold';
@@ -928,6 +1003,7 @@ function ask(cfg){
 
 /* ================= دکمه‌های نتیجهٔ تماس (نسخهٔ نهایی) ================= */
 async function outcome(l, o){
+  if (!gate(l, o)) return;
   const n0 = o.next(Object.assign({}, l, {attempts:l.attempts + (o.count ? 1 : 0)}));
   const fields = [];
   if (o.needsReason) fields.push({id:'reason', type:'select', label:'دلیل انصراف', options:LOST_REASONS, req:true});
@@ -993,14 +1069,14 @@ function recommend(l){
     if (d.decider === 'company' && p.n === 10) s += 3;
     if (p.n === 10 && d.decider !== 'company' && d.goal !== 'corp') s -= 8; if (p.n === 12 && d.payout !== 'business') s -= 3; if (p.n === 11 && amt < 5000) s -= 2;
     if (amt < p.min) { s -= 6; why.push('مبلغ از حداقل کمتر است'); }
-    if (T && T.plans.includes(p.n)) { s += 3 - T.plans.indexOf(p.n) * .4; why.push('با تیپ ' + l.type.code + ' جور است'); }
+    if (T && T.plans.includes(p.n)) { s += 1 - T.plans.indexOf(p.n) * .15; why.push('با سبک تیپ ' + l.type.code + ' هم جور است'); }
     return Object.assign({}, p, {fit:s, why:why.length ? why : ['گزینهٔ عمومی']}); }).sort((a, b) => b.fit - a.fit).slice(0, 3);
 }
 
 /* ================= تماس هدایت‌شده: ۴ اسکریپت جدا پس از تشخیص تیپ ================= */
 let CALL = null;   /* {leadId, step, t0} */
 function steps(l){ const c = l.type?.code; const qs = c ? ORDER[c] : GENERIC_ORDER;
-  return ['open', 'w1', 'w2', 'w3', 'type'].concat(qs.map(q => 'q:' + q), ['pitch', 'obj', 'close']); }
+  return ['open', 'w1', 'w2', 'w3', 'type'].concat(qs.map(q => 'q:' + q), ['txt:concern', 'pitch', 'obj', 'close']); }
 function startCall(){ const l = cur(); CALL = {leadId:l.id, step:0, t0:Date.now()}; l.warm = l.warm || {}; if (!l.firstDial) l.firstDial = Date.now(); log(l, 'تماس هدایت‌شده', 'شروع'); save(); renderFlow(); }
 function endCall(){ const l = cur(); if (CALL) log(l, 'تماس هدایت‌شده', 'پایان · مدت ' + fa(Math.round((Date.now() - CALL.t0) / 60000)) + ' دقیقه'); CALL = null; save(); renderLead(); }
 function warmDetect(l){
@@ -1021,7 +1097,8 @@ function renderFlow(){
   const S = steps(l), k = S[CALL.step], c = l.type?.code, T = c ? TYPES[c] : null, F = c ? FOCUS[c] : null;
   const mins = Math.floor((Date.now() - CALL.t0) / 60000);
   let body = '', canNext = true;
-  if (k === 'open') body = `<p class="say">${esc(fill(SCRIPT.opening.base, l))}</p><p class="small">لحن را خنثی و گرم نگه دارید تا تیپ مشتری مشخص شود.</p>`;
+  if (k === 'open') { body = `<p class="say">${esc(fill(SCRIPT.opening.base, l))}</p><p class="small">لحن را خنثی و گرم نگه دارید تا تیپ مشتری مشخص شود. اول اجازهٔ تماس و ارسال مدارک را بپرسید:</p><div class="fopts">${Object.entries(CONSENT).map(([v, t]) => `<button class="${l.disc.consent === v ? 'on' : ''}" data-cs="${v}">${t}</button>`).join('')}</div>`; canNext = l.disc.consent === 'yes'; }
+  else if (k === 'txt:concern') { body = `<p class="qt">بزرگ‌ترین نگرانی</p><p class="say">«قبل از اینکه طرح را بگویم، بزرگ‌ترین سؤال یا نگرانی‌تان چیست؟»</p><textarea id="fConcern" rows="3" class="fta" placeholder="به زبان خود مشتری بنویسید">${esc(l.disc.concern || '')}</textarea><p class="small">در قدم «اعتراض‌ها»، جوابِ همین نگرانی را اول می‌بینید.</p>`; }
   else if (k[0] === 'w') { const w = WARM.find(x => x.id === k); body = `<p class="say">${w.q}</p><p class="small">${w.hint}</p><div class="fopts">${w.o.map(([t, txt]) => `<button class="${l.warm[k] === t ? 'on' : ''}" data-w="${t}">${txt}</button>`).join('')}<button class="skip" data-w="">مشخص نبود</button></div>`; canNext = k in l.warm; }
   else if (k === 'type') { const r = warmDetect(l); if (r && !l.typeLocked) { l.type = r; save(); }
     body = l.type ? typeCard(l.type) + `<p class="small">اگر حس شما چیز دیگری است، تیپ را دستی انتخاب کنید:</p><div class="fopts">${['D','I','S','C'].map(x => `<button class="${c === x ? 'on' : ''}" data-ty="${x}" style="--c:${TYPES[x].color}">${TYPES[x].t}</button>`).join('')}</div>` : '<p class="warnline">شواهد کافی نیست؛ دست‌کم یکی از سؤال‌های گرم‌کننده را جواب دهید.</p>';
@@ -1032,15 +1109,17 @@ function renderFlow(){
     body = `<p class="say">${(PITCH[c] || PITCH.S)((l.name || '').replace('نمونه · ', '').split(' ')[0], a, b, why)}</p>${a.note ? `<p class="warnline">${a.t}${a.note}: این را صادقانه بگویید.</p>` : ''}${(l.disc.amt || 1) < 1 ? '<p class="warnline">مبلغ مشتری زیر حداقل ۱ میلیارد است. صادقانه بگویید و دو راه پیشنهاد دهید: سهم ۶۰۰ میلیونی پروژهٔ سلامت در فراخوان، یا شراکت با یک نفر دیگر برای رسیدن به ۱ میلیارد.</p>' : ''}
       <div class="recs">${rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('')}</div>
       <button class="btn ghost sm" id="fCalc">باز کردن مقایسه در ماشین حساب</button>`; }
-  else if (k === 'obj') body = `<p class="small">اگر مشتری اعتراضی کرد، روی همان بزنید تا جواب مخصوص تیپ ${c} بیاید:</p><div class="fopts">${OBJECTIONS.map((o, i) => `<button data-ob="${i}">${o.q}</button>`).join('')}</div><div id="fObj"></div>`;
+  else if (k === 'obj') body = `${l.disc.concern ? `<p class="hint" style="--c:${T ? T.color : '#888'}">نگرانی مشتری: «${esc(l.disc.concern)}» · نزدیک‌ترین جواب: <b>${OBJECTIONS[matchObj(l.disc.concern)].q}</b></p>` : ''}<p class="small">اگر مشتری اعتراضی کرد، روی همان بزنید تا جواب مخصوص تیپ ${c} بیاید:</p><div class="fopts">${OBJECTIONS.map((o, i) => `<button data-ob="${i}">${o.q}</button>`).join('')}</div><div id="fObj"></div>`;
   else if (k === 'close') body = `<p class="say">${CLOSE[c] || CLOSE.S}</p><p class="small">نتیجه را با یکی از این دکمه‌ها ثبت کنید (پیگیری خودکار تنظیم می‌شود):</p><div class="fopts">${['meet','senddocs','ready','think','objection','later','lost'].map(id => `<button class="ob ${OUTCOMES.find(o => o.id === id).cls}" data-out="${id}">${OUTCOMES.find(o => o.id === id).t}</button>`).join('')}</div>`;
-  const stepName = {open:'شروع', w1:'گرم‌کننده ۱', w2:'گرم‌کننده ۲', w3:'گرم‌کننده ۳', type:'تیپ شخصیتی', pitch:'معرفی طرح', obj:'اعتراض‌ها', close:'بستن'}[k] || DQ[k.slice(2)]?.t;
+  const stepName = {open:'شروع', w1:'گرم‌کننده ۱', w2:'گرم‌کننده ۲', w3:'گرم‌کننده ۳', type:'تیپ شخصیتی', pitch:'معرفی طرح', 'txt:concern':'نگرانی مشتری', obj:'اعتراض‌ها', close:'بستن'}[k] || DQ[k.slice(2)]?.t;
   box.innerHTML = `<div class="fhead"><b>تماس هدایت‌شده · ${esc(l.name)}</b><span class="tm">⏱ ${fa(mins)} دقیقه</span>${T ? `<span class="tp" style="--c:${T.color}">${c}</span>` : ''}<button class="btn sm ghost" id="fEnd">پایان تماس</button></div>
     <div class="fprog">${S.map((s, i) => `<i class="${i < CALL.step ? 'd' : i === CALL.step ? 'n' : ''}"></i>`).join('')}</div>
     <div class="fgrid"><div class="fmain"><span class="fstep">قدم ${fa(CALL.step + 1)} از ${fa(S.length)} · ${stepName}</span>${body}
       <div class="fnav"><button class="btn ghost sm" id="fBack" ${CALL.step ? '' : 'disabled'}>→ قبلی</button><button class="btn sm" id="fNext" ${canNext && CALL.step < S.length - 1 ? '' : 'disabled'}>بعدی ←</button></div></div>
     ${F ? `<aside class="ffocus" style="--c:${T.color}"><b>تمرکز با تیپ ${c}</b><ul class="on">${F.on.map(x => `<li>${x}</li>`).join('')}</ul><ul class="off">${F.off.map(x => `<li>${x}</li>`).join('')}</ul><p><b>مدرک:</b> ${F.proof}</p><p><b>زمان:</b> ${F.len}</p></aside>` : '<aside class="ffocus"><b>تمرکز</b><p class="small">بعد از ۳ سؤال گرم‌کننده، تمرکز مخصوص تیپ مشتری اینجا می‌آید.</p></aside>'}</div>`;
   $('#fEnd').onclick = endCall; $('#fBack').onclick = () => { CALL.step--; renderFlow(); }; $('#fNext').onclick = () => { CALL.step++; renderFlow(); };
+  box.querySelectorAll('[data-cs]').forEach(b => b.onclick = () => { setConsent(l, b.dataset.cs); if (b.dataset.cs === 'no') { block('اجازهٔ تماس داده نشد', ['در پرونده ثبت شد و پیگیری‌ها متوقف شد.', 'با احترام تماس را تمام کنید.']); CALL = null; renderLead(); return; } CALL.step++; renderFlow(); });
+  const fcn = $('#fConcern'); if (fcn) fcn.onchange = () => { l.disc.concern = fcn.value.trim(); log(l, 'نیازسنجی', 'نگرانی: ' + l.disc.concern); save(); };
   box.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { l.warm[k] = b.dataset.w; l.typeLocked = false; save(); CALL.step++; renderFlow(); });
   box.querySelectorAll('[data-ty]').forEach(b => b.onclick = () => { const r = l.type || {pct:{D:.25,I:.25,S:.25,C:.25}, conf:.5, hits:{}, second:'S'}; l.type = Object.assign({}, r, {code:b.dataset.ty, src:'انتخاب دستی کارشناس', conf:Math.max(r.conf, .6)}); l.typeLocked = true; log(l, 'تیپ شخصیتی', 'انتخاب دستی: ' + TYPES[b.dataset.ty].t); save(); renderFlow(); });
   bindDisc(box, l, id => { renderFlow(); setTimeout(() => { if (CALL && steps(l)[CALL.step] === 'q:' + id) { CALL.step++; renderFlow(); } }, 300); });
@@ -1065,7 +1144,7 @@ function renderReport(){
   const types = {D:0, I:0, S:0, C:0, '—':0}; L.forEach(l => types[l.type?.code || '—']++);
   const p = (a, b) => b ? fa(Math.round(a / b * 100)) + '٪' : '—';
   $('#report').innerHTML = `
-  <div class="kpis">${[['کل مشتری‌ها', L.length, ''], ['واریز شده', L.filter(l => l.stage === 'won').length, 'good'], ['نرخ تبدیل کل', p(L.filter(l => l.stage === 'won').length, L.length), 'good'], ['پیگیری عقب‌افتاده', L.filter(late).length, 'bad'], ['میانگین زمان اولین تماس', avgResp === null ? '—' : (avgResp < 60 ? fa(Math.round(avgResp)) + ' دقیقه' : fa(Math.round(avgResp / 60)) + ' ساعت'), avgResp !== null && avgResp > 5 ? 'warn' : '']].map(([t, v, c]) => `<div class="kpi ${c}"><b>${typeof v === 'number' ? fa(v) : v}</b><span>${t}</span></div>`).join('')}</div>
+  <div class="kpis">${[['کل مشتری‌ها', L.length, ''], ['واریز شده', L.filter(l => l.stage === 'won').length, 'good'], ['نرخ تبدیل کل', p(L.filter(l => l.stage === 'won').length, L.length), 'good'], ['پیگیری عقب‌افتاده', L.filter(late).length, 'bad'], ['نیازسنجی ناقص (بعد از تماس اول)', L.filter(l => (l.maxStage ?? 0) >= 1 && REQ.qualified.some(k => !hasVal(l, k))).length, 'warn'], ['عدم رضایت تماس', L.filter(l => l.disc?.consent === 'no').length, ''], ['میانگین زمان اولین تماس', avgResp === null ? '—' : (avgResp < 60 ? fa(Math.round(avgResp)) + ' دقیقه' : fa(Math.round(avgResp / 60)) + ' ساعت'), avgResp !== null && avgResp > 5 ? 'warn' : '']].map(([t, v, c]) => `<div class="kpi ${c}"><b>${typeof v === 'number' ? fa(v) : v}</b><span>${t}</span></div>`).join('')}</div>
   <div class="grid2"><div class="card"><h3>قیف فروش و نرخ تبدیل هر مرحله</h3>${funnel.map((f, i) => `<div class="fun"><span>${f.s.t}</span><i style="width:${f.n / max * 100}%"></i><b>${fa(f.n)}</b><em>${i ? p(f.n, funnel[i - 1].n) : ''}</em></div>`).join('')}<p class="small">عدد = مشتری‌هایی که دست‌کم به این مرحله رسیده‌اند · درصد = تبدیل از مرحلهٔ قبل. ضعیف‌ترین درصد، جایی است که باید آموزش دهید.</p></div>
   <div class="card"><h3>عملکرد کارشناسان</h3><div class="tblwrap"><table class="gt"><tr><th>کارشناس</th><th>مشتری</th><th>تماس موفق</th><th>جلسه</th><th>واریز</th><th>تبدیل</th><th>عقب‌افتاده</th></tr>${owners.map(o => { const M = L.filter(l => (l.owner || '—') === o), won = M.filter(l => l.stage === 'won').length;
     return `<tr><td>${esc(o)}</td><td>${fa(M.length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 1).length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 4).length)}</td><td>${fa(won)}</td><td>${p(won, M.length)}</td><td class="${M.filter(late).length ? 'neg' : ''}">${fa(M.filter(late).length)}</td></tr>`; }).join('')}</table></div></div></div>
@@ -1098,6 +1177,79 @@ $('#teamPull').onclick = async () => {
     save(); renderDash(); toast(`${fa(add)} پرونده اضافه و ${fa(upd)} پرونده به‌روز شد`); }
   catch (e) { alert('دریافت از شیت نشد. مطمئن شوید نسخهٔ جدید crm-sync-endpoint.gs منتشر شده است.'); }
 };
+
+function matchObj(t){ const K = [['تضمین','قطعی'],['سود نداد','ورشکست','خوب پیش نرود','ضرر','اگر'],['بانک','صندوق'],['همسر','مشورت','شریک','خانواده'],['کم','کمتر','پول ندارم','مبلغ'],['اعتماد','کلاهبرداری','از کجا','مطمئن'],['زودتر','نقد','خروج','لازم شد'],['دلار','ارز','تورم']];
+  let best = 0, bs = -1; K.forEach((ws, i) => { const s = ws.filter(w => t.includes(w)).length; if (s > bs) { bs = s; best = i; } }); return best; }
+
+/* ================= رضایت، قفل دکمه‌ها و کنترل واریز ================= */
+
+function hasVal(l, k){
+  if (k === 'consent') return l.disc.consent === 'yes';
+  if (k === '#checks') return CHECKS.every(c => l.checks && l.checks[c.id]);
+  const v = l.disc[k]; return v !== undefined && v !== null && String(v).trim() !== '';
+}
+function missingReq(l, id){ return (REQ[id] || []).filter(k => !hasVal(l, k)).map(k => REQ_LABEL[k]); }
+function block(title, lines, cta){
+  const box = $('#modal'); $('#mTitle').textContent = title; $('#mRule').hidden = true;
+  $('#mForm').innerHTML = `<ul class="blk">${lines.map(x => `<li>${x}</li>`).join('')}</ul><div class="mact">${cta ? `<button type="button" class="btn" id="mCta">${cta.t}</button>` : ''}<button type="button" class="btn ghost" id="mCancel">باشه</button></div>`;
+  box.hidden = false; $('#mCancel').onclick = () => box.hidden = true; box.onclick = e => { if (e.target === box) box.hidden = true; };
+  if (cta) $('#mCta').onclick = () => { box.hidden = true; cta.fn(); };
+}
+/* این تابع در ابتدای outcome صدا زده می‌شود؛ اگر false برگرداند، دکمه کار نمی‌کند */
+function gate(l, o){
+  if (l.disc.consent === 'no' && !['lost', 'wrong', 'later'].includes(o.id)) {
+    block('مشتری اجازهٔ تماس نداده است', ['در پرونده «خیر؛ تماس نگیرید» ثبت شده. تماس و پیام مجاز نیست.', 'اگر خود مشتری دوباره اجازه داد، در بخش نیازسنجی «اجازهٔ تماس» را عوض کنید.']); return false; }
+  const miss = missingReq(l, o.id);
+  if (miss.length) { block(`«${o.t}» هنوز ثبت نمی‌شود`, ['اول این موارد را تکمیل کنید:'].concat(miss.map(m => '<b>' + m + '</b>')),
+      miss.some(m => m.includes('چک‌لیست')) ? {t:'رفتن به چک‌لیست', fn:() => $('#checksCard').scrollIntoView({behavior:'smooth'})} : {t:'رفتن به نیازسنجی', fn:() => $('#disc').scrollIntoView({behavior:'smooth', block:'center'})}); return false; }
+  return true;
+}
+function setConsent(l, v){ if (l.disc.consent === v) return; l.disc.consent = v; log(l, 'رضایت تماس', CONSENT[v]);
+  if (v === 'no') { l.next = null; l.temp = 'cold'; l.optOut = Date.now(); } else l.optOut = null; save(); }
+
+/* نیازسنجی کامل (جایگزین نسخهٔ قبلی) */
+function renderDisc(l){
+  $('#disc').innerHTML = `<div class="obq consent"><span>اجازهٔ تماس و ارسال مدارک</span><div>${Object.entries(CONSENT).map(([v, t]) => `<button class="${l.disc.consent === v ? 'on' : ''} ${v === 'no' ? 'neg' : ''}" data-cs="${v}">${t}</button>`).join('')}</div></div>` +
+    DISC_Q.map(d => `<div class="obq"><span>${d.q}</span><div>${discBtns(l, d.id)}</div></div>`).join('') +
+    TEXTQ.map(t => `<label class="lbl">${t.t}<textarea data-tq="${t.id}" rows="2" placeholder="${t.ph}">${esc(l.disc[t.id] || '')}</textarea></label>`).join('');
+  bindDisc($('#disc'), l, () => { renderDisc(l); renderScript(l); });
+  $$('#disc [data-cs]').forEach(b => b.onclick = () => { setConsent(l, b.dataset.cs); renderLead(); });
+  $$('#disc [data-tq]').forEach(t => t.onchange = () => { l.disc[t.dataset.tq] = t.value.trim(); log(l, 'نیازسنجی', DQ_T(t.dataset.tq) + ': ' + t.value.trim()); save(); renderChecks(l); });
+  const req = REQ.qualified.filter(k => !hasVal(l, k)).map(k => REQ_LABEL[k]);
+  const rec = recommend(l);
+  $('#recs').innerHTML = `<p class="${req.length ? 'warnline' : 'okline'}">${req.length ? 'نیازسنجی ناقص است: ' + req.join('، ') : '✓ نیازسنجی کامل است؛ دکمهٔ «نیازسنجی انجام شد» باز است.'}</p>` +
+    rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('') +
+    `<button class="btn" id="toCalc">مقایسهٔ این ${fa(rec.length)} طرح در ماشین حساب ←</button><p class="small">طرح پیشنهادی بر اساس جواب‌های نیازسنجی است؛ تیپ شخصیتی فقط لحن و ترتیب گفتگو را تعیین می‌کند.</p>`;
+  $('#toCalc').onclick = () => { CALC.sel = new Set(rec.map(p => p.n)); CALC.amt = l.disc.amt || 1; tab('calc'); };
+}
+const DQ_T = id => (TEXTQ.find(t => t.id === id) || {}).t || (DQ[id] || {}).t || id;
+
+/* چک‌لیست کنترل پیش از واریز */
+function renderChecks(l){
+  l.checks = l.checks || {}; const done = CHECKS.filter(c => l.checks[c.id]).length;
+  $('#checks').innerHTML = `<p class="${done === CHECKS.length ? 'okline' : 'warnline'}">${done === CHECKS.length ? '✓ همهٔ موارد تأیید شده؛ دکمهٔ «واریز کرد» باز است.' : `${fa(done)} از ${fa(CHECKS.length)} مورد تأیید شده. تا همه کامل نشود، «واریز کرد» ثبت نمی‌شود.`}</p>` +
+    CHECKS.map(c => { const x = l.checks[c.id]; return `<div class="chkrow ${x ? 'ok' : ''}"><div><b>${x ? '✓' : '○'} ${c.t}</b><small>${c.d}</small>${x ? `<small class="by">تأیید: ${esc(x.by)} · ${when(x.at)}${x.note ? ' · ' + esc(x.note) : ''}</small>` : ''}</div>
+      ${x ? `<button class="btn sm ghost" data-unck="${c.id}">لغو</button>` : `<button class="btn sm" data-ck="${c.id}">تأیید</button>`}</div>`; }).join('');
+  $$('#checks [data-ck]').forEach(b => b.onclick = async () => { const c = CHECKS.find(x => x.id === b.dataset.ck);
+    const v = await ask({title:'تأیید: ' + c.t, rule:c.d + ' فقط اگر مدرک واقعی را دیده‌اید تأیید کنید.', fields:[{id:'by', label:'نام تأییدکننده', req:true}, {id:'note', label:'شمارهٔ سند/توضیح (اختیاری)'}]}); if (!v) return;
+    l.checks[c.id] = {by:v.by, note:v.note, at:Date.now()}; log(l, 'کنترل پیش از واریز', c.t + ' · تأیید ' + v.by + (v.note ? ' · ' + v.note : '')); save(); renderChecks(l); });
+  $$('#checks [data-unck]').forEach(b => b.onclick = () => { if (!confirm('تأیید این مورد لغو شود؟')) return; const c = CHECKS.find(x => x.id === b.dataset.unck); delete l.checks[c.id]; log(l, 'کنترل پیش از واریز', 'لغو: ' + c.t); save(); renderChecks(l); });
+}
+
+/* واگذاری پرونده به کارشناس دیگر */
+$('#lOwner').onchange = e => { const l = cur(); const v = e.target.value.trim(); if (v === (l.owner || '')) return; log(l, 'واگذاری', (l.owner || '—') + ' ← ' + (v || '—')); l.owner = v; save(); };
+
+/* نقشهٔ اتصال و خروجی JSON برای برنامه‌نویس */
+function downloadJSON(obj, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(obj, null, 2)], {type:'application/json'})); a.download = name; a.click(); }
+function exportSpec(){ downloadJSON({schema:'iranian-center.crm', version:'3.0', note:'رویدادهایی که پنل تولید می‌کند و یک CRM یا سرور واقعی باید دریافت کند. کلید API را هرگز داخل فایل HTML نگذارید.',
+  events:EVENT_MAP.map(([key, d]) => ({key, description:d})),
+  leadFields:{id:'string', name:'string', phone:'string', owner:'string', source:'string', stage:STAGES.map(s => s.id).concat('lost'), temp:['hot','warm','cold','won'],
+    type:{code:'D|I|S|C', conf:'0..1', second:'D|I|S|C'}, disc:Object.fromEntries(Object.entries(DQ).map(([k, v]) => [k, v.o.map(o => o[0])]).concat(TEXTQ.map(t => [t.id, 'text']), [['consent', ['yes','no']]])),
+    checks:Object.fromEntries(CHECKS.map(c => [c.id, {by:'string', at:'timestamp', note:'string'}])), next:{at:'timestamp', label:'string'}, timeline:[{at:'timestamp', kind:'string', text:'string', by:'string'}]},
+  rules:{gates:REQ, followUps:OUTCOMES.map(o => ({id:o.id, button:o.t, rule:o.rule}))},
+  serverRequirements:['احراز هویت کارشناسان و نقش‌ها','idempotency برای هر رویداد','صف تلاش مجدد','ثبت رضایت و لغو آن','تأیید مالی مستقل پیش از payment.verified','نگهداری تاریخچهٔ کامل']}, 'crm-connection-map.json'); }
+function exportLeads(){ downloadJSON({exported:new Date().toISOString(), agent:DB.agent, leads:DB.leads}, 'crm-leads-' + new Date().toISOString().slice(0, 10) + '.json'); }
+$('#specBtn').onclick = exportSpec; $('#leadsJson').onclick = exportLeads;
 
 /* ---------------- محتوای دستورالعمل (از همان داده‌ها ساخته می‌شود تا همیشه یکی باشد) ---------------- */
 (function renderGuide(){
@@ -1137,6 +1289,11 @@ $('#teamPull').onclick = async () => {
     ['timing','همین ماه ← لید داغ؛ فقط بررسی ← پیگیری با محتوا، بدون فشار'],
     ['source','بانک/صندوق ← مقایسه با بانک و صندوق در ماشین حساب · دلار/طلا ← طرح‌های دارایی‌محور']
   ].map(([id, e]) => `<tr><td><b>${DQ[id].t}</b></td><td>${DQ[id].o.map(o => o[1]).join('، ')}</td><td>${e}</td></tr>`).join('');
+})();
+
+(function(){
+  $('#gReq').innerHTML = '<tr><th>دکمه</th><th>تا این‌ها ثبت نشده، کار نمی‌کند</th></tr>' + Object.entries(REQ).map(([id, ks]) => `<tr><td><b>${OUTCOMES.find(o => o.id === id).t}</b></td><td>${ks.map(k => REQ_LABEL[k]).join('، ')}</td></tr>`).join('');
+  $('#gChecks').innerHTML = '<tr><th>#</th><th>مورد</th><th>چه چیزی باید دیده شود</th></tr>' + CHECKS.map((c, i) => `<tr><td>${fa(i + 1)}</td><td><b>${c.t}</b></td><td>${c.d}</td></tr>`).join('');
 })();
 
 /* ---------------- شروع ---------------- */
