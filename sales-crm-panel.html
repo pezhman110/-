@@ -193,6 +193,10 @@ body.manual-only .top{display:none}
 .own{border:1px solid var(--line);border-radius:10px;padding:6px 10px;width:130px}
 .fta{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:15px}
 .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.suit{border:1px solid #e6cf9b;background:#fdf8e8;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:13.5px}.suit ul{margin:4px 0;padding-inline-start:18px}
+.suit.hard{border-color:#e3b1ab;background:#fdf0ee}.suit.hard b{color:var(--red)}.suit small.by{display:block;color:var(--green-2);font-weight:700}
+.cpl{border-radius:999px;padding:1px 10px;font-size:12.5px;font-weight:700}.cpl.ok{background:#e3f3e8;color:var(--green-2)}.cpl.mid{background:#fdf3dc;color:#8a5a12}.cpl.low{background:#fdecea;color:var(--red)}
+.list td small.neg{display:block}
 
 </style></head><body>
 <header class="top">
@@ -382,7 +386,12 @@ body.manual-only .top{display:none}
     <p><b>اصل:</b> تیپ شخصیتی فقط لحن و ترتیب گفتگو را تعیین می‌کند؛ اینکه کدام طرح مناسب مشتری است را جواب‌های نیازسنجی (مبلغ، نوع سود، دلیل، مدت، ریسک، نقدشوندگی) تعیین می‌کنند.</p>
     <ul class="steps"><li><b>رضایت:</b> در شروع هر تماس هدایت‌شده اجازهٔ تماس و ارسال مدارک پرسیده می‌شود. اگر «خیر» باشد، پیگیری‌ها حذف و همهٔ دکمه‌ها جز «انصراف» و «شمارهٔ اشتباه» قفل می‌شوند.</li>
     <li><b>قفل دکمه‌ها:</b> هر دکمه شرط دارد؛ اگر کامل نباشد، پنل می‌گوید چه چیزی کم است و شما را به همان بخش می‌برد.</li>
-    <li><b>واریز:</b> کلیک کارشناس به‌تنهایی واریز را ثبت نمی‌کند؛ اول ۶ مورد چک‌لیست با نام تأییدکننده.</li></ul>
+    <li><b>تناسب:</b> اگر مشتری برای خرج زندگی به این پول یا سودش نیاز دارد، پنل «هشدار تناسب» قرمز نشان می‌دهد و «آمادهٔ قرارداد» فقط با تأیید سرپرست (نام و دلیل) باز می‌شود. هشدارهای دیگر: نیاز به نقدشوندگی بالا، مدت طرح بیشتر از افق مشتری، ریسک طرح بیشتر از ریسک‌پذیری او، مبلغ کمتر از حداقل.</li>
+    <li><b>تأیید مدیر:</b> پیش از «آمادهٔ قرارداد»، مدیر فروش باید پیشنهاد (طرح، مبلغ، نرخ و مدارک) را در چک‌لیست تأیید کند.</li>
+    <li><b>واریز:</b> کلیک کارشناس به‌تنهایی واریز را ثبت نمی‌کند؛ اول همهٔ موارد چک‌لیست با نام تأییدکننده.</li>
+    <li><b>ارجاع به سرپرست:</b> پیگیری‌ای که بیش از ۲۴ ساعت عقب افتاده، در داشبورد برچسب «ارجاع به سرپرست» می‌گیرد و در گزارش مدیر فهرست می‌شود.</li>
+    <li><b>تغییر دستی تیپ:</b> فقط با نوشتن شاهد (چه دیدید یا شنیدید)؛ شاهد در تاریخچه می‌ماند.</li>
+    <li><b>کامل بودن پرونده:</b> درصد کامل بودن ۱۱ دادهٔ اصلی بالای هر پرونده نمایش داده می‌شود.</li></ul>
     <div class="tblwrap"><table class="gt" id="gReq"></table></div>
     <h3>چک‌لیست کنترل پیش از واریز</h3><div class="tblwrap"><table class="gt" id="gChecks"></table></div>
     <h3>اتصال به CRM یا سرور واقعی</h3><p class="small">برای برنامه‌نویس: نقشهٔ رویدادها، ساختار دادهٔ هر مشتری، قواعد پیگیری و شرط‌ها در یک فایل JSON.</p>
@@ -645,6 +654,8 @@ Object.assign(DQ, {
   q:{D:'«چقدر از این پول ممکن است زودتر لازم شود؟»', I:'«ممکن است بخشی از این پول را زودتر بخواهید؟»', S:'«برای آرامش خیالتان، چه بخشی از پول باید همیشه در دسترس باشد؟»', C:'«چه درصدی از سرمایه باید نقدشونده بماند؟»'}},
  history:{t:'تجربهٔ قبلی', o:[['dep','سپرده/صندوق'],['gold','طلا/ارز/ملک'],['stock','بورس'],['biz','کسب‌وکار خصوصی'],['none','بدون تجربه']],
   q:{D:'«قبلاً کجا سرمایه‌گذاری کرده‌اید؟»', I:'«تا حالا کجا سرمایه‌گذاری کرده‌اید؟ تجربه‌اش چطور بود؟»', S:'«قبلاً پولتان را کجا نگه می‌داشتید؟»', C:'«سوابق سرمایه‌گذاری‌تان در چه دارایی‌هایی بوده؟»'}},
+ essential:{t:'ضروری بودن پول', o:[['no','پول ضروری نیست'],['partly','بخشی ضروری است'],['yes','برای هزینهٔ زندگی به آن/سودش نیاز دارم']],
+  q:{D:'«این پول را برای خرج زندگی لازم ندارید؟»', I:'«این پول جزو پس‌اندازی است که برای خرج روزمره لازم نیست؟»', S:'«مطمئنید اگر سود چند ماه دیر شود، خرج زندگی‌تان به مشکل نمی‌خورد؟»', C:'«آیا این سرمایه یا جریان سودش برای هزینه‌های ضروری شما لازم است؟»'}},
  channel:{t:'راه ارتباطی', o:[['call','تماس تلفنی'],['wa','واتس‌اپ'],['sms','پیامک'],['email','ایمیل'],['meet','جلسهٔ حضوری'],['online','جلسهٔ آنلاین']],
   q:{D:'«از چه راهی خبرتان کنم؟»', I:'«کدام راه برای شما راحت‌تر است؟»', S:'«ترجیح می‌دهید از چه راهی با شما در ارتباط باشیم؟»', C:'«مدارک را از چه راهی بفرستم؟»'}},
 });
@@ -657,17 +668,18 @@ const CONSENT = {yes:'بله؛ اجازهٔ تماس و ارسال مدارک د
 
 /* ============ شرط هر دکمه: تا این‌ها ثبت نشده، دکمه کار نمی‌کند ============ */
 const REQ = {
- qualified:['consent','amt','payout','reason','hz','risk','decider'],
+ qualified:['consent','amt','payout','reason','hz','risk','decider','essential'],
  senddocs:['consent'],
  meet:['consent','decider'],
  aftermeet:['consent'],
- ready:['consent','amt','payout','decider','docs'],
+ ready:['consent','amt','payout','decider','docs','#approve','#suit'],
  paid:['consent','amt','decider','docs','#checks'],
 };
-const REQ_LABEL = {consent:'اجازهٔ تماس', amt:'مبلغ', payout:'نوع سود', reason:'دلیل سرمایه‌گذاری', hz:'مدت', risk:'ریسک', decider:'تصمیم‌گیرنده', docs:'مدارک لازم', '#checks':'چک‌لیست کنترل پیش از واریز (همهٔ موارد)'};
+const REQ_LABEL = {essential:'ضروری بودن پول', '#approve':'تأیید مدیر فروش بر پیشنهاد (چک‌لیست)', '#suit':'تأیید سرپرست (پول مشتری ضروری است)', consent:'اجازهٔ تماس', amt:'مبلغ', payout:'نوع سود', reason:'دلیل سرمایه‌گذاری', hz:'مدت', risk:'ریسک', decider:'تصمیم‌گیرنده', docs:'مدارک لازم', '#checks':'چک‌لیست کنترل پیش از واریز (همهٔ موارد)'};
 
 /* ============ کنترل پیش از قرارداد و واریز ============ */
 const CHECKS = [
+ {id:'approve', t:'تأیید مدیر بر پیشنهاد', d:'طرح، مبلغ، نرخ و مدارک پیشنهاد پیش از ارسال به مشتری، به تأیید مدیر فروش رسید.'},
  {id:'disclose', t:'افشا', d:'ریسک‌ها، پیش‌بینی بودن سود طرح‌های سهمی، ساختار قرارداد خرید و شرط حسابرسی به مشتری گفته و امضا شد.'},
  {id:'kyc', t:'احراز هویت', d:'کارت ملی/پاسپورت دیده و نسخهٔ آن بایگانی شد.'},
  {id:'auth', t:'اختیار امضا', d:'برای شرکت یا وکالت: روزنامهٔ رسمی/وکالت‌نامه بررسی شد. (برای شخص حقیقی: «مورد ندارد» را ثبت کنید.)'},
@@ -693,6 +705,16 @@ const EVENT_MAP = [
 
 GENERIC_ORDER.push('liquid', 'history', 'channel');
 ORDER.S.push('liquid'); ORDER.C.splice(4, 0, 'liquid', 'history');
+
+GENERIC_ORDER.splice(GENERIC_ORDER.indexOf('risk') + 1, 0, 'essential');
+['D','I','C'].forEach(k => ORDER[k].splice(ORDER[k].indexOf('hz') + 1, 0, 'essential')); ORDER.S.splice(ORDER.S.indexOf('risk') + 1, 0, 'essential');
+OBJECTIONS.push(
+ {q:'چرا طلا یا ملک نخرم؟', a:'با معیار یکسان مقایسه کنید: نقدشوندگی، ریسک، هزینهٔ ورود و خروج، تمرکز دارایی، مدت و بازده واقعی. هیچ گزینه‌ای همیشه بهتر نیست؛ ماشین حساب، بانک و صندوق را کنار طرح‌ها نشان می‌دهد.',
+  D:'«بخشی طلا، بخشی اینجا؛ عدد هر دو را کنار هم ببینید.»', I:'«طلا فقط نگه‌داری است؛ اینجا در ساختن یک بیمارستان سهم دارید.»', S:'«طلا نوسان دارد؛ اینجا سود ماهانه با سند ملک است. می‌شود هر دو را داشت.»', C:'جدول مقایسهٔ نقدشوندگی، هزینهٔ ورود و خروج و بازده واقعی را بفرستید.'},
+ {q:'از کجا بفهمم پولم کجا خرج می‌شود؟', a:'حساب مقصد، مراحل پرداخت، مصرف منابع، گزارش دوره‌ای و حق نظارت در قرارداد نوشته می‌شود. در طرح شریک راهبردی، هیچ خرید یا قراردادی بدون تصویب هیئت‌مدیره و از مسیر حساب امانی انجام نمی‌شود.',
+  D:'«حساب امانی و گزارش فصلی؛ خودتان هم نماینده دارید.»', I:'«گزارش منظم می‌گیرید و می‌توانید بیایید ببینید.»', S:'«هر فصل گزارش می‌گیرید و پول از حساب امانی خرج می‌شود.»', C:'بند حساب امانی، گزارش حسابرسی‌شده و حق نظارت را در پیش‌نویس نشان دهید.'},
+ {q:'برای خرج زندگی به این سود نیاز دارم', a:'صادقانه بگویید: پولی که برای خرج زندگی لازم است نباید در هیچ سرمایه‌گذاری قفل شود. ذخیرهٔ نقد مشتری را بپرسید؛ اگر ندارد، «ضروری بودن پول» را «بله» ثبت کنید تا پنل هشدار تناسب بدهد و ادامه فقط با تأیید سرپرست باشد.',
+  D:'«رک بگویم: پول خرج زندگی را اینجا نگذارید؛ فقط مازاد را.»', I:'«دوست دارم این همراهی برایتان آرامش بیاورد، نه نگرانی؛ فقط مازاد پس‌انداز.»', S:'«آرامش شما مهم‌تر است. اول ذخیرهٔ چند ماه خرج را کنار بگذارید.»', C:'«اگر سود دو ماه دیر شود، خرج شما چه می‌شود؟ این را با هم حساب کنیم.»'});
 
 /* ================= تنظیمات =================
    CRM_SYNC_ENDPOINT: (اختیاری) آدرس Web app گوگل‌شیت فایل crm-sync-endpoint.gs؛ هر کلیک روی دکمه‌ها آنجا هم ثبت می‌شود.
@@ -750,7 +772,7 @@ function renderDash(){
   $('#list').innerHTML = rows.length ? rows.map(l => { const b = bucket(l), T = l.type ? TYPES[l.type.code] : null;
     return `<tr class="${b}"><td><button class="lk" data-id="${l.id}">${esc(l.name || 'بی‌نام')}</button><small>${esc(l.city || '')} ${l.source ? '· ' + esc(l.source) : ''}${l.owner ? ' · کارشناس: ' + esc(l.owner) : ''}</small></td>
       <td dir="ltr" class="ph"><a href="tel:${esc(l.phone)}">${esc(fa(l.phone))}</a></td>
-      <td><span class="tag">${stageOf(l.stage).t}</span>${l.disc?.consent === 'no' ? '<small class="neg">تماس نگیرید</small>' : ''}</td>
+      <td><span class="tag">${stageOf(l.stage).t}</span>${l.disc?.consent === 'no' ? '<small class="neg">تماس نگیرید</small>' : ''}${escalated(l) ? '<small class="neg">ارجاع به سرپرست</small>' : ''}</td>
       <td>${T ? `<span class="tp" style="--c:${T.color}">${l.type.code}</span>` : '<span class="muted">—</span>'}</td>
       <td><span class="temp ${l.temp}">${{hot:'داغ', warm:'گرم', cold:'سرد', won:'مشتری'}[l.temp] || ''}</span></td>
       <td class="nx"><b>${l.next ? when(l.next.at) : '—'}</b><small>${esc(l.next?.label || '')}</small></td>
@@ -796,6 +818,7 @@ $('#demoBtn').onclick = () => { if (!confirm('سه مشتری نمونه (ساخ
 function renderLead(){
   const l = cur(); $('#leadEmpty').hidden = !!l; $('#leadBody').hidden = !l; if (!l) return;
   $('#lName').textContent = l.name || 'بی‌نام'; $('#lMeta').innerHTML = `<a href="tel:${esc(l.phone)}" dir="ltr">${esc(fa(l.phone))}</a> · ${esc(l.city || 'شهر نامشخص')} · ${esc(l.source)} · سرمایه: ${esc(l.budget || '—')}${l.interest ? ' · علاقه: ' + esc(l.interest) : ''}`;
+  const cp = completeness(l); $('#lMeta').innerHTML += ` · <span class="cpl ${cp.pct === 100 ? 'ok' : cp.pct >= 60 ? 'mid' : 'low'}">پرونده ${fa(cp.pct)}٪ کامل (${fa(cp.n)} از ${fa(cp.of)})</span>`;
   $('#lCall').href = 'tel:' + l.phone; $('#lWa').href = 'https://wa.me/' + waNum(l.phone);
   /* مراحل با رفت و برگشت */
   const si = STAGES.findIndex(s => s.id === l.stage);
@@ -1107,7 +1130,7 @@ function renderFlow(){
   else if (k === 'pitch') { if (STAGES.findIndex(x => x.id === l.stage) < 2) { const from = stageOf(l.stage).t; l.stage = 'qualified'; l.temp = l.disc.timing === 'now' ? 'hot' : l.temp; bumpMax(l); log(l, 'مرحله', from + ' ← نیازسنجی (خودکار پس از تماس هدایت‌شده)'); save(); } const rec = recommend(l), a = planFacts(rec[0], l), b = rec[1] && planFacts(rec[1], l);
     const why = [label('reason', l.disc.reason), label('payout', l.disc.payout)].filter(Boolean).join('، ') || 'هدفتان';
     body = `<p class="say">${(PITCH[c] || PITCH.S)((l.name || '').replace('نمونه · ', '').split(' ')[0], a, b, why)}</p>${a.note ? `<p class="warnline">${a.t}${a.note}: این را صادقانه بگویید.</p>` : ''}${(l.disc.amt || 1) < 1 ? '<p class="warnline">مبلغ مشتری زیر حداقل ۱ میلیارد است. صادقانه بگویید و دو راه پیشنهاد دهید: سهم ۶۰۰ میلیونی پروژهٔ سلامت در فراخوان، یا شراکت با یک نفر دیگر برای رسیدن به ۱ میلیارد.</p>' : ''}
-      <div class="recs">${rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('')}</div>
+      ${suitBox(l, rec[0])}<div class="recs">${rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('')}</div>
       <button class="btn ghost sm" id="fCalc">باز کردن مقایسه در ماشین حساب</button>`; }
   else if (k === 'obj') body = `${l.disc.concern ? `<p class="hint" style="--c:${T ? T.color : '#888'}">نگرانی مشتری: «${esc(l.disc.concern)}» · نزدیک‌ترین جواب: <b>${OBJECTIONS[matchObj(l.disc.concern)].q}</b></p>` : ''}<p class="small">اگر مشتری اعتراضی کرد، روی همان بزنید تا جواب مخصوص تیپ ${c} بیاید:</p><div class="fopts">${OBJECTIONS.map((o, i) => `<button data-ob="${i}">${o.q}</button>`).join('')}</div><div id="fObj"></div>`;
   else if (k === 'close') body = `<p class="say">${CLOSE[c] || CLOSE.S}</p><p class="small">نتیجه را با یکی از این دکمه‌ها ثبت کنید (پیگیری خودکار تنظیم می‌شود):</p><div class="fopts">${['meet','senddocs','ready','think','objection','later','lost'].map(id => `<button class="ob ${OUTCOMES.find(o => o.id === id).cls}" data-out="${id}">${OUTCOMES.find(o => o.id === id).t}</button>`).join('')}</div>`;
@@ -1121,7 +1144,7 @@ function renderFlow(){
   box.querySelectorAll('[data-cs]').forEach(b => b.onclick = () => { setConsent(l, b.dataset.cs); if (b.dataset.cs === 'no') { block('اجازهٔ تماس داده نشد', ['در پرونده ثبت شد و پیگیری‌ها متوقف شد.', 'با احترام تماس را تمام کنید.']); CALL = null; renderLead(); return; } CALL.step++; renderFlow(); });
   const fcn = $('#fConcern'); if (fcn) fcn.onchange = () => { l.disc.concern = fcn.value.trim(); log(l, 'نیازسنجی', 'نگرانی: ' + l.disc.concern); save(); };
   box.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { l.warm[k] = b.dataset.w; l.typeLocked = false; save(); CALL.step++; renderFlow(); });
-  box.querySelectorAll('[data-ty]').forEach(b => b.onclick = () => { const r = l.type || {pct:{D:.25,I:.25,S:.25,C:.25}, conf:.5, hits:{}, second:'S'}; l.type = Object.assign({}, r, {code:b.dataset.ty, src:'انتخاب دستی کارشناس', conf:Math.max(r.conf, .6)}); l.typeLocked = true; log(l, 'تیپ شخصیتی', 'انتخاب دستی: ' + TYPES[b.dataset.ty].t); save(); renderFlow(); });
+  box.querySelectorAll('[data-ty]').forEach(b => b.onclick = async () => { if (l.type && l.type.code === b.dataset.ty) return; const ev = await ask({title:'تغییر دستی تیپ به ' + TYPES[b.dataset.ty].t, rule:'تیپ فقط با شاهد عوض می‌شود؛ شاهد در تاریخچه ثبت می‌شود.', fields:[{id:'ev', label:'چه دیدید یا شنیدید؟', req:true}]}); if (!ev) return; const r = l.type || {pct:{D:.25,I:.25,S:.25,C:.25}, conf:.5, hits:{}, second:'S'}; l.type = Object.assign({}, r, {code:b.dataset.ty, src:'انتخاب دستی کارشناس', conf:Math.max(r.conf, .6)}); l.typeLocked = true; l.type.evidence = ev.ev; log(l, 'تیپ شخصیتی', 'انتخاب دستی: ' + TYPES[b.dataset.ty].t + ' · شاهد: ' + ev.ev); save(); renderFlow(); });
   bindDisc(box, l, id => { renderFlow(); setTimeout(() => { if (CALL && steps(l)[CALL.step] === 'q:' + id) { CALL.step++; renderFlow(); } }, 300); });
   box.querySelectorAll('[data-ob]').forEach(b => b.onclick = () => { const o = OBJECTIONS[b.dataset.ob]; $('#fObj').innerHTML = `<p>${o.a}</p><p class="tip" style="--c:${T ? T.color : '#888'}"><b>برای ${c || '—'}:</b> ${c ? o[c] : ''}</p>`; log(l, 'اعتراض', o.q); save(); });
   box.querySelectorAll('[data-out]').forEach(b => b.onclick = async () => { await outcome(l, OUTCOMES.find(o => o.id === b.dataset.out)); if (l.timeline[0]?.kind === OUTCOMES.find(o => o.id === b.dataset.out).t) { CALL = null; log(l, 'تماس هدایت‌شده', 'پایان با نتیجه'); save(); renderLead(); } });
@@ -1144,10 +1167,11 @@ function renderReport(){
   const types = {D:0, I:0, S:0, C:0, '—':0}; L.forEach(l => types[l.type?.code || '—']++);
   const p = (a, b) => b ? fa(Math.round(a / b * 100)) + '٪' : '—';
   $('#report').innerHTML = `
-  <div class="kpis">${[['کل مشتری‌ها', L.length, ''], ['واریز شده', L.filter(l => l.stage === 'won').length, 'good'], ['نرخ تبدیل کل', p(L.filter(l => l.stage === 'won').length, L.length), 'good'], ['پیگیری عقب‌افتاده', L.filter(late).length, 'bad'], ['نیازسنجی ناقص (بعد از تماس اول)', L.filter(l => (l.maxStage ?? 0) >= 1 && REQ.qualified.some(k => !hasVal(l, k))).length, 'warn'], ['عدم رضایت تماس', L.filter(l => l.disc?.consent === 'no').length, ''], ['میانگین زمان اولین تماس', avgResp === null ? '—' : (avgResp < 60 ? fa(Math.round(avgResp)) + ' دقیقه' : fa(Math.round(avgResp / 60)) + ' ساعت'), avgResp !== null && avgResp > 5 ? 'warn' : '']].map(([t, v, c]) => `<div class="kpi ${c}"><b>${typeof v === 'number' ? fa(v) : v}</b><span>${t}</span></div>`).join('')}</div>
+  <div class="kpis">${[['کل مشتری‌ها', L.length, ''], ['واریز شده', L.filter(l => l.stage === 'won').length, 'good'], ['نرخ تبدیل کل', p(L.filter(l => l.stage === 'won').length, L.length), 'good'], ['پیگیری عقب‌افتاده', L.filter(late).length, 'bad'], ['نیازسنجی ناقص (بعد از تماس اول)', L.filter(l => (l.maxStage ?? 0) >= 1 && REQ.qualified.some(k => !hasVal(l, k))).length, 'warn'], ['عدم رضایت تماس', L.filter(l => l.disc?.consent === 'no').length, ''], ['ارجاع به سرپرست (عقب‌افتادهٔ بیش از ۲۴ ساعت)', L.filter(escalated).length, 'bad'], ['میانگین زمان اولین تماس', avgResp === null ? '—' : (avgResp < 60 ? fa(Math.round(avgResp)) + ' دقیقه' : fa(Math.round(avgResp / 60)) + ' ساعت'), avgResp !== null && avgResp > 5 ? 'warn' : '']].map(([t, v, c]) => `<div class="kpi ${c}"><b>${typeof v === 'number' ? fa(v) : v}</b><span>${t}</span></div>`).join('')}</div>
   <div class="grid2"><div class="card"><h3>قیف فروش و نرخ تبدیل هر مرحله</h3>${funnel.map((f, i) => `<div class="fun"><span>${f.s.t}</span><i style="width:${f.n / max * 100}%"></i><b>${fa(f.n)}</b><em>${i ? p(f.n, funnel[i - 1].n) : ''}</em></div>`).join('')}<p class="small">عدد = مشتری‌هایی که دست‌کم به این مرحله رسیده‌اند · درصد = تبدیل از مرحلهٔ قبل. ضعیف‌ترین درصد، جایی است که باید آموزش دهید.</p></div>
   <div class="card"><h3>عملکرد کارشناسان</h3><div class="tblwrap"><table class="gt"><tr><th>کارشناس</th><th>مشتری</th><th>تماس موفق</th><th>جلسه</th><th>واریز</th><th>تبدیل</th><th>عقب‌افتاده</th></tr>${owners.map(o => { const M = L.filter(l => (l.owner || '—') === o), won = M.filter(l => l.stage === 'won').length;
     return `<tr><td>${esc(o)}</td><td>${fa(M.length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 1).length)}</td><td>${fa(M.filter(l => (l.maxStage ?? 0) >= 4).length)}</td><td>${fa(won)}</td><td>${p(won, M.length)}</td><td class="${M.filter(late).length ? 'neg' : ''}">${fa(M.filter(late).length)}</td></tr>`; }).join('')}</table></div></div></div>
+  ${L.some(escalated) ? `<div class="card"><h3>ارجاع به سرپرست</h3><div class="tblwrap"><table class="gt"><tr><th>مشتری</th><th>کارشناس</th><th>پیگیری عقب‌افتاده از</th><th>عنوان</th></tr>${L.filter(escalated).map(l => `<tr><td>${esc(l.name)}</td><td>${esc(l.owner || '—')}</td><td class="neg">${when(l.next.at)}</td><td>${esc(l.next.label)}</td></tr>`).join('')}</table></div></div>` : ''}
   <div class="grid2"><div class="card"><h3>دلیل‌های انصراف</h3>${Object.keys(reasons).length ? Object.entries(reasons).sort((a, b) => b[1] - a[1]).map(([r, n]) => `<div class="fun"><span>${esc(r)}</span><i style="width:${n / Math.max(...Object.values(reasons)) * 100}%;background:var(--red)"></i><b>${fa(n)}</b><em></em></div>`).join('') : '<p class="muted">هنوز انصرافی ثبت نشده.</p>'}</div>
   <div class="card"><h3>منبع لید و تیپ مشتری‌ها</h3><div class="tblwrap"><table class="gt"><tr><th>منبع</th><th>تعداد</th><th>واریز</th><th>تبدیل</th></tr>${Object.entries(src).sort((a, b) => b[1].n - a[1].n).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${fa(v.n)}</td><td>${fa(v.won)}</td><td>${p(v.won, v.n)}</td></tr>`).join('')}</table></div>
     <p>${Object.entries(types).map(([k, n]) => `<span class="tp" style="--c:${TYPES[k]?.color || '#999'}">${k}</span> ${fa(n)}`).join(' &nbsp; ')}</p><p class="small">مشتری بدون تیپ (—) یعنی تماس هدایت‌شده یا تشخیص انجام نشده.</p></div></div>`;
@@ -1178,7 +1202,7 @@ $('#teamPull').onclick = async () => {
   catch (e) { alert('دریافت از شیت نشد. مطمئن شوید نسخهٔ جدید crm-sync-endpoint.gs منتشر شده است.'); }
 };
 
-function matchObj(t){ const K = [['تضمین','قطعی'],['سود نداد','ورشکست','خوب پیش نرود','ضرر','اگر'],['بانک','صندوق'],['همسر','مشورت','شریک','خانواده'],['کم','کمتر','پول ندارم','مبلغ'],['اعتماد','کلاهبرداری','از کجا','مطمئن'],['زودتر','نقد','خروج','لازم شد'],['دلار','ارز','تورم']];
+function matchObj(t){ const K = [['تضمین','قطعی'],['سود نداد','ورشکست','خوب پیش نرود','ضرر','اگر'],['بانک','صندوق'],['همسر','مشورت','شریک','خانواده'],['کم','کمتر','پول ندارم','مبلغ'],['اعتماد','کلاهبرداری','از کجا','مطمئن'],['زودتر','نقد','خروج','لازم شد'],['دلار','ارز','تورم'],['طلا','ملک','سکه'],['کجا خرج','مصرف','خرج می‌شود'],['خرج زندگی','هزینهٔ زندگی','هزینه زندگی','زندگی']];
   let best = 0, bs = -1; K.forEach((ws, i) => { const s = ws.filter(w => t.includes(w)).length; if (s > bs) { bs = s; best = i; } }); return best; }
 
 /* ================= رضایت، قفل دکمه‌ها و کنترل واریز ================= */
@@ -1186,6 +1210,8 @@ function matchObj(t){ const K = [['تضمین','قطعی'],['سود نداد','�
 function hasVal(l, k){
   if (k === 'consent') return l.disc.consent === 'yes';
   if (k === '#checks') return CHECKS.every(c => l.checks && l.checks[c.id]);
+  if (k === '#approve') return !!(l.checks && l.checks.approve);
+  if (k === '#suit') return l.disc.essential !== 'yes' || !!l.suitOk;
   const v = l.disc[k]; return v !== undefined && v !== null && String(v).trim() !== '';
 }
 function missingReq(l, id){ return (REQ[id] || []).filter(k => !hasVal(l, k)).map(k => REQ_LABEL[k]); }
@@ -1219,7 +1245,7 @@ function renderDisc(l){
   const rec = recommend(l);
   $('#recs').innerHTML = `<p class="${req.length ? 'warnline' : 'okline'}">${req.length ? 'نیازسنجی ناقص است: ' + req.join('، ') : '✓ نیازسنجی کامل است؛ دکمهٔ «نیازسنجی انجام شد» باز است.'}</p>` +
     rec.map((p, i) => `<div class="rec"><span class="rk">${fa(i + 1)}</span><div><b>طرح ${fa(p.n)} · ${p.t}</b><small>${p.why.join('؛ ')}</small></div></div>`).join('') +
-    `<button class="btn" id="toCalc">مقایسهٔ این ${fa(rec.length)} طرح در ماشین حساب ←</button><p class="small">طرح پیشنهادی بر اساس جواب‌های نیازسنجی است؛ تیپ شخصیتی فقط لحن و ترتیب گفتگو را تعیین می‌کند.</p>`;
+    suitBox(l, rec[0]) + `<button class="btn" id="toCalc">مقایسهٔ این ${fa(rec.length)} طرح در ماشین حساب ←</button><p class="small">طرح پیشنهادی بر اساس جواب‌های نیازسنجی است؛ تیپ شخصیتی فقط لحن و ترتیب گفتگو را تعیین می‌کند.</p>`;
   $('#toCalc').onclick = () => { CALC.sel = new Set(rec.map(p => p.n)); CALC.amt = l.disc.amt || 1; tab('calc'); };
 }
 const DQ_T = id => (TEXTQ.find(t => t.id === id) || {}).t || (DQ[id] || {}).t || id;
@@ -1250,6 +1276,30 @@ function exportSpec(){ downloadJSON({schema:'iranian-center.crm', version:'3.0',
   serverRequirements:['احراز هویت کارشناسان و نقش‌ها','idempotency برای هر رویداد','صف تلاش مجدد','ثبت رضایت و لغو آن','تأیید مالی مستقل پیش از payment.verified','نگهداری تاریخچهٔ کامل']}, 'crm-connection-map.json'); }
 function exportLeads(){ downloadJSON({exported:new Date().toISOString(), agent:DB.agent, leads:DB.leads}, 'crm-leads-' + new Date().toISOString().slice(0, 10) + '.json'); }
 $('#specBtn').onclick = exportSpec; $('#leadsJson').onclick = exportLeads;
+
+/* ================= تناسب سرمایه‌گذاری، تأیید مدیر، ارجاع به سرپرست ================= */
+/* هشدارهای تناسب: اگر طرح با وضع مالی مشتری جور نیست، کارشناس باید بداند و ادامه، تأیید سرپرست می‌خواهد */
+function suitability(l, p){
+  const d = l.disc || {}, w = [];
+  if (d.essential === 'yes') w.push({hard:true, t:'مشتری برای هزینهٔ زندگی به این پول یا سودش نیاز دارد. هیچ طرحی نباید با پول ضروری خریده شود؛ ادامه فقط با تأیید سرپرست.'});
+  if (d.essential === 'partly') w.push({t:'بخشی از پول ضروری است؛ فقط بخش غیرضروری را پیشنهاد دهید و ذخیرهٔ نقد مشتری را بپرسید.'});
+  if (d.liquid === 'gt50') w.push({t:'بیش از نیمی از پول باید نقد بماند؛ همهٔ طرح‌ها پول را دست‌کم ۱ سال قفل می‌کنند. فقط بخش آزاد را پیشنهاد دهید.'});
+  if (p && d.hz && p.term > +d.hz) w.push({t:`مدت طرح ${fa(p.term)} سال است ولی مشتری پول را فقط ${fa(d.hz)} سال لازم ندارد.`});
+  if (p && d.risk === 'low' && p.risk !== 'کم') w.push({t:'مشتری امنیت اصل پول را می‌خواهد ولی ریسک این طرح «' + p.risk + '» است.'});
+  if (p && (d.amt || 1) * 1000 < p.min) w.push({t:'مبلغ از حداقل این طرح کمتر است.'});
+  return w;
+}
+function suitBox(l, p){ const w = suitability(l, p); if (!w.length) return '';
+  return `<div class="suit ${w.some(x => x.hard) ? 'hard' : ''}"><b>هشدار تناسب</b><ul>${w.map(x => `<li>${x.t}</li>`).join('')}</ul>${w.some(x => x.hard) ? (l.suitOk ? `<small class="by">تأیید سرپرست: ${esc(l.suitOk.by)} · ${esc(l.suitOk.why)}</small>` : '<button class="btn sm" data-suitok>ثبت تأیید سرپرست برای ادامه</button>') : ''}</div>`; }
+async function suitApprove(l){ const v = await ask({title:'تأیید سرپرست برای ادامه با وجود عدم تناسب', rule:'سرپرست باید با مشتری صحبت کرده و مطمئن شده باشد که پول ضروری او درگیر نمی‌شود.', fields:[{id:'by', label:'نام سرپرست', req:true}, {id:'why', label:'دلیل ادامه', req:true}]}); if (!v) return;
+  l.suitOk = {by:v.by, why:v.why, at:Date.now()}; log(l, 'تناسب', 'تأیید سرپرست: ' + v.by + ' · ' + v.why); save(); renderLead(); }
+document.addEventListener('click', e => { if (e.target.matches('[data-suitok]')) suitApprove(cur()); });
+
+/* کامل بودن پرونده (درصد) */
+function completeness(l){ const keys = ['consent','amt','payout','reason','hz','risk','decider','essential','liquid','docs','concern']; const n = keys.filter(k => hasVal(l, k)).length; return {n, of:keys.length, pct:Math.round(n / keys.length * 100)}; }
+
+/* پیگیری عقب‌افتادهٔ بیش از ۲۴ ساعت: ارجاع به سرپرست */
+const escalated = l => l.next && l.disc?.consent !== 'no' && Date.now() - l.next.at > 24 * 36e5;
 
 /* ---------------- محتوای دستورالعمل (از همان داده‌ها ساخته می‌شود تا همیشه یکی باشد) ---------------- */
 (function renderGuide(){
