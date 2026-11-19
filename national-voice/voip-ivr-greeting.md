@@ -14,14 +14,13 @@
 اگر شمارهٔ داخلی را می‌دانید، هم‌اکنون آن را شماره‌گیری کنید.
 
 - برای گفت‌وگو با **اپراتور**، عدد **۱**؛
-- برای ارتباط با **قائم‌مقام مرکز**، عدد **۲**؛
-- برای ارتباط با **ریاست دفتر**، عدد **۳**؛
+- برای ارتباط با **ریاست دفتر و بازرس ویژه**، عدد **۲**؛
+- برای ارتباط با **قائم‌مقام مرکز**، عدد **۳**؛
 - برای ارتباط با **شورای حل اختلاف ایرانیان خارج از کشور**، عدد **۴**؛
 - برای **امور سرمایه‌گذاری**، عدد **۵**؛
 - برای بخش **مُد و زیبایی**، عدد **۶**؛
 - برای ارتباط با **سازمان ورزش**، عدد **۷**؛
-- و برای ارتباط با **رئیس شورای عالی سیاست‌گذاری**، عدد **۸** را شماره‌گیری کنید.
-- برای شنیدن دوبارهٔ این پیام، عدد **۹** را بگیرید.
+- و برای ارتباط با **شورای توریسم سلامت**، عدد **۸** را شماره‌گیری کنید.
 
 ## English
 
@@ -32,14 +31,13 @@ Thank you for calling, we are delighted to hear from you.
 If you know the extension, please dial it now.
 
 - To speak with an **operator**, press **1**.
-- For the **Deputy Director of the Center**, press **2**.
-- For the **Head of the Office**, press **3**.
+- For the **Head of the Office and the Special Inspector**, press **2**.
+- For the **Deputy Director of the Center**, press **3**.
 - For the **Dispute Resolution Council for Iranians Abroad**, press **4**.
 - For **Investment Affairs**, press **5**.
 - For **Fashion and Beauty**, press **6**.
 - For the **Sports Organization**, press **7**.
-- For the **Chairman of the Supreme Policy Council**, press **8**.
-- To hear this message again, press **9**.
+- For the **Health Tourism Council**, press **8**.
 
 Thank you.
 
