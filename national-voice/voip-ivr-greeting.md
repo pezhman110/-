@@ -13,7 +13,7 @@
 
 - برای ارتباط با **دفتر مدیریت مرکز**، عدد **۱**؛
 - برای ارتباط با **روابط عمومی**، عدد **۲**؛
-- برای ارتباط با **مجتمع قضایی و امور حقوقی**، عدد **۳**؛
+- برای ارتباط با **شورای حل اختلاف**، عدد **۳**؛
 - و برای گفت‌وگو با **اپراتور**، عدد **۰** را شماره‌گیری کنید.
 - برای شنیدن دوبارهٔ این پیام، عدد **۹** را بگیرید.
 
@@ -27,7 +27,7 @@ If you know the extension, please dial it now.
 
 - For the **Director's Office**, press **1**.
 - For **Public Relations**, press **2**.
-- For the **Judicial Complex and Legal Affairs**, press **3**.
+- For the **Dispute Resolution Council**, press **3**.
 - To speak with an **operator**, press **0**.
 - To hear this message again, press **9**.
 
