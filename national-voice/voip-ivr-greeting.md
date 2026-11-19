@@ -1,6 +1,6 @@
 # پیام خوش‌آمد تلفنی (VoIP / منشی تلفنی) · مرکز خدمات مشاوره ایرانیان خارج از کشور
 
-> **مدت تقریبی:** حدود ۷۰ ثانیه (فارسی و سپس انگلیسی) · **لحن:** رسمی، گرم، آرام، صدای روشن و نازک · شماره‌های داخلی پیشنهادی‌اند؛ اگر سیستم تلفن شما شمارهٔ دیگری دارد، بگویید تا متن و صدا اصلاح شود.
+> **مدت تقریبی:** حدود ۷۰ ثانیه (فارسی و سپس انگلیسی) · **لحن:** رسمی، گرم، آرام، صدای زن جوان، گرم و دلنشین به سبک مهماندار هواپیما · شماره‌های داخلی پیشنهادی‌اند؛ اگر سیستم تلفن شما شمارهٔ دیگری دارد، بگویید تا متن و صدا اصلاح شود.
 
 ## متن فارسی
 
@@ -19,9 +19,9 @@
 
 ## English
 
-Welcome to the **Consulting Services Center for Iranians Abroad**,
+Good day, and welcome to the **Consulting Services Center for Iranians Abroad**,
 the bridge between Iran and Iranians around the world.
-Thank you for calling.
+Thank you for calling, we are delighted to hear from you.
 
 If you know the extension, please dial it now.
 
@@ -30,6 +30,8 @@ If you know the extension, please dial it now.
 - For the **Judicial Complex and Legal Affairs**, press **3**.
 - To speak with an **operator**, press **0**.
 - To hear this message again, press **9**.
+
+Thank you.
 
 ## پیام‌های تکمیلی سیستم تلفن
 
